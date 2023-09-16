@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>19639569626-ofcokdmvfc5dccnn5l47u2oqtf6rn024.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.19639569626-ofcokdmvfc5dccnn5l47u2oqtf6rn024</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>19639569626-jms37qu8ae8h5haq31d973cij3d92a57.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAPb4hCT8LUtemYK7kntKc4YyMJ0Lj7eW0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>19639569626</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.antigecommerce.fitgate</string>
+	<key>PROJECT_ID</key>
+	<string>fitgate-b4390</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fitgate-b4390.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:19639569626:ios:9d3dea5ef16719ac52e9e3</string>
+</dict>
+</plist>

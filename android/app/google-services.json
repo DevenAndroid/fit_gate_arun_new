@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "19639569626",
+    "project_id": "fitgate-b4390",
+    "storage_bucket": "fitgate-b4390.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19639569626:android:1efafcce271ce7eb52e9e3",
+        "android_client_info": {
+          "package_name": "com.antigecommerce.fitgate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19639569626-99u4d0lqph7d8er7jo6r4q55asrbdctt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antigecommerce.fitgate",
+            "certificate_hash": "bb3aa1f7ef992267105e8c7cb860051084948c00"
+          }
+        },
+        {
+          "client_id": "19639569626-l13d4k93dbqmm13nb2sh21fq71qnv5cf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYQl8bJqC8S27G8P3dkMOZJ3axltUEha0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19639569626-l13d4k93dbqmm13nb2sh21fq71qnv5cf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "19639569626-ofcokdmvfc5dccnn5l47u2oqtf6rn024.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.antigecommerce.fitgate",
+                "app_store_id": "6444258614"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
