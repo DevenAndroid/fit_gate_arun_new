@@ -150,7 +150,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               ),
                               notificationCon.notifyCount == true
                                   ? Positioned(
-                                      right: 0,
+                                      right: 10,
+                                      // top: 3,
                                       child: Container(
                                         height: 8,
                                         width: 9,

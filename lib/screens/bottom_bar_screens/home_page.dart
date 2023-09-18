@@ -13,6 +13,7 @@ import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/explore_page.dart';
+import 'package:fit_gate/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   final banner = Get.put(BannerController());
   final login = Get.put(LoginController());
   int? index;
-
+  PageController pageController = PageController(initialPage: 0);
   getSubscriptionList() async {
     await login.getUserById();
     print("MNAME---> ${Global.userModel?.middleName}");
@@ -89,52 +90,56 @@ class _HomePageState extends State<HomePage> {
         leadingImage: "",
         fontWeight: FontWeight.w900,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Global.userModel?.phoneNumber != null
-                ? SizedBox()
-                : GestureDetector(
-                    onTap: () {
-                      Get.off(() => LoginScreen());
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 80,
-                      color: MyColors.grey,
-                      child: Center(
-                        child: Text.rich(TextSpan(children: [
-                          TextSpan(
-                            text: "Log in ",
-                            style: TextStyle(
-                                color: MyColors.orange,
-                                fontSize: 16.5,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: " to enjoy the full experience",
-                            style: TextStyle(
-                                color: MyColors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal),
-                          )
-                        ])),
-                      ),
-                    ),
-                  ),
-            SizedBox(height: 2),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-              child: SingleChildScrollView(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 0,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Global.userModel?.phoneNumber != null
+                        ? SizedBox()
+                        : GestureDetector(
+                            onTap: () {
+                              Get.off(() => LoginScreen());
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 80,
+                              color: MyColors.grey,
+                              child: Center(
+                                child: Text.rich(TextSpan(children: [
+                                  TextSpan(
+                                    text: "Log in ",
+                                    style: TextStyle(
+                                        color: MyColors.orange,
+                                        fontSize: 16.5,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: " to enjoy the full experience",
+                                    style: TextStyle(
+                                        color: MyColors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal),
+                                  )
+                                ])),
+                              ),
+                            ),
+                          ),
+                    SizedBox(height: 2),
                     GetBuilder<BannerController>(builder: (banner) {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.22,
                         child: PageView.builder(
+                            controller: pageController,
                             scrollDirection: Axis.horizontal,
                             onPageChanged: (val) {},
+
                             // shrinkWrap: true,
                             itemCount: banner.getBannerList.length,
                             itemBuilder: (c, i) {
@@ -280,18 +285,27 @@ class _HomePageState extends State<HomePage> {
                             right: 20,
                             child: Align(
                               alignment: Alignment.bottomRight,
-                              child: CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.18,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.033,
-                                title: "Join",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                borderColor: Colors.transparent,
-                                fontColor: MyColors.orange,
-                                bgColor: MyColors.white,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+                              child: GetBuilder<BottomController>(
+                                  builder: (controller) {
+                                return CustomButton(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.18,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.033,
+                                  title: "Join",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  borderColor: Colors.transparent,
+                                  fontColor: MyColors.orange,
+                                  bgColor: MyColors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  onTap: () {
+                                    controller.getIndex(1);
+                                    controller.setSelectedScreen(true,
+                                        screenName: Subscription());
+                                  },
+                                );
+                              }),
                             ),
                           ),
                         ],
@@ -306,155 +320,139 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(
-                      height: 300,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 0),
-                        child: ListView.builder(
-                            itemCount: 10,
-                            itemBuilder: (c, i) {
-                              return GestureDetector(
-                                onTap: () {
-                                  index = i;
-                                  setState(() {});
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Container(
-                                    // width: MediaQuery.of(context).size.width * 0.9,
-                                    decoration: BoxDecoration(
-                                      color: MyColors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: index == i
-                                            ? MyColors.orange
-                                            : MyColors.border.withOpacity(.40),
-                                        width: 1,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              MyColors.grey.withOpacity(0.10),
-                                          spreadRadius: 5,
-                                          blurRadius: 10,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                              // flex: 0,
-                                              child: Image.asset(
-                                            MyImages.bodyMaster,
-                                            fit: BoxFit.cover,
-                                          )),
-                                          SizedBox(width: 10),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Body Master",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: 19,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.star,
-                                                        color: MyColors.orange,
-                                                        size: 17,
-                                                      ),
-                                                      Text(
-                                                        "4.5",
-                                                        style: TextStyle(
-                                                          color:
-                                                              MyColors.orange,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 3),
-                                                      Text(
-                                                        "250 Review",
-                                                        style: TextStyle(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: MyColors.grey,
-                                                          fontSize: 13.5,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Row(
-                                                    children: [
-                                                      ImageButton(
-                                                        padding:
-                                                            EdgeInsets.all(0),
-                                                        image: MyImages.car,
-                                                        color: MyColors.grey,
-                                                        width: 13,
-                                                      ),
-                                                      SizedBox(width: 5),
-                                                      Text(
-                                                        "22 Km",
-                                                        style: TextStyle(
-                                                          color: MyColors.grey,
-                                                          fontSize: 13.8,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 0,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0),
-                                              child: Text("Pro"),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                    ),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (c, i) {
+                  return GestureDetector(
+                    onTap: () {
+                      index = i;
+                      setState(() {});
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        margin: EdgeInsets.symmetric(horizontal: 18),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: MyColors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: index == i
+                                ? MyColors.orange
+                                : MyColors.border.withOpacity(.40),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: MyColors.grey.withOpacity(0.10),
+                              spreadRadius: 5,
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                // flex: 0,
+                                child: Image.asset(
+                              MyImages.bodyMaster,
+                              fit: BoxFit.cover,
+                            )),
+                            SizedBox(width: 10),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Body Master",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: MyColors.orange,
+                                          size: 17,
+                                        ),
+                                        Text(
+                                          "4.5",
+                                          style: TextStyle(
+                                            color: MyColors.orange,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(width: 3),
+                                        Text(
+                                          "250 Review",
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: MyColors.grey,
+                                            fontSize: 13.5,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        ImageButton(
+                                          padding: EdgeInsets.all(0),
+                                          image: MyImages.car,
+                                          color: MyColors.grey,
+                                          width: 13,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          "22 Km",
+                                          style: TextStyle(
+                                            color: MyColors.grey,
+                                            fontSize: 13.8,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Text(
+                                  "Pro",
+                                  style: TextStyle(color: MyColors.orange),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        ],
       ),
     );
   }

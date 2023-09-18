@@ -162,6 +162,7 @@ class _SubscriptionState extends State<Subscription> {
                       height: MediaQuery.of(context).size.height * 0.086,
                       title: "15BHD / year",
                       iconClr: MyColors.grey,
+                      isOffer: true,
                       borderRadius: BorderRadius.circular(10),
                       // img: MyImages.setting,
                     ),

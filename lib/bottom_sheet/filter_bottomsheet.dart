@@ -16,7 +16,7 @@ filterBottomSheet(context) {
       context: context,
       builder: (_) {
         int index = 0;
-        bool select = false;
+        // bool select = false;
         var img = Get.put(ImageController());
         return StatefulBuilder(builder: (context, setState) {
           return SizedBox(
@@ -96,20 +96,25 @@ filterBottomSheet(context) {
                         (index) => FilterChip(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6)),
-                          backgroundColor: select == true
+                          backgroundColor: km[index].selected
                               ? MyColors.orange
                               : MyColors.lightGrey,
                           // shape: OutlinedBorder(),
                           label: Text(
-                            km[index],
+                            km[index].title,
                             style: TextStyle(
-                              color: select == true
+                              color: km[index].selected
                                   ? MyColors.white
                                   : MyColors.grey,
                             ),
                           ),
+                          pressElevation: 0,
+                          selected: km[index].selected,
+                          showCheckmark: false,
+                          selectedColor: MyColors.orange,
                           onSelected: (val) {
                             // select = val;
+                            km[index].selected = val;
                             setState(() {});
                           },
                         ),
@@ -130,21 +135,27 @@ filterBottomSheet(context) {
                         (index) => FilterChip(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6)),
-                          backgroundColor: select == true
+                          backgroundColor: amenities[index].selected
                               ? MyColors.orange
                               : MyColors.lightGrey,
                           // shape: OutlinedBorder(),
                           label: Text(
-                            amenities[index],
+                            amenities[index].title,
                             style: TextStyle(
-                              color: select == true
+                              color: amenities[index].selected
                                   ? MyColors.white
                                   : MyColors.grey,
                             ),
                           ),
+                          pressElevation: 0,
+                          selected: amenities[index].selected,
+                          showCheckmark: false,
+                          selectedColor: MyColors.orange,
                           onSelected: (val) {
                             // select = val;
+                            amenities[index].selected = val;
                             setState(() {});
+                            print(" &&&&&& ${val}");
                           },
                         ),
                       ),
@@ -166,6 +177,13 @@ filterBottomSheet(context) {
                                 blurRadius: 6,
                                 spreadRadius: 4,
                               ),
+                              onTap: () {
+                                // km.last.selected = false;
+                                // amenities.last.selected = false;
+                                // km.remove(km.last.selected);
+                                // setState(() {});
+                                Navigator.pop(context);
+                              },
                             ),
                           ),
                           SizedBox(width: 12),
@@ -187,24 +205,24 @@ filterBottomSheet(context) {
       });
 }
 
-List<String> km = [
-  "Less then 5KM",
-  "Less then 10KM",
-  "Less then 15KM",
-  "Less then 20KM",
-  "Less then 25KM",
+List<FilterModel> km = [
+  FilterModel(title: "Less then 5KM"),
+  FilterModel(title: "Less then 10KM"),
+  FilterModel(title: "Less then 15KM"),
+  FilterModel(title: "Less then 20KM"),
+  FilterModel(title: "Less then 25KM"),
 ];
-List<String> amenities = [
-  "Sauna",
-  "Cafes",
-  "Swimming Pool",
-  "Lockers",
-  "Jacuzzi",
-  "Steam",
-  "Shower",
-  "Group Class",
-  "Crossfit",
-  "Cardio",
+List<FilterModel> amenities = [
+  FilterModel(title: "Sauna"),
+  FilterModel(title: "Cafes"),
+  FilterModel(title: "Swimming Pool"),
+  FilterModel(title: "Lockers"),
+  FilterModel(title: "Jacuzzi"),
+  FilterModel(title: "Steam"),
+  FilterModel(title: "Shower"),
+  FilterModel(title: "Group Class"),
+  FilterModel(title: "Crossfit"),
+  FilterModel(title: "Cardio"),
 ];
 
 class Tile extends StatelessWidget {
@@ -243,4 +261,11 @@ class Tile extends StatelessWidget {
       ),
     );
   }
+}
+
+class FilterModel {
+  final String title;
+  bool selected;
+
+  FilterModel({required this.title, this.selected = false});
 }

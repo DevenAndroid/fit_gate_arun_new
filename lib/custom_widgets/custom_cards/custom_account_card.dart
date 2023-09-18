@@ -66,8 +66,9 @@ class CustomAccountCard extends StatelessWidget {
                 flex: 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    expiryDate == null ? SizedBox(height: 27) : Spacer(),
+                    // expiryDate == null ? SizedBox(height: 27) : Spacer(),
                     Text(
                       "$title",
                       overflow: TextOverflow.ellipsis,
@@ -91,17 +92,17 @@ class CustomAccountCard extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                        Text(
-                          expiryDate == null
-                              ? ""
-                              : getDate(expiryDate!.substring(0, 11)),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: MyColors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        // Text(
+                        //   expiryDate == null
+                        //       ? ""
+                        //       : getDate(expiryDate!.substring(0, 11)),
+                        //   overflow: TextOverflow.ellipsis,
+                        //   style: TextStyle(
+                        //     color: MyColors.white,
+                        //     fontSize: 15,
+                        //     fontWeight: FontWeight.w500,
+                        //   ),
+                        // ),
                       ],
                     ),
                     expiryDate == null ? SizedBox() : Spacer()

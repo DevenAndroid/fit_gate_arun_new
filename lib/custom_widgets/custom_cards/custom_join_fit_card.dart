@@ -2,6 +2,7 @@
 
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/utils/my_color.dart';
+import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 
 class CustomJoinFitCard extends StatelessWidget {
@@ -14,6 +15,7 @@ class CustomJoinFitCard extends StatelessWidget {
   final double? iconSize;
   final double? fontSize;
   final bool? isJoinFitGate;
+  final bool isOffer;
   // final double? iconSize;
   final IconData? icon;
   final BorderRadius? borderRadius;
@@ -38,7 +40,8 @@ class CustomJoinFitCard extends StatelessWidget {
       this.icon,
       this.fontSize,
       this.color,
-      this.isJoinFitGate})
+      this.isJoinFitGate,
+      this.isOffer = false})
       : super(key: key);
 
   @override
@@ -101,23 +104,53 @@ class CustomJoinFitCard extends StatelessWidget {
                     img == null
                         ? SizedBox()
                         : ImageButton(
-                            padding: EdgeInsets.zero,
+                            // padding: EdgeInsets.zero,
                             image: img,
                             color: index == selectedIndex
                                 ? MyColors.orange
                                 : MyColors.black,
                             height: iconSize ?? 50,
                           ),
-                    SizedBox(width: 13),
-                    Text(
-                      "$title",
-                      style: TextStyle(
-                        color: index == selectedIndex
-                            ? MyColors.orange
-                            : MyColors.black,
-                        fontSize: fontSize ?? 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "$title",
+                          style: TextStyle(
+                            color: index == selectedIndex
+                                ? MyColors.orange
+                                : MyColors.black,
+                            fontSize: fontSize ?? 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        isOffer
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    flex: 0,
+                                    child: ImageButton(
+                                      image: MyImages.offer,
+                                      height: 13,
+                                      width: 13,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 0,
+                                    child: Text(
+                                      "Save 9BHD!",
+                                      style: TextStyle(
+                                        color: MyColors.orange,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(),
+                      ],
                     ),
                   ],
                 ),

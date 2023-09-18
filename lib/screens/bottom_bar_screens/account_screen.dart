@@ -135,9 +135,9 @@ class _AccountScreenState extends State<AccountScreen> {
                         GetBuilder<BottomController>(builder: (controller) {
                           return CustomAccountCard(
                             onClick: () {
-                              controller.getIndex(1);
-                              controller.setSelectedScreen(true,
-                                  screenName: Subscription());
+                              // controller.getIndex(1);
+                              // controller.setSelectedScreen(true,
+                              //     screenName: Subscription());
                             },
                             // expiryDate: Global.userModel?.subscriptionTo,
                             title: "Pro",
