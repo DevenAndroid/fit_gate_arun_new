@@ -17,6 +17,7 @@ class LoginController extends GetxController {
   var auth = FirebaseAuth.instance;
   // var checkPhone;
   Future<bool> userLogin(String? phone, String? fcmToken) async {
+    loading(value: true);
     var pref = await SharedPreferences.getInstance();
 
     var data = {
@@ -28,11 +29,13 @@ class LoginController extends GetxController {
     var response = await DataBaseHelper.post(EndPoints.login, data);
     var parsedData = jsonDecode(response.body);
     if (parsedData['statusCode'] == 200) {
+      loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
       update();
       return true;
     } else {
+      loading(value: false);
       return false;
     }
   }

@@ -253,26 +253,9 @@ class _CustomExploreCardState extends State<CustomExploreCard> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Text(
-                        (() {
-                          if (widget.gymDetailsModel!.classType == "sapphire") {
-                            return "${widget.gymDetailsModel!.classType![0].toUpperCase()}${widget.gymDetailsModel!.classType!.substring(1)}";
-                          }
-                          return "${widget.gymDetailsModel!.classType![0].toUpperCase()}${widget.gymDetailsModel!.classType!.substring(1)}";
-                        }()),
-                        overflow: TextOverflow.ellipsis,
-                        style: (() {
-                          if (widget.gymDetailsModel?.classType == "sapphire") {
-                            return TextStyle(
-                                color: MyColors.blue, fontSize: 15);
-                          } else if (widget.gymDetailsModel?.classType ==
-                              "emerald") {
-                            return TextStyle(
-                                color: MyColors.green, fontSize: 15);
-                          } else {
-                            return TextStyle(
-                                color: MyColors.brown, fontSize: 15);
-                          }
-                        }())),
+                      "Free",
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],

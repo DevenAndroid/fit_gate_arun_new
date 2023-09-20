@@ -3,7 +3,9 @@ import 'package:fit_gate/bottom_sheet/filter_bottomsheet.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
+import 'package:fit_gate/models/gym_details_model.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/explore_page.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/home_page.dart';
 import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
 import 'package:fit_gate/utils/end_points.dart';
@@ -71,9 +73,16 @@ class _ExploreState extends State<Explore> {
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ImageButton(
-                    image: MyImages.map,
-                  ),
+                  child: GetBuilder<BottomController>(builder: (controller) {
+                    return ImageButton(
+                      image: MyImages.map,
+                      onTap: () {
+                        bottomController.setSelectedScreen(true,
+                            screenName: ExplorePage());
+                        Get.to(() => BottomNavigationScreen());
+                      },
+                    );
+                  }),
                 ),
               ],
             ),
@@ -92,8 +101,9 @@ class _ExploreState extends State<Explore> {
                         var gymData = data.packageList[i];
                         return GetBuilder<BottomController>(
                             builder: (controller) {
-                          return GestureDetector(
-                            onTap: () {
+                          return GymTile(
+                            gymModel: gymData,
+                            onClick: () {
                               index = i;
                               setState(() {});
                               controller.setSelectedScreen(
@@ -105,162 +115,6 @@ class _ExploreState extends State<Explore> {
                               );
                               Get.to(() => BottomNavigationScreen());
                             },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Container(
-                                // width: MediaQuery.of(context).size.width * 0.9,
-                                margin: EdgeInsets.symmetric(horizontal: 15),
-                                // padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: MyColors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: index == i
-                                        ? MyColors.orange
-                                        : MyColors.border.withOpacity(.40),
-                                    width: 1,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: MyColors.grey.withOpacity(0.10),
-                                      spreadRadius: 5,
-                                      blurRadius: 10,
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        // flex: 0,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: CachedNetworkImage(
-                                            // imageBuilder: (context, imageProvider) =>
-                                            //     Container(
-                                            //   // height: MediaQuery.of(context).size.height * 0.18,
-                                            //   decoration: BoxDecoration(
-                                            //     color: MyColors.white,
-                                            //     borderRadius: BorderRadius.circular(10),
-                                            //     image: DecorationImage(
-                                            //       image: imageProvider,
-                                            //       fit: BoxFit.cover,
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                            placeholder: (c, url) => Center(
-                                              child: CircularProgressIndicator(
-                                                color: MyColors.orange,
-                                                strokeWidth: 2.5,
-                                              ),
-                                            ),
-                                            fit: BoxFit.cover,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.12,
-                                            imageUrl:
-                                                "${EndPoints.imgBaseUrl}${gymData.pictures?[0]}",
-                                            errorWidget: (c, u, r) =>
-                                                Container(),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${gymData.facilityName}",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 19,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.star,
-                                                    color: MyColors.orange,
-                                                    size: 17,
-                                                  ),
-                                                  Text(
-                                                    "${gymData.rating ?? 0}",
-                                                    style: TextStyle(
-                                                      color: MyColors.orange,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 3),
-                                                  Text(
-                                                    "${gymData.review} Review",
-                                                    style: TextStyle(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      color: MyColors.grey,
-                                                      fontSize: 13.5,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: [
-                                                  ImageButton(
-                                                    padding: EdgeInsets.all(0),
-                                                    image: MyImages.car,
-                                                    color: MyColors.grey,
-                                                    width: 13,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    "22 Km",
-                                                    style: TextStyle(
-                                                      color: MyColors.grey,
-                                                      fontSize: 13.8,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 0,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10.0),
-                                          child: Text(
-                                            "Pro",
-                                            style: TextStyle(
-                                                color: MyColors.orange),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
                           );
                         });
                       });
@@ -268,6 +122,165 @@ class _ExploreState extends State<Explore> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GymTile extends StatelessWidget {
+  const GymTile({
+    super.key,
+    required this.gymModel,
+    this.onClick,
+    this.opening,
+  });
+
+  final GymDetailsModel gymModel;
+  final VoidCallback? onClick;
+  final String? opening;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Container(
+          // width: MediaQuery.of(context).size.width * 0.9,
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          // padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: MyColors.white,
+            borderRadius: BorderRadius.circular(10),
+            // border: Border.all(
+            //   color: index == i
+            //       ? MyColors.orange
+            //       : MyColors.border.withOpacity(.40),
+            //   width: 1,
+            // ),
+            boxShadow: [
+              BoxShadow(
+                color: MyColors.grey.withOpacity(0.10),
+                spreadRadius: 5,
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                opening != null
+                    ? SizedBox()
+                    : Expanded(
+                        // flex: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: CachedNetworkImage(
+                            placeholder: (c, url) => Center(
+                              child: CircularProgressIndicator(
+                                color: MyColors.orange,
+                                strokeWidth: 2.5,
+                              ),
+                            ),
+                            fit: BoxFit.cover,
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            imageUrl:
+                                "${EndPoints.imgBaseUrl}${gymModel.pictures?[0]}",
+                            errorWidget: (c, u, r) => Container(),
+                          ),
+                        ),
+                      ),
+                SizedBox(width: opening != null ? 0 : 10),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${gymModel.facilityName}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: MyColors.orange,
+                              size: 17,
+                            ),
+                            Text(
+                              "${gymModel.rating ?? 0}",
+                              style: TextStyle(
+                                color: MyColors.orange,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: 3),
+                            Text(
+                              "${gymModel.review} Review",
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: MyColors.grey,
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 0,
+                              child: ImageButton(
+                                padding: EdgeInsets.all(0),
+                                image: opening != null
+                                    ? MyImages.clock
+                                    : MyImages.car,
+                                color: MyColors.grey,
+                                width: 13,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Expanded(
+                              child: Text(
+                                opening ?? "22 Km",
+                                style: TextStyle(
+                                  color: MyColors.grey,
+                                  fontSize: 13.8,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "Pro",
+                      style: TextStyle(color: MyColors.orange),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

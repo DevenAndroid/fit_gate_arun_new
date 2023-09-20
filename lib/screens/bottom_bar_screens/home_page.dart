@@ -12,7 +12,6 @@ import 'package:fit_gate/controller/notification_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
-import 'package:fit_gate/screens/bottom_bar_screens/explore_page.dart';
 import 'package:fit_gate/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -183,6 +182,12 @@ class _HomePageState extends State<HomePage> {
                                               color: MyColors.black,
                                               bgColor: MyColors.white,
                                               boxShape: BoxShape.circle,
+                                              onTap: () {
+                                                pageController.previousPage(
+                                                    duration:
+                                                        Duration(seconds: 0),
+                                                    curve: Curves.easeOut);
+                                              },
                                             ),
                                             ImageButton(
                                               height: 12,
@@ -191,6 +196,12 @@ class _HomePageState extends State<HomePage> {
                                               color: MyColors.black,
                                               bgColor: MyColors.white,
                                               boxShape: BoxShape.circle,
+                                              onTap: () {
+                                                pageController.nextPage(
+                                                    duration:
+                                                        Duration(seconds: 0),
+                                                    curve: Curves.easeOut);
+                                              },
                                             ),
                                           ],
                                         ),
@@ -205,11 +216,11 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 15),
                     GetBuilder<BottomController>(
                         builder: (controller) => CustomButton(
-                              onTap: () {
-                                controller.getIndex(1);
-                                controller.setSelectedScreen(true,
-                                    screenName: ExplorePage());
-                              },
+                              // onTap: () {
+                              //   controller.getIndex(1);
+                              //   controller.setSelectedScreen(true,
+                              //       screenName: ExplorePage());
+                              // },
                               title: "Explore more offers",
                               height: MediaQuery.of(context).size.height * 0.06,
                               fontSize: 18,
@@ -242,13 +253,14 @@ class _HomePageState extends State<HomePage> {
                             top: 15,
                             left: 20,
                             child: Container(
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: MyColors.orange,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 15),
+                                    vertical: 8.0, horizontal: 15),
                                 child: Text(
                                   "Enjoy free Offers",
                                   style: TextStyle(
@@ -300,7 +312,7 @@ class _HomePageState extends State<HomePage> {
                                   bgColor: MyColors.white,
                                   borderRadius: BorderRadius.circular(5),
                                   onTap: () {
-                                    controller.getIndex(1);
+                                    controller.getIndex(0);
                                     controller.setSelectedScreen(true,
                                         screenName: Subscription());
                                   },

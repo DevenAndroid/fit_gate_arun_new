@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:fit_gate/controller/map_controller.dart';
+import 'package:fit_gate/custom_widgets/custom_text_field.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/models/gym_details_model.dart';
-import 'package:fit_gate/screens/bottom_bar_screens/home_page.dart';
-import 'package:fit_gate/utils/end_points.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/explore.dart';
+import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
 import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -15,14 +17,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../controller/bottom_controller.dart';
-import '../../custom_widgets/custom_app_bar.dart';
-import '../../custom_widgets/custom_cards/custom_explore_card.dart';
-import '../../custom_widgets/custom_cards/custom_join_fit_card.dart';
 import '../../custom_widgets/custom_google_map.dart';
 import '../../utils/my_color.dart';
-import '../gym_details_screens/gym_details_screen.dart';
-import '../gym_map_details_page.dart';
-import 'bottom_naviagtion_screen.dart';
 
 class ExplorePage extends StatefulWidget {
   final Function(int)? index;
@@ -60,15 +56,35 @@ class _ExplorePageState extends State<ExplorePage> {
               double.parse(
                   mapController.latLngList[i].addressLongitude!.toString())),
           icon: BitmapDescriptor.defaultMarker,
-          infoWindow: InfoWindow(title: "", onTap: () {}),
-          onTap: () async {
-            goToPlace(
-                index: i,
-                id: mapController.latLngList[i].id.toString(),
-                name: mapController.latLngList[i].facilityName,
-                latitude: mapController.latLngList[i].addressLatitude,
-                longitude: mapController.latLngList[i].addressLongitude,
-                gymDetailsModel: mapController.latLngList[i].gymDetailsModel);
+          // infoWindow: InfoWindow(title: "", onTap: () {}),
+          onTap: () {
+            print("@@@@@@@@@@@@");
+            infoWindowController.addInfoWindow!(
+              GetBuilder<BottomController>(builder: (cont) {
+                return GymTile(
+                  gymModel: mapController.latLngList[i].gymDetailsModel!,
+
+                  // img:
+                  //     "${EndPoints.imgBaseUrl}${mapController.latLngList[i].gymDetailsModel?.pictures![0]}",
+                  onClick: () {
+                    cont.setSelectedScreen(
+                      true,
+                      screenName: GymDetailsScreen(
+                        index: i,
+                        gymDetailsModel:
+                            mapController.latLngList[i].gymDetailsModel,
+                      ),
+                    );
+                    Get.to(() => BottomNavigationScreen());
+                  },
+                );
+              }),
+              LatLng(
+                  double.parse(
+                      mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(
+                      mapController.latLngList[i].addressLongitude.toString())),
+            );
           },
         );
         if (mapController.latLngList[i].gymDetailsModel!.status == "accept")
@@ -154,29 +170,47 @@ class _ExplorePageState extends State<ExplorePage> {
                   mapController.latLngList[i].addressLongitude!.toString())),
           icon: BitmapDescriptor.defaultMarker,
           infoWindow: InfoWindow(title: "", onTap: () {}),
-          onTap: () async {
-            goToPlace(
-              index: i,
-              id: mapController.latLngList[i].id.toString(),
-              name: mapController.latLngList[i].facilityName,
-              latitude: mapController.latLngList[i].addressLatitude,
-              longitude: mapController.latLngList[i].addressLongitude,
-              gymDetailsModel: mapController.latLngList[i].gymDetailsModel,
+          onTap: () {
+            print("@@@@@@@@@@@@11");
+            infoWindowController.addInfoWindow!(
+              GetBuilder<BottomController>(builder: (cont) {
+                return GymTile(
+                  gymModel: gymDetailsModel!,
+                  // cardClr: MyColors.white,
+                  // borderClr: Colors.transparent,
+                  // title1: "738",
+                  // rate: "4.5",
+                  // img:
+                  //     "${EndPoints.imgBaseUrl}${gymDetailsModel?.pictures![0]}",
+                  onClick: () {
+                    cont.setSelectedScreen(
+                      true,
+                      screenName: GymDetailsScreen(
+                        index: index,
+                        gymDetailsModel: gymDetailsModel,
+                      ),
+                    );
+                    Get.to(() => BottomNavigationScreen());
+                  },
+                );
+              }),
+              LatLng(double.parse(latitude.toString()),
+                  double.parse(longitude.toString())),
             );
           },
         );
         markers.add(marker);
       }
     });
-    Get.to(() => GymMapDetailsPage(
-          // markerId: MarkerId(id),
-          // markers: markers,
-          infoWindowController: infoWindowController,
-          position: CameraPosition(
-              target: LatLng(double.parse(latitude.toString()),
-                  double.parse(longitude.toString())),
-              zoom: 16.0),
-        ));
+    // Get.to(() => GymMapDetailsPage(
+    //       // markerId: MarkerId(id),
+    //       // markers: markers,
+    //       infoWindowController: infoWindowController,
+    //       position: CameraPosition(
+    //           target: LatLng(double.parse(latitude.toString()),
+    //               double.parse(longitude.toString())),
+    //           zoom: 16.0),
+    //     ));
     setState(() {});
     print("qqqqqqq $longitude");
     print("aaaaaaa $latitude");
@@ -223,6 +257,7 @@ class _ExplorePageState extends State<ExplorePage> {
     snackbarKey.currentState?.hideCurrentSnackBar();
     super.dispose();
   }
+
   // @override
   // void dispose() {
   //   if (_googleMapController != null) {
@@ -230,6 +265,57 @@ class _ExplorePageState extends State<ExplorePage> {
   //   }
   //   super.dispose();
   // }
+  Future getMapLatLng(GoogleMapController controller) async {
+    await mapController.getLatLan();
+
+    markers.clear();
+    setState(() {
+      for (int i = 0; i < mapController.latLngList.length; i++) {
+        final marker = Marker(
+          markerId: MarkerId("${mapController.latLngList[i].id}"),
+          position: LatLng(
+              double.parse(
+                  mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(
+                  mapController.latLngList[i].addressLongitude!.toString())),
+          icon: BitmapDescriptor.defaultMarker,
+          onTap: () {
+            print("@@@@@@@@@@@@44");
+            infoWindowController.addInfoWindow!(
+              GetBuilder<BottomController>(builder: (cont) {
+                return GymTile(
+                  gymModel: mapController.latLngList[i].gymDetailsModel!,
+                  // cardClr: MyColors.white,
+                  // borderClr: Colors.transparent,
+                  // title1: "738",
+                  // rate: "4.5",
+                  // img:
+                  //     "${EndPoints.imgBaseUrl}${mapController.latLngList[i].gymDetailsModel?.pictures![0]}",
+                  onClick: () {
+                    cont.setSelectedScreen(
+                      true,
+                      screenName: GymDetailsScreen(
+                        index: i,
+                        gymDetailsModel:
+                            mapController.latLngList[i].gymDetailsModel,
+                      ),
+                    );
+                    Get.to(() => BottomNavigationScreen());
+                  },
+                );
+              }),
+              LatLng(
+                  double.parse(
+                      mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(
+                      mapController.latLngList[i].addressLongitude.toString())),
+            );
+          },
+        );
+        markers.add(marker);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,114 +324,160 @@ class _ExplorePageState extends State<ExplorePage> {
       onWillPop: () {
         bottomController.getIndex(0);
 
-        return bottomController.setSelectedScreen(true, screenName: HomePage());
+        return bottomController.setSelectedScreen(true, screenName: Explore());
       },
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
+        // backgroundColor: Colors.blue.withOpacity(.40),
         extendBody: true,
         key: homeScaffoldKey,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(45),
-          child: GestureDetector(
-            onTap: () {
-              search.clear();
-              setState(() {});
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            child: CustomAppBar(
-              title: "Explore",
-              leadingImage: "",
-              // actionIcon: Icons.add,
-              fontWeight: FontWeight.w900,
-              onTap: () {
-                search.clear();
-                setState(() {});
-              },
-            ),
-          ),
-        ),
-        body: RefreshIndicator(
-          color: MyColors.orange,
-          onRefresh: () async {
-            print('dsfsfs');
-            await mapController.getGym();
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            color: Colors.transparent,
-            child: Column(
-              children: [
-                GetBuilder<MapController>(builder: (mapController) {
-                  return Stack(
+        // appBar: PreferredSize(
+        //   preferredSize: Size.fromHeight(kToolbarHeight),
+        //   child: GestureDetector(
+        //     onTap: () {
+        //       search.clear();
+        //       setState(() {});
+        //       FocusManager.instance.primaryFocus?.unfocus();
+        //     },
+        //     child: CustomAppBar(
+        //       title: "Explore",
+        //       leadingImage: "",
+        //       // actionIcon: Icons.add,
+        //       fontWeight: FontWeight.w900,
+        //       onTap: () {
+        //         search.clear();
+        //         setState(() {});
+        //       },
+        //     ),
+        //   ),
+        // ),
+        body: GetBuilder<MapController>(builder: (cont) {
+          return Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  search.clear();
+                  setState(() {});
+                },
+                child: GoogleMap(
+                  myLocationButtonEnabled: false,
+                  myLocationEnabled: false,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    _googleMapController = controller;
+                    changeMapMode(_googleMapController!);
+                    onMapCreated(_googleMapController!);
+                    print(
+                        "GOOGLE MAP CONTROLLER -------> $_googleMapController");
+                    // getMapLatLng(_googleMapController!);
+                    infoWindowController.googleMapController = controller;
+                    setState(() {});
+                    // Uuid id = Uuid();
+                    // controller.showMarkerInfoWindow(MarkerId("$id"));
+                  },
+                  // Bahrain
+                  initialCameraPosition: CameraPosition(
+                    target: Global.userModel?.countryName == "Bahrain"
+                        ? LatLng(26.126532866, 50.58895572)
+                        : LatLng(26.2172, 50.1971),
+                    zoom: 13.2,
+                  ),
+                  markers: markers,
+                  onTap: (vd) {
+                    search.clear();
+                    setState(() {});
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+
+                  zoomControlsEnabled: true,
+                  buildingsEnabled: true,
+
+                  onCameraMove: (val) {
+                    infoWindowController.hideInfoWindow!();
+                  },
+                ),
+              ),
+              CustomInfoWindow(
+                controller: infoWindowController,
+                width: 350,
+                height: 120,
+                // offset: 35,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 45),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: GoogleMap(
-                          myLocationButtonEnabled: false,
-                          myLocationEnabled: false,
-                          onMapCreated: (GoogleMapController controller) {
-                            _googleMapController = controller;
-                            changeMapMode(_googleMapController!);
-                            onMapCreated(_googleMapController!);
-                            setState(() {});
-                            // Uuid id = Uuid();
-                            // controller.showMarkerInfoWindow(MarkerId("$id"));
-                          },
-                          // Bahrain
-                          initialCameraPosition: CameraPosition(
-                            target: Global.userModel?.countryName == "Bahrain"
-                                ? LatLng(26.126532866, 50.58895572)
-                                : LatLng(26.2172, 50.1971),
-                            zoom: 13.2,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: GetBuilder<BottomController>(
+                                builder: (bottomController) {
+                              return GestureDetector(
+                                onTap: () {
+                                  search.clear();
+                                  bottomController.setSelectedScreen(true,
+                                      screenName: Explore());
+                                  Get.to(() => BottomNavigationScreen());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: MyColors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(17.0),
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 20,
+                                      color: MyColors.grey,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
-                          markers: markers,
-                          onTap: (vd) {
-                            search.clear();
-                            setState(() {});
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                        ),
+                          SizedBox(width: 0),
+                          Expanded(
+                            flex: 7,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, right: 15),
+                              child: Focus(
+                                child: CustomTextField(
+                                  controller: search,
+                                  prefixIcon: MyImages.search,
+                                  hint: "Search",
+                                  color: MyColors.white,
+                                  fillColor: MyColors.white,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      searchText = val;
+                                    });
+                                    mapController.getLocation(
+                                        search: searchText);
+                                    print("00000000 $searchText");
+                                  },
+                                ),
+                                onFocusChange: (val) {
+                                  if (!val) {
+                                    search.clear();
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      /* Padding(
+                      Padding(
                         padding: const EdgeInsets.only(
-                            left: 15.0, riguht: 15, top: 15),
-                        child: Focus(
-                          child: CustomTextField(
-                              controller: search,
-                            prefixIcon: MyImages.search,
-                            hint: "Search",
-                            color: MyColors.white,
-                            fillColor: MyColors.white,
-                            onChanged: (val) {
-                              setState(() {
-                                searchText = val;
-                              });
-                              mapController.getLocation(search: searchText);
-                              print("search LIst ----------  ${searchText}");
-                            },
-                          ),
-                          onFocusChange: (value) {
-                            if (!value) {
-                              // snackBar(value.toString());
-                              search.clear();
-                              setState(() {});
-                            }
-                          },
-                        ),
-                      ),*/
-                      /*  Padding(
-                        padding: const EdgeInsets.only(
-                            top: 70.0, left: 15, right: 15),
-                        child: mapController.searchList.isEmpty
-                            ? search.text.isEmpty
-                                ? Text("")
-                                : Center(
-                                    child: Card(
-                                        child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("No data found"),
-                                    )),
-                                  )
+                            top: 10.0, left: 15, right: 15),
+                        child: search.text.isEmpty
+                            ? SizedBox()
                             : ListView.builder(
                                 shrinkWrap: true,
                                 physics: BouncingScrollPhysics(),
@@ -354,214 +486,46 @@ class _ExplorePageState extends State<ExplorePage> {
                                   var a = mapController.searchList[i];
                                   return GestureDetector(
                                     onTap: () {
-                                      goToPlace(
-                                          index: i,
-                                          id: a.id.toString(),
-                                          name: a.addressAddress,
-                                          latitude: a.addressLatitude,
-                                          longitude: a.addressLongitude,
-                                          gymDetailsModel: a);
+                                      searchText.isEmpty
+                                          ? SizedBox()
+                                          : goToPlace(
+                                              id: a.id.toString(),
+                                              index: i,
+                                              name: a.addressAddress,
+                                              latitude: a.addressLatitude,
+                                              longitude: a.addressLongitude,
+                                              gymDetailsModel: a);
+                                      search.clear();
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                     },
-                                    child: search.text.isEmpty
-                                        ? SizedBox()
-                                        : Container(
-                                            decoration: BoxDecoration(
-                                              color: MyColors.white,
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("${a.addressAddress}"),
-                                                  SizedBox(height: 5)
-                                                  // Divider()
-                                                ],
-                                              ),
-                                            )),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: MyColors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${a.addressAddress}"),
+                                            SizedBox(height: 5)
+                                            // Divider()
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   );
                                 }),
-                      ),
-                      mapController.searchList.isEmpty ||
-                              mapController.paginationData.totalRows == null ||
-                              mapController.paginationData.totalRows! <= 10
-                          ? SizedBox()
-                          : Positioned(
-                              top: MediaQuery.of(context).size.height * 0.3,
-                              left: 20,
-                              child: AllPaginationWidget(
-                                searchGym: mapController,
-                                s: search.text,
-                              ),
-                            )*/
+                      )
                     ],
-                  );
-                }),
-                SizedBox(height: 5),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // Text(
-                        //   "Search nearby gyms",
-                        //   style: TextStyle(
-                        //     color: MyColors.black,
-                        //     fontSize: 18,
-                        //     fontWeight: FontWeight.w600,
-                        //   ),
-                        // ),
-                        SizedBox(height: 5),
-                        GetBuilder<MapController>(builder: (cont) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 3.0, right: 3),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: CustomGymCard(
-                                      onClick: () {
-                                        selectedIndex = 1;
-                                        setState(() {});
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        mapController.getPackageListByName(
-                                            packageName: "sapphire");
-                                      },
-                                      img: MyImages.sapphire,
-                                      iconSize: 20,
-                                      selectedIndex: selectedIndex,
-                                      index: 1,
-                                      // width: MediaQuery.of(context).size.width * 0.28,
-                                      title: "Sapphire",
-                                      titleClr: MyColors.blue,
-                                      boxShadow: BoxShadow(
-                                        color: MyColors.grey.withOpacity(0.25),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: CustomGymCard(
-                                      onClick: () {
-                                        selectedIndex = 2;
-                                        setState(() {});
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        mapController.getPackageListByName(
-                                            packageName: "emerald");
-                                      },
-                                      img: MyImages.emerald,
-                                      iconSize: 20,
-                                      selectedIndex: selectedIndex,
-                                      index: 2,
-                                      // width: MediaQuery.of(context).size.width * 0.28,
-                                      title: "Emerald",
-                                      titleClr: MyColors.green,
-                                      boxShadow: BoxShadow(
-                                        color: MyColors.grey.withOpacity(0.25),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: CustomGymCard(
-                                      onClick: () {
-                                        selectedIndex = 3;
-                                        setState(() {});
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        mapController.getPackageListByName(
-                                            packageName: "ruby");
-                                      },
-                                      img: MyImages.ruby,
-                                      iconSize: 20,
-                                      index: 3,
-                                      selectedIndex: selectedIndex,
-                                      // width: MediaQuery.of(context).size.width * 0.28,
-                                      title: "  Ruby",
-                                      titleClr: MyColors.brown,
-                                      boxShadow: BoxShadow(
-                                        color: MyColors.grey.withOpacity(0.25),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                        SizedBox(height: 5),
-                        GetBuilder<MapController>(builder: (controllers) {
-                          return controllers.packageList.isEmpty
-                              ? Text("No gym found")
-                              : Padding(
-                                  padding: const EdgeInsets.only(bottom: 0.0),
-                                  child: Scrollbar(
-                                    thickness: 5.0,
-                                    thumbVisibility: true,
-                                    controller: scrollController,
-                                    child: ListView.builder(
-                                        shrinkWrap: true,
-                                        controller: scrollController,
-                                        itemCount:
-                                            controllers.packageList.length,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0, right: 4),
-                                            child: GetBuilder<BottomController>(
-                                              builder: (controller) =>
-                                                  CustomExploreCard(
-                                                onClick: () {
-                                                  controller.setSelectedScreen(
-                                                    true,
-                                                    screenName:
-                                                        GymDetailsScreen(
-                                                      index: index,
-                                                      gymDetailsModel:
-                                                          controllers
-                                                                  .packageList[
-                                                              index],
-                                                    ),
-                                                  );
-                                                  Get.to(() =>
-                                                      BottomNavigationScreen());
-                                                },
-                                                gymDetailsModel: controllers
-                                                    .packageList[index],
-                                                cardClr: MyColors.white,
-                                                borderClr: Colors.transparent,
-                                                title1: "250",
-                                                rate: "4.5",
-                                                img:
-                                                    "${EndPoints.imgBaseUrl}${controllers.packageList[index].pictures?[0]}",
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                );
-                        }),
-                      ],
-                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

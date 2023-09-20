@@ -3,7 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_google_map.dart';
-import 'package:fit_gate/screens/bottom_bar_screens/explore_page.dart';
+import 'package:fit_gate/screens/explore.dart';
 import 'package:fit_gate/screens/gym_details_screens/photo_view_page.dart';
 import 'package:fit_gate/screens/subscription_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ import '../../controller/map_controller.dart';
 import '../../controller/notification_controller.dart';
 import '../../custom_widgets/custom_btns/custom_button.dart';
 import '../../custom_widgets/custom_btns/icon_button.dart';
-import '../../custom_widgets/custom_cards/custom_explore_card.dart';
 import '../../models/gym_details_model.dart';
 import '../../utils/end_points.dart';
 import '../../utils/my_images.dart';
@@ -116,8 +115,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
       onWillPop: () {
         bottomController.getIndex(1);
 
-        return bottomController.setSelectedScreen(true,
-            screenName: ExplorePage());
+        return bottomController.setSelectedScreen(true, screenName: Explore());
       },
       child: Scaffold(
         body: Stack(
@@ -147,26 +145,23 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                         "Gym Details",
                         style: TextStyle(color: MyColors.white),
                       ),
+                      leadingWidth: 45,
                       leading: GestureDetector(
                           onTap: () {
                             print("object");
                             bottomController.setSelectedScreen(true,
-                                screenName: ExplorePage());
+                                screenName: Explore());
                             // Get.to(() => BottomNavigationScreen());
                             // context.go('/page2');
                           },
                           child: Container(
                             color: Colors.transparent,
                             alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20, top: 18, bottom: 11, right: 18),
-                              child: Image.asset(
-                                MyImages.arrowBack,
-                                color: MyColors.white,
-                                height: 20,
-                                width: 20,
-                              ),
+                            child: Image.asset(
+                              MyImages.arrowLeft,
+                              color: MyColors.white,
+                              height: 18,
+                              width: 18,
                             ),
                             /*ImageButton(
                         padding: EdgeInsets.only(
@@ -222,6 +217,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                         }),
                       ],
                     ),
+                    SizedBox(height: 10),
                     Align(
                       alignment: Alignment.center,
                       child: CachedNetworkImage(
@@ -253,20 +249,20 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
               ),
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.25,
+              top: MediaQuery.of(context).size.height * 0.28,
               left: 0,
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: CustomExploreCard(
-                  gymDetailsModel: widget.gymDetailsModel,
-                  cardClr: MyColors.white,
-                  borderClr: Colors.transparent,
-                  title1: "738",
-                  title2:
+                child: GymTile(
+                  gymModel: widget.gymDetailsModel!,
+                  // cardClr: MyColors.white,
+                  // borderClr: Colors.transparent,
+                  // title1: "738",
+                  opening:
                       "Opening ${widget.gymDetailsModel?.workingHour?[weekDay - 1].start} To ${widget.gymDetailsModel?.workingHour?[weekDay - 1].end}",
-                  rate: "4.5",
-                  clockImg: MyImages.clock,
+                  // rate: "4.5",
+                  // clockImg: MyImages.clock,
                 ),
               ),
             ),

@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../screens/auth/secondpage.dart';
-import '../../screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
 
 class RegisterController extends GetxController {
   var auth = FirebaseAuth.instance;
@@ -55,6 +54,7 @@ class RegisterController extends GetxController {
   }
 
   registerApiCall(phone, context, companyId, fcmToken, countryCode) async {
+    loading(value: true);
     var pref = await SharedPreferences.getInstance();
     var data = {
       "phone_number": phone,
@@ -71,14 +71,15 @@ class RegisterController extends GetxController {
       print("PARSED DATA REGGGG --- $parsedData");
       print("ENCODE REG DATA --- ${jsonEncode(data)}");
       if (parsedData['statusCode'] == 200) {
+        loading(value: false);
         Global.userModel = UserModel.fromJson(parsedData['data']);
         pref.setString('isLogin', jsonEncode(parsedData['data']));
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => UserInfoScreen()),
-                (route) => false);
+            (route) => false);
       }
-    } catch(e){
+    } catch (e) {
       loading(value: false);
     }
     // else {

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
+import 'package:fit_gate/controller/notification_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/custom_widgets/dialog/custom_dialog.dart';
 import 'package:fit_gate/global_functions.dart';
@@ -26,13 +27,23 @@ class BottomNavigationScreen extends StatefulWidget {
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final indexCon = Get.put(BottomController());
   final loginController = Get.put(LoginController());
-
+  final notifyController = Get.put(NotificationController());
   List<Widget> myPages = [
     HomePage(),
     Explore(),
     CheckInPage(),
     AccountScreen(),
   ];
+  getNotify() async {
+    await notifyController.notification();
+    await loginController.getUserById();
+  }
+
+  @override
+  void initState() {
+    getNotify();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

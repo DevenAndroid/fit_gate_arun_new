@@ -13,11 +13,14 @@ class DataBaseHelper {
   ) async {
     http.Response? response;
     try {
-      loading(value: true);
+      // loading(value: true);
       response = await http.post(
         Uri.parse(path),
         body: jsonEncode(data),
-        headers: {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"},
+        headers: {
+          "content-type": "application/json",
+          "Authorization": "Bearer ${Global.userModel?.id}"
+        },
       );
 
       var parsedData = jsonDecode(response.body);
@@ -51,7 +54,7 @@ class DataBaseHelper {
         default:
           return response;
       }
-    } catch(e){
+    } catch (e) {
       loading(value: false);
       return response!;
     }
@@ -63,7 +66,10 @@ class DataBaseHelper {
     loading(value: true);
     http.Response response = await http.get(
       Uri.parse(path),
-      headers: {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"},
+      headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer ${Global.userModel?.id}"
+      },
     );
     var parsedData = jsonDecode(response.body);
 

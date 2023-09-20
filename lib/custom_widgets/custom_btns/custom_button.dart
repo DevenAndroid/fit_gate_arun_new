@@ -52,7 +52,7 @@ class CustomButton extends StatelessWidget {
             "$title",
             style: TextStyle(
               fontSize: fontSize ?? 17,
-              fontWeight: fontWeight ?? FontWeight.bold,
+              fontWeight: fontWeight ?? FontWeight.w600,
               color: fontColor ?? MyColors.white,
             ),
           ),

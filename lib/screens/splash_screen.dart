@@ -10,15 +10,11 @@ import 'package:fit_gate/controller/subscription_controller.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/models/user_model.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
-import 'package:fit_gate/screens/auth/sign_up_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../custom_widgets/custom_btns/custom_button.dart';
-import '../utils/my_color.dart';
 import '../utils/my_images.dart';
 import 'auth/secondpage.dart';
 
@@ -54,15 +50,16 @@ class _SplashScreenState extends State<SplashScreen> {
       //       await jsonDecode(pref.getString('isActivated').toString()));
       //   Global.activeSubscriptionModel = activeData;
       // }
-      if(FirebaseAuth.instance.currentUser!.displayName.toString() != "true"){
-        Get.offAll(()=> UserInfoScreen());
+      if (FirebaseAuth.instance.currentUser!.displayName.toString() != "true") {
+        Get.offAll(() => UserInfoScreen());
         return;
       }
 
       await Future.wait<void>([
         loginCon.getUserById(),
         loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
-        activePlan.activeSubscriptionPlan()
+        activePlan.activeSubscriptionPlan(),
+        mapController.getGym(),
       ]);
 
       if (Global.userModel?.deleteStatus == '1') {
@@ -74,8 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Get.off(() => BottomNavigationScreen());
         });
       }
-    }
-    else {
+    } else {
       Get.offAll(() => LoginScreen());
     }
     // else if (delete == true) {

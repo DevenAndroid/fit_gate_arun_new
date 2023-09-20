@@ -80,6 +80,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        leadingWidth: 45,
         bottom: PreferredSize(
             child: CheckConnection(), preferredSize: Size.fromHeight(70)),
         title: Text(
@@ -103,15 +104,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         child: Container(
                           color: Colors.transparent,
                           alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 10, top: 18, bottom: 11, right: 18),
-                            child: Image.asset(
-                              widget.leadingImage ?? MyImages.arrowBack,
-                              color: widget.leadingImageClr ?? MyColors.black,
-                              height: 20,
-                              width: 20,
-                            ),
+                          child: Image.asset(
+                            widget.leadingImage ?? MyImages.arrowLeft,
+                            color: widget.leadingImageClr ?? MyColors.black,
+                            height: 18,
+                            width: 18,
                           ),
                           /*ImageButton(
                         padding: EdgeInsets.only(
@@ -141,7 +138,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           child: Stack(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                                padding: const EdgeInsets.only(right: 10.0),
                                 child: Icon(
                                   widget.iconData ?? Icons.notifications_none,
                                   size: 25,
@@ -150,7 +147,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               ),
                               notificationCon.notifyCount == true
                                   ? Positioned(
-                                      right: 10,
+                                      right: 12,
                                       // top: 3,
                                       child: Container(
                                         height: 8,

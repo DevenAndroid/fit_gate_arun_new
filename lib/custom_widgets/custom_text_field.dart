@@ -3,6 +3,7 @@
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../utils/my_color.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -51,7 +52,8 @@ class CustomTextField extends StatelessWidget {
     this.readOnly,
     this.lblColor,
     this.maxLength,
-    List? inputFormatters, this.onOutSideClick,
+    List? inputFormatters,
+    this.onOutSideClick,
   }) : super(key: key);
 
   @override
@@ -85,11 +87,9 @@ class CustomTextField extends StatelessWidget {
           obscureText: obscureText ?? false,
           cursorColor: MyColors.black,
           keyboardType: keyboardType ?? TextInputType.text,
-
           decoration: InputDecoration(
             counterText: "",
-
-            contentPadding: EdgeInsets.only(left: 15, top: 25, bottom: 10),
+            // contentPadding: EdgeInsets.only(left: 15, top: 25, bottom: 10),
             fillColor: fillColor ?? Colors.transparent,
             filled: true,
             isDense: true,
@@ -99,7 +99,7 @@ class CustomTextField extends StatelessWidget {
             ),
             // prefixText: "+973",
             prefixIcon: prefixIcon == null
-                ? SizedBox()
+                ? null
                 : GestureDetector(
                     onTap: onPressed,
                     child: ImageButton(
@@ -110,7 +110,7 @@ class CustomTextField extends StatelessWidget {
                       color: MyColors.grey,
                     )),
             suffixIcon: suffixIcon == null
-                ? SizedBox()
+                ? null
                 : GestureDetector(
                     onTap: onPressed,
                     child: Padding(
@@ -128,6 +128,11 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 15,
             ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderSide: BorderSide(
+                  color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(7)),
               borderSide: BorderSide(
@@ -140,8 +145,8 @@ class CustomTextField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(7)),
-              borderSide:
-                  BorderSide(color: color ?? MyColors.orange, width: 1.5),
+              borderSide: BorderSide(
+                  color: color ?? MyColors.grey.withOpacity(.40), width: 1.5),
             ),
           ),
         ),
@@ -149,6 +154,11 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
+var border = OutlineInputBorder(
+  borderRadius: BorderRadius.all(Radius.circular(7)),
+  borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+);
 
 class CustomUnderlineTxt extends StatelessWidget {
   final String? title;

@@ -37,7 +37,7 @@ class MapController extends GetxController {
             {"class_type": packageName, "lat": latitude, "lon": longitude}));
     print(
         'HEADERRRRRR ============================= --------------------      ${header}');
-    print("gggggg....      "+response.body);
+    print("gggggg....      " + response.body);
     var parsedData = jsonDecode(response.body);
     loading(value: false);
     if (parsedData['statusCode'] == 200) {
@@ -53,14 +53,15 @@ class MapController extends GetxController {
   }
 
   getGym() async {
-    print("PARSED DATA ------------  222222222222 ${EndPoints.getGym+"?user_id=${Global.userModel?.id}"}");
+    print(
+        "PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
     http.Response response = await http.get(
-      Uri.parse(EndPoints.getGym+"?user_id=${Global.userModel?.id}"),
+      Uri.parse(EndPoints.getGym + "?user_id=${Global.userModel?.id}"),
       headers: await header,
     );
     var parsedData = jsonDecode(response.body);
     print("PARSED DATA ------------  111111111111 $parsedData");
-    print("gggggg....      "+response.body);
+    print("gggggg....      " + response.body);
     if (parsedData['statusCode'] == 200) {
       var list = (parsedData['data'] as List)
           .map((e) => GymDetailsModel.fromJson(e))
@@ -105,14 +106,14 @@ class MapController extends GetxController {
   }
 
   getLatLan() async {
-    loading(value: true);
+    // loading(value: true);
     var response = await http.get(
       Uri.parse(EndPoints.getLatLan),
       headers: await header,
     );
     var data = jsonDecode(response.body);
 
-    loading(value: false);
+    // loading(value: false);
     print("LOCATION  DATA ------------- $data");
     if (data['statusCode'] == 200) {
       print(
