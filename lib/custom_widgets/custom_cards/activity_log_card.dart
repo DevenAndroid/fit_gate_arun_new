@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/models/check_in_model.dart';
 import 'package:fit_gate/utils/end_points.dart';
 import 'package:fit_gate/utils/my_color.dart';
-import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -34,18 +33,18 @@ class CustomActivityLogCard extends StatelessWidget {
       : super(key: key);
 
   final imgCon = Get.put(ImageController());
-  getDate(_date) {
-    var inputFormat = DateFormat('yyyy-MM-dd');
-    var inputDate = inputFormat.parse(_date);
-    var outputFormat = DateFormat('dd/MM/yyyy');
-    return outputFormat.format(inputDate);
-  }
+  // getDate(_date) {
+  //   var inputFormat = DateFormat('yyyy-MM-dd');
+  //   var inputDate = inputFormat.parse(_date);
+  //   var outputFormat = DateFormat('dd/MM/yyyy');
+  //   return outputFormat.format(inputDate);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    String bin = checkInModel!.createdAt.toString();
-    var format = bin.substring(bin.length - 8);
-    var time = DateFormat.jm().format(DateFormat("hh:mm:ss").parse("$format"));
+    // String bin = checkInModel!.createdAt.toString();
+    // var format = bin.substring(bin.length - 8);
+    // var time = DateFormat.jm().format(DateFormat("hh:mm:ss").parse("$format"));
     return GestureDetector(
       onTap: onClick,
       child: Container(
@@ -99,7 +98,7 @@ class CustomActivityLogCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    "${getDate(checkInModel?.createdAt)}    ${time}",
+                    timeFormat("${checkInModel?.createdAt}"),
                     style: TextStyle(
                       color: MyColors.grey.withOpacity(0.55),
                       fontSize: 15,
@@ -114,4 +113,10 @@ class CustomActivityLogCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String timeFormat(String dateTime) {
+  var oldDate = DateTime.parse(dateTime);
+  var newDate = DateFormat('d MMM yyyy hh:mm a').format(oldDate);
+  return newDate;
 }

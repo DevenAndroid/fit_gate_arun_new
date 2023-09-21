@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/controller/get_company_controller.dart';
@@ -15,6 +17,7 @@ import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/subscription_controller.dart';
@@ -45,7 +48,9 @@ class _HomePageState extends State<HomePage> {
   final banner = Get.put(BannerController());
   final login = Get.put(LoginController());
   int? index;
-  PageController pageController = PageController(initialPage: 0);
+  // PageController pageController = PageController(initialPage: 0);
+  CarouselController carouselController = CarouselController();
+
   getSubscriptionList() async {
     await login.getUserById();
     print("MNAME---> ${Global.userModel?.middleName}");
@@ -63,6 +68,27 @@ class _HomePageState extends State<HomePage> {
     // }
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
+    InAppUpdate.checkForUpdate().then((updateInfo) {
+      log("^^^^^^^^^^^ $updateInfo");
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        if (updateInfo.immediateUpdateAllowed) {
+          // Perform immediate update
+          InAppUpdate.performImmediateUpdate().then((appUpdateResult) {
+            if (appUpdateResult == AppUpdateResult.success) {
+              //App Update successful
+            }
+          });
+        } else if (updateInfo.flexibleUpdateAllowed) {
+          //Perform flexible update
+          InAppUpdate.startFlexibleUpdate().then((appUpdateResult) {
+            if (appUpdateResult == AppUpdateResult.success) {
+              //App Update successful
+              InAppUpdate.completeFlexibleUpdate();
+            }
+          });
+        }
+      }
+    });
   }
 
   @override
@@ -134,83 +160,154 @@ class _HomePageState extends State<HomePage> {
                     GetBuilder<BannerController>(builder: (banner) {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.22,
-                        child: PageView.builder(
-                            controller: pageController,
-                            scrollDirection: Axis.horizontal,
-                            onPageChanged: (val) {},
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CarouselSlider(
+                              carouselController:
+                                  carouselController, // Give the controller
+                              options: CarouselOptions(
+                                // initialPage: 0,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1,
+                                padEnds: true,
+                                // autoPlay: true,
+                              ),
 
-                            // shrinkWrap: true,
-                            itemCount: banner.getBannerList.length,
-                            itemBuilder: (c, i) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  // height: 170,
-                                  // width: MediaQuery.of(context).size.width,
-                                  // height: MediaQuery.of(context).size.height * 0.22,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
+                              items: banner.getBannerList.map((featuredImage) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                      imageUrl: '${featuredImage.image}',
+                                      placeholder: (c, __) => Center(
+                                          child: CircularProgressIndicator(
+                                        color: MyColors.orange,
+                                        strokeWidth: 1.5,
+                                      )),
+                                    ),
                                   ),
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        imageUrl:
-                                            '${banner.getBannerList[i].image}',
-                                        placeholder: (c, __) => Center(
-                                            child: CircularProgressIndicator(
-                                          color: MyColors.orange,
-                                          strokeWidth: 1.5,
-                                        )),
-                                      ),
-                                      Positioned(
-                                        top:
-                                            MediaQuery.of(context).size.height *
-                                                0.09,
-                                        left: 5,
-                                        right: 5,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            ImageButton(
-                                              height: 12,
-                                              width: 12,
-                                              image: MyImages.arrowLeft,
-                                              color: MyColors.black,
-                                              bgColor: MyColors.white,
-                                              boxShape: BoxShape.circle,
-                                              onTap: () {
-                                                pageController.previousPage(
-                                                    duration:
-                                                        Duration(seconds: 0),
-                                                    curve: Curves.easeOut);
-                                              },
-                                            ),
-                                            ImageButton(
-                                              height: 12,
-                                              width: 12,
-                                              image: MyImages.arrowRight,
-                                              color: MyColors.black,
-                                              bgColor: MyColors.white,
-                                              boxShape: BoxShape.circle,
-                                              onTap: () {
-                                                pageController.nextPage(
-                                                    duration:
-                                                        Duration(seconds: 0),
-                                                    curve: Curves.easeOut);
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                );
+                              }).toList(),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ImageButton(
+                                    height: 12,
+                                    width: 12,
+                                    image: MyImages.arrowLeft,
+                                    color: MyColors.black,
+                                    bgColor: MyColors.white,
+                                    boxShape: BoxShape.circle,
+                                    onTap: () {
+                                      carouselController.previousPage(
+                                          duration: Duration(seconds: 1),
+                                          curve: Curves.easeOut);
+                                    },
                                   ),
-                                ),
-                              );
-                            }),
+                                  ImageButton(
+                                    height: 12,
+                                    width: 12,
+                                    image: MyImages.arrowRight,
+                                    color: MyColors.black,
+                                    bgColor: MyColors.white,
+                                    boxShape: BoxShape.circle,
+                                    onTap: () {
+                                      carouselController.nextPage(
+                                          duration: Duration(seconds: 1),
+                                          curve: Curves.easeOut);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        // PageView.builder(
+                        //     controller: pageController,
+                        //     scrollDirection: Axis.horizontal,
+                        //     onPageChanged: (val) {},
+                        //
+                        //     // shrinkWrap: true,
+                        //     itemCount: banner.getBannerList.length,
+                        //     itemBuilder: (c, i) {
+                        //       return ClipRRect(
+                        //         borderRadius: BorderRadius.circular(10),
+                        //         child: Container(
+                        //           // height: 170,
+                        //           // width: MediaQuery.of(context).size.width,
+                        //           // height: MediaQuery.of(context).size.height * 0.22,
+                        //           decoration: BoxDecoration(
+                        //             color: Colors.transparent,
+                        //             borderRadius: BorderRadius.circular(10),
+                        //           ),
+                        //           child: Stack(
+                        //             fit: StackFit.expand,
+                        //             children: [
+                        //               CachedNetworkImage(
+                        //                 fit: BoxFit.cover,
+                        //                 imageUrl:
+                        //                     '${banner.getBannerList[i].image}',
+                        //                 placeholder: (c, __) => Center(
+                        //                     child: CircularProgressIndicator(
+                        //                   color: MyColors.orange,
+                        //                   strokeWidth: 1.5,
+                        //                 )),
+                        //               ),
+                        //               Positioned(
+                        //                 top:
+                        //                     MediaQuery.of(context).size.height *
+                        //                         0.09,
+                        //                 left: 5,
+                        //                 right: 5,
+                        //                 child: Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.spaceBetween,
+                        //                   children: [
+                        //                     ImageButton(
+                        //                       height: 12,
+                        //                       width: 12,
+                        //                       image: MyImages.arrowLeft,
+                        //                       color: MyColors.black,
+                        //                       bgColor: MyColors.white,
+                        //                       boxShape: BoxShape.circle,
+                        //                       onTap: () {
+                        //                         pageController.previousPage(
+                        //                             duration:
+                        //                                 Duration(seconds: 1),
+                        //                             curve: Curves.easeOut);
+                        //                       },
+                        //                     ),
+                        //                     ImageButton(
+                        //                       height: 12,
+                        //                       width: 12,
+                        //                       image: MyImages.arrowRight,
+                        //                       color: MyColors.black,
+                        //                       bgColor: MyColors.white,
+                        //                       boxShape: BoxShape.circle,
+                        //                       onTap: () {
+                        //                         pageController.nextPage(
+                        //                             duration:
+                        //                                 Duration(seconds: 1),
+                        //                             curve: Curves.easeOut);
+                        //                       },
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       );
+                        //     }),
                       );
                     }),
                     SizedBox(height: 15),

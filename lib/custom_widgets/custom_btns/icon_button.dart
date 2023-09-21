@@ -9,17 +9,17 @@ class ImageButton extends StatelessWidget {
   final BoxShape? boxShape;
   final EdgeInsetsGeometry? padding;
   final Function()? onTap;
-  const ImageButton(
-      {Key? key,
-      this.image,
-      this.height,
-      this.width,
-      this.onTap,
-      this.padding,
-      this.color,
-      this.bgColor,
-      this.boxShape})
-      : super(key: key);
+  const ImageButton({
+    Key? key,
+    this.image,
+    this.height,
+    this.width,
+    this.onTap,
+    this.padding,
+    this.color,
+    this.bgColor,
+    this.boxShape,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

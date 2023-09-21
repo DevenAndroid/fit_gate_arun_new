@@ -31,14 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
   final activePlan = Get.put(SubscriptionController());
   var auth = FirebaseAuth.instance.authStateChanges();
 
-  var data;
-
   checkUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    data = await jsonDecode(pref.getString('isLogin').toString());
+    var data = await jsonDecode(pref.getString('isLogin').toString());
     var logout = await pref.getBool('isLogout');
-    print("SPLASH ----- $data");
+    // print("SPLASH ----- $data");
     print("LOGOUT::$logout");
+    print("^^^^^^^^^^^ $data");
     if (data != null) {
       // await mapController.getCurrentLocation();
       UserModel setData = UserModel.fromJson(data);

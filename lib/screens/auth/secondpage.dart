@@ -1,16 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fit_gate/custom_widgets/custom_app_bar.dart';
+import 'package:fit_gate/custom_widgets/custom_btns/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../custom_widgets/dialog/custom_dialog.dart';
 import '../../global_functions.dart';
 import '../../repo/userinfo_repo.dart';
 import '../bottom_bar_screens/bottom_naviagtion_screen.dart';
-import 'login_screen.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
@@ -32,9 +31,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   TextEditingController dobController = TextEditingController();
   TextEditingController areaController = TextEditingController();
 
-  DateTime current = DateTime.now().subtract(Duration(days: 365*18));
+  DateTime current = DateTime.now().subtract(Duration(days: 365 * 18));
 
-  pickDate({required Function(DateTime gg) onPick, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+  pickDate(
+      {required Function(DateTime gg) onPick,
+      DateTime? initialDate,
+      DateTime? firstDate,
+      DateTime? lastDate}) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: current,
@@ -100,44 +103,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff0a65a5),
-        title: Text('User Information'),
-        actions: [
-          IconButton(onPressed: (){
-            setState(() {});
-            showDialog(
-                context: context,
-                builder: (_) => CustomDialog(
-                  title:
-                  "Are sure you want to logout?",
-                  label1: "Yes",
-                  label2: "No",
-                  cancel: () {
-                    Get.back();
-                  },
-                  onTap: () async {
-                    await FirebaseAuth.instance
-                        .signOut();
-                    var pref =
-                    await SharedPreferences
-                        .getInstance();
-                    await pref.setBool(
-                        "isLogout", true);
-                    await pref.remove('isLogin');
-                    await pref
-                        .remove('isActivated');
-                    Global.userModel = null;
-                    Global.activeSubscriptionModel =
-                    null;
-                    push(
-                        context: context,
-                        screen: LoginScreen(),
-                        pushUntil: true);
-                  },
-                ));
-          }, icon: Icon(Icons.logout))
-        ],
+      appBar: CustomAppBar(
+        title: "User Information",
+        leadingImage: "",
+        image: "",
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -184,7 +153,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 height: 15,
               ),
               DropdownButtonFormField(
-
                   value: dropdowngender,
                   icon: const Icon(Icons.keyboard_arrow_down),
                   items: genderList.map((String items) {
@@ -217,7 +185,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               TextField(
                   controller: dobController,
                   readOnly: true,
-                  onTap: (){
+                  onTap: () {
                     pickDate(onPick: (DateTime gg) {
                       // 2023-08-03
                       current = gg;
@@ -327,14 +295,22 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       ),
                     )),
               SizedBox(
-                height: 20,
+                height: 50,
               ),
-              ElevatedButton(
-                  onPressed: () async {
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                child: CustomButton(
+                  title: FirebaseAuth.instance.currentUser!.displayName
+                              .toString() !=
+                          "true"
+                      ? 'Register'
+                      : 'Update',
+                  onTap: () async {
                     firstnameController.text.trim();
                     print(await header);
 
-                    SharedPreferences sharedpre = await SharedPreferences.getInstance();
+                    SharedPreferences sharedpre =
+                        await SharedPreferences.getInstance();
                     String? token = await FirebaseMessaging.instance.getToken();
                     userinfoRepo(
                       country_name: dropdownvalue,
@@ -342,17 +318,22 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       gender: dropdowngender,
                       fname: firstnameController.text.trim(),
                       lname: lastnameController.text.trim(),
-                      area: dropdownvalue == "Bahrain" ? dropdownBahrain : dropdownSaudiArabia,
+                      area: dropdownvalue == "Bahrain"
+                          ? dropdownBahrain
+                          : dropdownSaudiArabia,
                       fcm_token: token,
                     ).then((value) {
-                      if(value.statusCode == 200){
-                        FirebaseAuth.instance.currentUser!.updateDisplayName("true");
-                        FirebaseAuth.instance.currentUser!.updatePhotoURL(dropdownvalue);
-                        Get.offAll(()=> BottomNavigationScreen());
+                      if (value.statusCode == 200) {
+                        FirebaseAuth.instance.currentUser!
+                            .updateDisplayName("true");
+                        FirebaseAuth.instance.currentUser!
+                            .updatePhotoURL(dropdownvalue);
+                        Get.offAll(() => BottomNavigationScreen());
                       }
                     });
                   },
-                  child: FirebaseAuth.instance.currentUser!.displayName.toString() != "true" ? Text('Register') : Text('Update'))
+                ),
+              )
             ],
           ),
         ),

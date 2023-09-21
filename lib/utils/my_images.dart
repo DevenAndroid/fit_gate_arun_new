@@ -60,4 +60,6 @@ class MyImages {
   static String proBg = "$baseUrl/pro_bg.png";
   static String subBg = "$baseUrl/sub_bg.png";
   static String filter = "$baseUrl/filter.png";
+  static String intro = "$baseUrl/intro.png";
+  static String intro_bg = "$baseUrl/intro_bg.png";
 }

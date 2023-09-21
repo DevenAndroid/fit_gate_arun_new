@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_gate/global_functions.dart';
@@ -80,8 +79,8 @@ class LoginController extends GetxController {
       body: jsonEncode({"user_id": Global.userModel?.id}),
       headers: await header,
     );
-    log(""
-        "Api Response......         ${response.body}");
+    // log(""
+    //     "Api Response......         ${response.body}");
     var parsedData = jsonDecode(response.body);
     var pref = await SharedPreferences.getInstance();
     if (parsedData['statusCode'] == 200) {
