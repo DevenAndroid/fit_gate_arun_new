@@ -218,11 +218,16 @@ List<FilterModel> amenities = [
   FilterModel(title: "Swimming Pool"),
   FilterModel(title: "Lockers"),
   FilterModel(title: "Jacuzzi"),
+  FilterModel(title: "Restaurants"),
   FilterModel(title: "Steam"),
   FilterModel(title: "Shower"),
+  FilterModel(title: "Shower"),
+  FilterModel(title: "Parking"),
   FilterModel(title: "Group Class"),
   FilterModel(title: "Crossfit"),
   FilterModel(title: "Cardio"),
+  FilterModel(title: "Outdoor pool"),
+  FilterModel(title: "Boxing"),
 ];
 
 class Tile extends StatelessWidget {

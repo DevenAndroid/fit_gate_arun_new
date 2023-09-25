@@ -17,6 +17,7 @@ class GymDetailsModel {
   String? addressLatitude;
   String? addressLongitude;
   String? status;
+  String? sub_user_type;
   String? deleteStatus;
   String? createdAt;
 
@@ -39,6 +40,7 @@ class GymDetailsModel {
       this.addressLatitude,
       this.addressLongitude,
       this.status,
+      this.sub_user_type,
       this.deleteStatus,
       this.createdAt});
 
@@ -68,6 +70,7 @@ class GymDetailsModel {
     addressLatitude = json['address_latitude'];
     addressLongitude = json['address_longitude'];
     status = json['status'];
+    sub_user_type = json['sub_user_type'];
     deleteStatus = json['delete_status'].toString();
     createdAt = json['created_at'];
   }
@@ -94,6 +97,7 @@ class GymDetailsModel {
     data['address_latitude'] = this.addressLatitude;
     data['address_longitude'] = this.addressLongitude;
     data['status'] = this.status;
+    data['sub_user_type'] = this.sub_user_type;
     data['delete_status'] = this.deleteStatus;
     data['created_at'] = this.createdAt;
     return data;

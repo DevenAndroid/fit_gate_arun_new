@@ -14,6 +14,8 @@ import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../custom_widgets/custom_cards/custom_join_fit_card.dart';
+
 class Explore extends StatefulWidget {
   const Explore({super.key});
 
@@ -30,6 +32,7 @@ class _ExploreState extends State<Explore> {
     await mapController.getGym();
   }
 
+  int? selectedIndex;
   @override
   void initState() {
     getData();
@@ -90,6 +93,69 @@ class _ExploreState extends State<Explore> {
         ),
         body: Column(
           children: [
+            SizedBox(height: 18),
+            Text("Search Near by gyms",
+                style: TextStyle(
+                  fontSize: 17,
+                )),
+            SizedBox(height: 15),
+            Expanded(
+              flex: 0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomGymCard(
+                      onClick: () {
+                        selectedIndex = 1;
+                        setState(() {});
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        mapController.getPackageListByName(packageName: "free");
+                      },
+                      img: MyImages.sapphire,
+                      iconSize: 20,
+                      selectedIndex: selectedIndex,
+                      index: 1,
+                      // width: MediaQuery.of(context).size.width * 0.28,
+                      title: "Free",
+                      titleClr: MyColors.blue,
+                      boxShadow: BoxShadow(
+                        color: MyColors.grey.withOpacity(0.25),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  Expanded(
+                    child: CustomGymCard(
+                      onClick: () {
+                        selectedIndex = 1;
+                        setState(() {});
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        mapController.getPackageListByName(packageName: "pro");
+                      },
+
+                      img: MyImages.emerald,
+                      iconSize: 20,
+                      selectedIndex: selectedIndex,
+                      index: 1,
+                      // width: MediaQuery.of(context).size.width * 0.28,
+                      title: "Pro",
+                      titleClr: MyColors.blue,
+                      boxShadow: BoxShadow(
+                        color: MyColors.grey.withOpacity(0.25),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  Spacer(),
+                  Spacer(),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
             Expanded(
               child: Padding(
                 padding:
@@ -153,12 +219,12 @@ class GymTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
-            // border: Border.all(
-            //   color: index == i
-            //       ? MyColors.orange
-            //       : MyColors.border.withOpacity(.40),
-            //   width: 1,
-            // ),
+            border: Border.all(
+              color: gymModel.sub_user_type == "pro"
+                  ? MyColors.green.withOpacity(0.50)
+                  : MyColors.border.withOpacity(.40),
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
                 color: MyColors.grey.withOpacity(0.10),
@@ -273,8 +339,11 @@ class GymTile extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Pro",
-                      style: TextStyle(color: MyColors.orange),
+                      "${gymModel.sub_user_type}",
+                      style: TextStyle(
+                          color: gymModel.sub_user_type == "pro"
+                              ? MyColors.green
+                              : MyColors.brown),
                     ),
                   ),
                 ),
