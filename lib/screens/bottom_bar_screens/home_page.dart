@@ -172,6 +172,8 @@ class _HomePageState extends State<HomePage> {
                                 viewportFraction: 1,
                                 padEnds: true,
                                 // autoPlay: true,
+                                // autoPlayInterval: Duration(seconds: 2),
+                                // autoPlayCurve: Curves.linear,
                               ),
 
                               items: banner.getBannerList.map((featuredImage) {
