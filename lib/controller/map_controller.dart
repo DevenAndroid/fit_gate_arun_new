@@ -28,16 +28,30 @@ class MapController extends GetxController {
     return encoder.convert(jsonObject);
   }
 
-  getPackageListByName({String? packageName, String? lat, String? lon}) async {
+  getPackageListByName({
+    String? packageName,
+    String? subUserType,
+    String? distance,
+    String? amenities,
+    String? lat,
+    String? lon,
+  }) async {
     loading(value: true);
+    var data = {
+      "class_type": "",
+      "sub_user_type": subUserType ?? "",
+      "distance": distance ?? "",
+      "amenities": amenities ?? "",
+      "lat": latitude,
+      "lon": longitude,
+    };
     http.Response response = await http.post(
         Uri.parse(EndPoints.classTypeFilterGym),
         headers: await header,
-        body: jsonEncode(
-            {"class_type": packageName, "lat": latitude, "lon": longitude}));
-    print(
-        'HEADERRRRRR ============================= --------------------      ${header}');
-    print("gggggg....      " + response.body);
+        body: jsonEncode(data));
+
+    print("ENCODED ${jsonEncode(data)}");
+    print("RESPONSE" + response.body);
     var parsedData = jsonDecode(response.body);
     loading(value: false);
     if (parsedData['statusCode'] == 200) {

@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'check_connection.dart';
 import 'utils/notification_service.dart';
 
+int? isBoardingView;
+
 Future<void> main() async {
   var connection = Get.put(ConnectivityService());
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,9 @@ Future<void> main() async {
           measurementId: "G-THSCG2PSXM",
         ));
   }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isBoardingView = prefs.getInt('intro');
+  print("$isBoardingView");
   notification();
 
   runApp(MyApp());

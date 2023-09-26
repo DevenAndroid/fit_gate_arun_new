@@ -8,9 +8,11 @@ import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
 import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/controller/subscription_controller.dart';
 import 'package:fit_gate/global_functions.dart';
+import 'package:fit_gate/main.dart';
 import 'package:fit_gate/models/user_model.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,7 +73,9 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     } else {
-      Get.offAll(() => LoginScreen());
+      isBoardingView == 1
+          ? Get.offAll(() => LoginScreen())
+          : Get.offAll(() => IntroScreen());
     }
     // else if (delete == true) {
     //   print("SPLASH DELETE ==========  $delete");

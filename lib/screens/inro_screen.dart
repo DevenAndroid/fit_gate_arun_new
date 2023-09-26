@@ -3,6 +3,7 @@ import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -74,7 +75,10 @@ class IntroScreen extends StatelessWidget {
                 // borderColor: MyColors.white,
                 borderRadius: BorderRadius.circular(12),
                 height: MediaQuery.of(context).size.height * 0.06,
-                onTap: () {
+                onTap: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.setInt("intro", 1);
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (_) => LoginScreen()),

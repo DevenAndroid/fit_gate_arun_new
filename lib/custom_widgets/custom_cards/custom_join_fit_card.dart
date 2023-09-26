@@ -195,61 +195,64 @@ class CustomGymCard extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onClick,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          // height: height ?? MediaQuery.of(context).size.height * 0.15,
-          width: width,
-          decoration: BoxDecoration(
-            color: MyColors.white,
-            borderRadius: borderRadius ?? BorderRadius.circular(5),
-            border:
-                Border.all(color: MyColors.border.withOpacity(0.5), width: 1.5),
-            // boxShadow: [
-            //   boxShadow ??
-            //       BoxShadow(
-            //         color: index == selectedIndex
-            //             ? MyColors.orange.withOpacity(0.20)
-            //             : MyColors.grey.withOpacity(0.15),
-            //         spreadRadius: 4,
-            //         blurRadius: 7,
-            //       ),
-            // ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(7),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // SizedBox(width: 5),
-                  Expanded(
-                    flex: 1,
-                    child: ImageButton(
-                      padding: EdgeInsets.zero,
-                      image: img,
-                      height: iconSize ?? 40,
-                      width: iconSize ?? 40,
-                    ),
-                  ),
-                  SizedBox(width: 4),
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      "$title",
-                      // textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: titleClr,
-                        fontSize: 13.5,
-                      ),
-                    ),
-                  ),
-                  // SizedBox(width: 10)
-                ],
+      child: Container(
+        // height: height ?? MediaQuery.of(context).size.height * 0.15,
+        // width: width,
+        decoration: BoxDecoration(
+          color: MyColors.white,
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+          border:
+              Border.all(color: MyColors.border.withOpacity(0.5), width: 1.5),
+          // boxShadow: [
+          //   boxShadow ??
+          //       BoxShadow(
+          //         color: index == selectedIndex
+          //             ? MyColors.orange.withOpacity(0.20)
+          //             : MyColors.grey.withOpacity(0.15),
+          //         spreadRadius: 4,
+          //         blurRadius: 7,
+          //       ),
+          // ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // SizedBox(width: 5),
+              // Expanded(
+              //   flex: 1,
+              //   child: ImageButton(
+              //     padding: EdgeInsets.zero,
+              //     image: img,
+              //     height: iconSize ?? 40,
+              //     width: iconSize ?? 40,
+              //   ),
+              // ),
+              Expanded(
+                flex: 0,
+                child: Image.asset(
+                  img,
+                  height: 22,
+                  width: 22,
+                ),
               ),
-            ),
+              SizedBox(width: 4),
+              Expanded(
+                flex: 0,
+                child: Text(
+                  "$title",
+                  // textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: titleClr,
+                    fontSize: 13.5,
+                  ),
+                ),
+              ),
+              // SizedBox(width: 10)
+            ],
           ),
         ),
       ),

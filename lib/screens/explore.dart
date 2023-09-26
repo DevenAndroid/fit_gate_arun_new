@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/bottom_sheet/filter_bottomsheet.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
@@ -101,89 +103,96 @@ class _ExploreState extends State<Explore> {
             SizedBox(height: 15),
             Expanded(
               flex: 0,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomGymCard(
-                      onClick: () {
-                        selectedIndex = 1;
-                        setState(() {});
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        mapController.getPackageListByName(packageName: "free");
-                      },
-                      img: MyImages.sapphire,
-                      iconSize: 20,
-                      selectedIndex: selectedIndex,
-                      index: 1,
-                      // width: MediaQuery.of(context).size.width * 0.28,
-                      title: "Free",
-                      titleClr: MyColors.blue,
-                      boxShadow: BoxShadow(
-                        color: MyColors.grey.withOpacity(0.25),
-                        spreadRadius: 1,
-                        blurRadius: 5,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomGymCard(
+                        onClick: () {
+                          selectedIndex = 1;
+                          setState(() {});
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          mapController.getPackageListByName(
+                            subUserType: "free",
+                          );
+                        },
+                        img: MyImages.sapphire,
+                        iconSize: 20,
+                        selectedIndex: selectedIndex,
+                        index: 1,
+                        // width: MediaQuery.of(context).size.width * 0.28,
+                        title: "Free",
+                        titleClr: MyColors.blue,
+                        boxShadow: BoxShadow(
+                          color: MyColors.grey.withOpacity(0.25),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(5),
                     ),
-                  ),
-                  Expanded(
-                    child: CustomGymCard(
-                      onClick: () {
-                        selectedIndex = 1;
-                        setState(() {});
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        mapController.getPackageListByName(packageName: "pro");
-                      },
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: CustomGymCard(
+                        onClick: () {
+                          selectedIndex = 1;
+                          setState(() {});
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          mapController.getPackageListByName(
+                            subUserType: "pro",
+                          );
+                        },
 
-                      img: MyImages.emerald,
-                      iconSize: 20,
-                      selectedIndex: selectedIndex,
-                      index: 1,
-                      // width: MediaQuery.of(context).size.width * 0.28,
-                      title: "Pro",
-                      titleClr: MyColors.blue,
-                      boxShadow: BoxShadow(
-                        color: MyColors.grey.withOpacity(0.25),
-                        spreadRadius: 1,
-                        blurRadius: 5,
+                        img: MyImages.emerald,
+                        iconSize: 20,
+                        selectedIndex: selectedIndex,
+                        index: 1,
+                        // width: MediaQuery.of(context).size.width * 0.28,
+                        title: "Pro",
+                        titleClr: MyColors.green,
+                        boxShadow: BoxShadow(
+                          color: MyColors.grey.withOpacity(0.25),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(5),
                     ),
-                  ),
-                  Spacer(),
-                  Spacer(),
-                ],
+                    Spacer(),
+                    Spacer(),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 15),
+            // SizedBox(height: 15),
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: GetBuilder<MapController>(builder: (data) {
-                  return ListView.builder(
-                      itemCount: data.packageList.length,
-                      itemBuilder: (c, i) {
-                        var gymData = data.packageList[i];
-                        return GetBuilder<BottomController>(
-                            builder: (controller) {
-                          return GymTile(
-                            gymModel: gymData,
-                            onClick: () {
-                              index = i;
-                              setState(() {});
-                              controller.setSelectedScreen(
-                                true,
-                                screenName: GymDetailsScreen(
-                                  index: index,
-                                  gymDetailsModel: gymData,
-                                ),
+                  return data.packageList.isEmpty
+                      ? Center(child: Text("No data found"))
+                      : ListView.builder(
+                          itemCount: data.packageList.length,
+                          itemBuilder: (c, i) {
+                            var gymData = data.packageList[i];
+                            return GetBuilder<BottomController>(
+                                builder: (controller) {
+                              return GymTile(
+                                gymModel: gymData,
+                                onClick: () {
+                                  index = i;
+                                  setState(() {});
+                                  controller.setSelectedScreen(
+                                    true,
+                                    screenName: GymDetailsScreen(
+                                      index: index,
+                                      gymDetailsModel: gymData,
+                                    ),
+                                  );
+                                  Get.to(() => BottomNavigationScreen());
+                                },
                               );
-                              Get.to(() => BottomNavigationScreen());
-                            },
-                          );
-                        });
-                      });
+                            });
+                          });
                 }),
               ),
             ),
@@ -194,7 +203,7 @@ class _ExploreState extends State<Explore> {
   }
 }
 
-class GymTile extends StatelessWidget {
+class GymTile extends StatefulWidget {
   const GymTile({
     super.key,
     required this.gymModel,
@@ -207,9 +216,21 @@ class GymTile extends StatelessWidget {
   final String? opening;
 
   @override
+  State<GymTile> createState() => _GymTileState();
+}
+
+class _GymTileState extends State<GymTile> {
+  final mapController = Get.put(MapController());
+  @override
+  void initState() {
+    calculateDistance();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
+      onTap: widget.onClick,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Container(
@@ -220,7 +241,7 @@ class GymTile extends StatelessWidget {
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: gymModel.sub_user_type == "pro"
+              color: widget.gymModel.sub_user_type == "pro"
                   ? MyColors.green.withOpacity(0.50)
                   : MyColors.border.withOpacity(.40),
               width: 1,
@@ -234,12 +255,12 @@ class GymTile extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                opening != null
+                widget.opening != null
                     ? SizedBox()
                     : Expanded(
                         // flex: 0,
@@ -255,21 +276,21 @@ class GymTile extends StatelessWidget {
                             fit: BoxFit.cover,
                             height: MediaQuery.of(context).size.height * 0.12,
                             imageUrl:
-                                "${EndPoints.imgBaseUrl}${gymModel.pictures?[0]}",
+                                "${EndPoints.imgBaseUrl}${widget.gymModel.pictures?[0]}",
                             errorWidget: (c, u, r) => Container(),
                           ),
                         ),
                       ),
-                SizedBox(width: opening != null ? 0 : 10),
+                SizedBox(width: widget.opening != null ? 0 : 10),
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
+                    padding: const EdgeInsets.only(top: 3.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${gymModel.facilityName}",
+                          "${widget.gymModel.facilityName}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 19,
@@ -278,6 +299,8 @@ class GymTile extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
                               Icons.star,
@@ -285,7 +308,7 @@ class GymTile extends StatelessWidget {
                               size: 17,
                             ),
                             Text(
-                              "${gymModel.rating ?? 0}",
+                              "${widget.gymModel.rating ?? 0}",
                               style: TextStyle(
                                 color: MyColors.orange,
                                 fontSize: 14,
@@ -294,7 +317,7 @@ class GymTile extends StatelessWidget {
                             ),
                             SizedBox(width: 3),
                             Text(
-                              "${gymModel.review} Review",
+                              "${widget.gymModel.review} Review",
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: MyColors.grey,
@@ -311,7 +334,7 @@ class GymTile extends StatelessWidget {
                               flex: 0,
                               child: ImageButton(
                                 padding: EdgeInsets.all(0),
-                                image: opening != null
+                                image: widget.opening != null
                                     ? MyImages.clock
                                     : MyImages.car,
                                 color: MyColors.grey,
@@ -321,7 +344,8 @@ class GymTile extends StatelessWidget {
                             SizedBox(width: 5),
                             Expanded(
                               child: Text(
-                                opening ?? "22 Km",
+                                widget.opening ??
+                                    "${distance.toStringAsFixed(2)} km",
                                 style: TextStyle(
                                   color: MyColors.grey,
                                   fontSize: 13.8,
@@ -336,15 +360,12 @@ class GymTile extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "${gymModel.sub_user_type}",
-                      style: TextStyle(
-                          color: gymModel.sub_user_type == "pro"
-                              ? MyColors.green
-                              : MyColors.brown),
-                    ),
+                  child: Text(
+                    "${widget.gymModel.sub_user_type?[0].toUpperCase()}${widget.gymModel.sub_user_type?.substring(1)}",
+                    style: TextStyle(
+                        color: widget.gymModel.sub_user_type == "pro"
+                            ? MyColors.green
+                            : MyColors.brown),
                   ),
                 ),
               ],
@@ -353,5 +374,28 @@ class GymTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double distance = 0.0;
+
+  String calculateDistance() {
+    // double distance = 0.0;
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((double.parse('${widget.gymModel.addressLatitude}') -
+                    mapController.latitude) *
+                p) /
+            2 +
+        c(mapController.latitude * p) *
+            c(double.parse('${widget.gymModel.addressLatitude}') * p) *
+            (1 -
+                c((double.parse('${widget.gymModel.addressLongitude}') -
+                        mapController.longitude) *
+                    p)) /
+            2;
+    // return 12742 * asin(sqrt(a));
+    distance = 12742 * asin(sqrt(a));
+    return (distance).toStringAsFixed(2);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:fit_gate/controller/image_controller.dart';
+import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,10 @@ filterBottomSheet(context) {
       backgroundColor: MyColors.white,
       context: context,
       builder: (_) {
-        int index = 0;
+        int typeIndex = 0;
+        int amenitiesIndex = 0;
+        int? kmIndex;
+        List<String> selectedAmenities = [];
         // bool select = false;
         var img = Get.put(ImageController());
         return StatefulBuilder(builder: (context, setState) {
@@ -58,11 +62,11 @@ filterBottomSheet(context) {
                         Expanded(
                           child: Tile(
                             onTap: () {
-                              index = 1;
+                              typeIndex = 1;
                               setState(() {});
                             },
                             title: "Free",
-                            index: index,
+                            index: typeIndex,
                             sIndex: 1,
                           ),
                         ),
@@ -70,11 +74,11 @@ filterBottomSheet(context) {
                         Expanded(
                           child: Tile(
                             onTap: () {
-                              index = 2;
+                              typeIndex = 2;
                               setState(() {});
                             },
                             title: "Pro",
-                            index: index,
+                            index: typeIndex,
                             sIndex: 2,
                           ),
                         ),
@@ -88,38 +92,70 @@ filterBottomSheet(context) {
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 10),
+                    // Wrap(
+                    //   spacing: 10.0,
+                    //   runSpacing: .0,
+                    //   children: List.generate(
+                    //       km.length,
+                    //       (index) => ChoiceChip(
+                    //             shape: RoundedRectangleBorder(
+                    //                 borderRadius: BorderRadius.circular(6)),
+                    //             backgroundColor: km[index].selected
+                    //                 ? MyColors.orange
+                    //                 : MyColors.lightGrey,
+                    //             // shape: OutlinedBorder(),
+                    //             label: Text(
+                    //               km[index].title,
+                    //               style: TextStyle(
+                    //                 color: km[index].selected
+                    //                     ? MyColors.white
+                    //                     : MyColors.grey,
+                    //               ),
+                    //             ),
+                    //             pressElevation: 0,
+                    //             selected: km[index].selected == index,
+                    //             showCheckmark: false,
+                    //             selectedColor: MyColors.orange,
+                    //             onSelected: (val) {
+                    //               kmIndex = val ? index : null;
+                    //               // select = val;
+                    //               // km[index].selected = val;
+                    //               // km[kmIndex].selected = false;
+                    //               setState(() {});
+                    //             },
+                    //           )).toList(),
+                    // ),
                     Wrap(
                       spacing: 10.0,
                       runSpacing: .0,
                       children: List.generate(
                         km.length,
-                        (index) => FilterChip(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          backgroundColor: km[index].selected
-                              ? MyColors.orange
-                              : MyColors.lightGrey,
-                          // shape: OutlinedBorder(),
-                          label: Text(
-                            km[index].title,
-                            style: TextStyle(
-                              color: km[index].selected
-                                  ? MyColors.white
-                                  : MyColors.grey,
+                        (int index) {
+                          return ChoiceChip(
+                            backgroundColor: MyColors.lightGrey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
+                            label: Text(
+                              '${km[index].title}',
+                              style: TextStyle(
+                                color: kmIndex == index
+                                    ? MyColors.white
+                                    : MyColors.grey,
+                              ),
                             ),
-                          ),
-                          pressElevation: 0,
-                          selected: km[index].selected,
-                          showCheckmark: false,
-                          selectedColor: MyColors.orange,
-                          onSelected: (val) {
-                            // select = val;
-                            km[index].selected = val;
-                            setState(() {});
-                          },
-                        ),
-                      ),
+                            selectedColor: MyColors.orange,
+                            selected: kmIndex == index,
+                            onSelected: (bool selected) {
+                              setState(() {
+                                kmIndex = selected ? index : null;
+                              });
+                              print("km index $kmIndex");
+                            },
+                          );
+                        },
+                      ).toList(),
                     ),
+
                     SizedBox(height: 20),
                     Text(
                       "Amenities",
@@ -153,9 +189,13 @@ filterBottomSheet(context) {
                           selectedColor: MyColors.orange,
                           onSelected: (val) {
                             // select = val;
+                            amenitiesIndex = index;
                             amenities[index].selected = val;
+                            if (val == true) {
+                              selectedAmenities.add(amenities[index].title);
+                            }
                             setState(() {});
-                            print(" &&&&&& ${val}");
+                            print(" &&&&&& ${selectedAmenities}");
                           },
                         ),
                       ),
@@ -178,20 +218,41 @@ filterBottomSheet(context) {
                                 spreadRadius: 4,
                               ),
                               onTap: () {
-                                // km.last.selected = false;
-                                // amenities.last.selected = false;
+                                // km[kmIndex ?? 0].selected = false;
+                                for (var value in amenities) {
+                                  value.selected = false;
+                                }
                                 // km.remove(km.last.selected);
-                                // setState(() {});
+                                setState(() {});
                                 Navigator.pop(context);
                               },
                             ),
                           ),
                           SizedBox(width: 12),
                           Expanded(
-                            child: CustomButton(
-                              height: MediaQuery.of(context).size.height * 0.06,
-                              title: "Confirm",
-                            ),
+                            child: GetBuilder<MapController>(builder: (data) {
+                              return CustomButton(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                title: "Confirm",
+                                onTap: () async {
+                                  await data.getPackageListByName(
+                                    amenities: amenitiesIndex == 0
+                                        ? ""
+                                        : amenities[amenitiesIndex].title,
+                                    distance: kmIndex == null
+                                        ? ""
+                                        : km[kmIndex ?? 0].title,
+                                    subUserType: typeIndex == 1
+                                        ? "free"
+                                        : typeIndex == 2
+                                            ? "pro"
+                                            : "",
+                                  );
+                                  Navigator.pop(context);
+                                },
+                              );
+                            }),
                           ),
                         ],
                       ),
@@ -221,7 +282,6 @@ List<FilterModel> amenities = [
   FilterModel(title: "Restaurants"),
   FilterModel(title: "Steam"),
   FilterModel(title: "Shower"),
-  FilterModel(title: "Shower"),
   FilterModel(title: "Parking"),
   FilterModel(title: "Group Class"),
   FilterModel(title: "Crossfit"),
@@ -248,7 +308,7 @@ class Tile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 00),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           color: sIndex == index ? MyColors.orange : MyColors.lightGrey,
@@ -274,3 +334,27 @@ class FilterModel {
 
   FilterModel({required this.title, this.selected = false});
 }
+// SizedBox(
+//                       // height: 200,
+//                       child: GridView.builder(
+//                           shrinkWrap: true,
+//                           itemCount: km.length,
+//                           gridDelegate:
+//                               SliverGridDelegateWithFixedCrossAxisCount(
+//                             crossAxisCount: 3,
+//                             crossAxisSpacing: 12,
+//                             mainAxisSpacing: 12,
+//                             childAspectRatio: 7 / 3,
+//                           ),
+//                           itemBuilder: (c, index) {
+//                             return Tile(
+//                               onTap: () {
+//                                 kmIndex = index;
+//                                 setState(() {});
+//                               },
+//                               title: km[index].title,
+//                               index: index,
+//                               sIndex: kmIndex,
+//                             );
+//                           }),
+//                     ),
