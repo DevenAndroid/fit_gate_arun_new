@@ -171,6 +171,7 @@ class _HomePageState extends State<HomePage> {
                                 enableInfiniteScroll: false,
                                 viewportFraction: 1,
                                 padEnds: true,
+
                                 // autoPlay: true,
                                 // autoPlayInterval: Duration(seconds: 2),
                                 // autoPlayCurve: Curves.linear,
@@ -439,7 +440,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: 2,
                 itemBuilder: (c, i) {
                   return GestureDetector(
                     onTap: () {

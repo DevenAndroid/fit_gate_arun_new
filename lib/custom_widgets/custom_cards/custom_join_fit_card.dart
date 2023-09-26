@@ -198,61 +198,57 @@ class CustomGymCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: height ?? MediaQuery.of(context).size.height * 0.15,
+          // height: height ?? MediaQuery.of(context).size.height * 0.15,
           width: width,
           decoration: BoxDecoration(
             color: MyColors.white,
             borderRadius: borderRadius ?? BorderRadius.circular(5),
-            border: Border.all(
-                color: index == selectedIndex
-                    ? title == "Sapphire"
-                        ? MyColors.blue.withOpacity(.60)
-                        : title == "Emerald"
-                            ? MyColors.green.withOpacity(.60)
-                            : Colors.red.shade200
-                    : Colors.transparent,
-                width: 1.5),
-            boxShadow: [
-              boxShadow ??
-                  BoxShadow(
-                    color: index == selectedIndex
-                        ? MyColors.orange.withOpacity(0.20)
-                        : MyColors.grey.withOpacity(0.15),
-                    spreadRadius: 4,
-                    blurRadius: 7,
-                  ),
-            ],
+            border:
+                Border.all(color: MyColors.border.withOpacity(0.5), width: 1.5),
+            // boxShadow: [
+            //   boxShadow ??
+            //       BoxShadow(
+            //         color: index == selectedIndex
+            //             ? MyColors.orange.withOpacity(0.20)
+            //             : MyColors.grey.withOpacity(0.15),
+            //         spreadRadius: 4,
+            //         blurRadius: 7,
+            //       ),
+            // ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: 5),
-                Expanded(
-                  flex: 1,
-                  child: ImageButton(
-                    padding: EdgeInsets.zero,
-                    image: img,
-                    height: iconSize ?? 40,
-                  ),
-                ),
-                SizedBox(width: 4),
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    "$title",
-                    // textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: titleClr,
-                      fontSize: 13.5,
+            padding: const EdgeInsets.all(7),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // SizedBox(width: 5),
+                  Expanded(
+                    flex: 1,
+                    child: ImageButton(
+                      padding: EdgeInsets.zero,
+                      image: img,
+                      height: iconSize ?? 40,
+                      width: iconSize ?? 40,
                     ),
                   ),
-                ),
-                SizedBox(width: 10)
-              ],
+                  SizedBox(width: 4),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      "$title",
+                      // textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: titleClr,
+                        fontSize: 13.5,
+                      ),
+                    ),
+                  ),
+                  // SizedBox(width: 10)
+                ],
+              ),
             ),
           ),
         ),
