@@ -56,7 +56,7 @@ class CustomActivityLogCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(7),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.20),
+              color: Colors.grey.withOpacity(0.10),
               spreadRadius: 5,
               blurRadius: 10,
             ),
@@ -100,7 +100,7 @@ class CustomActivityLogCard extends StatelessWidget {
                   Text(
                     timeFormat("${checkInModel?.createdAt}"),
                     style: TextStyle(
-                      color: MyColors.grey.withOpacity(0.55),
+                      color: MyColors.grey.withOpacity(0.70),
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -117,6 +117,6 @@ class CustomActivityLogCard extends StatelessWidget {
 
 String timeFormat(String dateTime) {
   var oldDate = DateTime.parse(dateTime);
-  var newDate = DateFormat('d MMM yyyy hh:mm a').format(oldDate);
+  var newDate = DateFormat('dd MMM yyyy hh:mm a').format(oldDate);
   return newDate;
 }

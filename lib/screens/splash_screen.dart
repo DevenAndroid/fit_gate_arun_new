@@ -55,6 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAll(() => UserInfoScreen());
         return;
       }
+      // await mapController.getCurrentLocation();
 
       await Future.wait<void>([
         loginCon.getUserById(),

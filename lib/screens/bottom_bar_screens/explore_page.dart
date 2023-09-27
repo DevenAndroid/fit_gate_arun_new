@@ -399,8 +399,8 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
               CustomInfoWindow(
                 controller: infoWindowController,
-                width: 350,
-                height: 120,
+                width: 380,
+                height: 130,
                 // offset: 35,
               ),
               Padding(

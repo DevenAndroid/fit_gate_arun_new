@@ -113,7 +113,7 @@ class _ExploreState extends State<Explore> {
                           selectedIndex = 1;
                           setState(() {});
                           FocusManager.instance.primaryFocus?.unfocus();
-                          mapController.getPackageListByName(
+                          mapController.getFilterData(
                             subUserType: "free",
                           );
                         },
@@ -138,7 +138,7 @@ class _ExploreState extends State<Explore> {
                           selectedIndex = 1;
                           setState(() {});
                           FocusManager.instance.primaryFocus?.unfocus();
-                          mapController.getPackageListByName(
+                          mapController.getFilterData(
                             subUserType: "pro",
                           );
                         },
@@ -242,7 +242,7 @@ class _GymTileState extends State<GymTile> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.gymModel.sub_user_type == "pro"
-                  ? MyColors.green.withOpacity(0.50)
+                  ? MyColors.orange.withOpacity(0.50)
                   : MyColors.border.withOpacity(.40),
               width: 1,
             ),
@@ -297,7 +297,7 @@ class _GymTileState extends State<GymTile> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 5),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +327,7 @@ class _GymTileState extends State<GymTile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 5),
                         Row(
                           children: [
                             Expanded(
@@ -364,8 +364,8 @@ class _GymTileState extends State<GymTile> {
                     "${widget.gymModel.sub_user_type?[0].toUpperCase()}${widget.gymModel.sub_user_type?.substring(1)}",
                     style: TextStyle(
                         color: widget.gymModel.sub_user_type == "pro"
-                            ? MyColors.green
-                            : MyColors.brown),
+                            ? MyColors.orange
+                            : MyColors.grey),
                   ),
                 ),
               ],

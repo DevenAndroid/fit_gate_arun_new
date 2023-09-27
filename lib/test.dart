@@ -8,6 +8,7 @@ import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dar
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 import 'screens/bottom_bar_screens/home_page.dart';
 import 'utils/my_images.dart';
@@ -200,3 +201,143 @@ class _SubscriptionState extends State<Subscription> {
     );
   }
 }
+
+/// Stateful widget to fetch and then display video content.
+class VideoApp extends StatefulWidget {
+  const VideoApp({super.key});
+
+  @override
+  _VideoAppState createState() => _VideoAppState();
+}
+
+class _VideoAppState extends State<VideoApp> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+      ..initialize().then((_) {
+        _controller.play();
+        _controller.setLooping(true);
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Video Demo',
+      home: Scaffold(
+        body: Center(
+          child: _controller.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+              : Container(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+//  Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Image.asset(
+//                     MyImages.logo,
+//                     height: 110,
+//                     width: 200,
+//                   ),
+//                   // Spacer(),
+//                   Container(
+//                     decoration: BoxDecoration(
+//                       color: MyColors.orange,
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: Image.asset(
+//                         MyImages.intro,
+//                         height: 20,
+//                         width: 20,
+//                       ),
+//                     ),
+//                   )
+//                 ],
+//               ),
+//               SizedBox(height: 30),
+//               Positioned(
+//                 top: 100,
+//                 child: Text(
+//                   "Muscle Up Your\nBody Physique",
+//                   style: TextStyle(
+//                     color: MyColors.white,
+//                     fontSize: 33,
+//                     height: 1.2,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(height: 20),
+//               Positioned(
+//                 top: 200,
+//                 child: Text(
+//                   "Explore amazing features and offers with\nPro Subscription",
+//                   style: TextStyle(
+//                     color: MyColors.white,
+//                     fontSize: 15,
+//                     fontWeight: FontWeight.w100,
+//                   ),
+//                 ),
+//               ),
+//               // Spacer(),
+//               Positioned(
+//                 bottom: 80,
+//                 left: 0,
+//                 right: 0,
+//                 child: CustomButton(
+//                   title: "Get Started",
+//                   borderRadius: BorderRadius.circular(12),
+//                   height: MediaQuery.of(context).size.height * 0.06,
+//                   onTap: () async {
+//                     SharedPreferences pref =
+//                         await SharedPreferences.getInstance();
+//                     pref.setInt("intro", 1);
+//                     Navigator.pushAndRemoveUntil(
+//                         context,
+//                         MaterialPageRoute(builder: (_) => SignUpScreen()),
+//                         (route) => false);
+//                   },
+//                 ),
+//               ),
+//               SizedBox(height: 20),
+//               Positioned(
+//                 bottom: 10,
+//                 left: 0,
+//                 right: 0,
+//                 child: CustomButton(
+//                   title: "Login",
+//                   bgColor: Colors.orange,
+//                   borderColor: MyColors.white,
+//                   borderRadius: BorderRadius.circular(12),
+//                   height: MediaQuery.of(context).size.height * 0.06,
+//                   onTap: () async {
+//                     SharedPreferences pref =
+//                         await SharedPreferences.getInstance();
+//                     pref.setInt("intro", 1);
+//                     Navigator.pushAndRemoveUntil(
+//                         context,
+//                         MaterialPageRoute(builder: (_) => LoginScreen()),
+//                         (route) => false);
+//                   },
+//                 ),
+//               ),

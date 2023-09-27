@@ -224,7 +224,7 @@ filterBottomSheet(context) {
                                 }
                                 // km.remove(km.last.selected);
                                 setState(() {});
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                               },
                             ),
                           ),
@@ -236,10 +236,15 @@ filterBottomSheet(context) {
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Confirm",
                                 onTap: () async {
-                                  await data.getPackageListByName(
-                                    amenities: amenitiesIndex == 0
-                                        ? ""
-                                        : amenities[amenitiesIndex].title,
+                                  var amenities = selectedAmenities
+                                      .toString()
+                                      .replaceAll("[", "")
+                                      .replaceAll("]", "")
+                                      .replaceAll(", ", ",");
+
+                                  await data.getFilterData(
+                                    amenities:
+                                        amenitiesIndex == 0 ? "" : amenities,
                                     distance: kmIndex == null
                                         ? ""
                                         : km[kmIndex ?? 0].title,

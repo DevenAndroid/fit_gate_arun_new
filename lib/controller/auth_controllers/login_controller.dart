@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/utils/database_helper.dart';
 import 'package:fit_gate/utils/end_points.dart';
@@ -31,6 +32,7 @@ class LoginController extends GetxController {
       loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
+      MapController().getGym();
       update();
       return true;
     } else {

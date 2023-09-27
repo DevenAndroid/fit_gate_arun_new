@@ -37,10 +37,10 @@ class _AccountScreenState extends State<AccountScreen> {
   int chooseOption = 0;
   var data = Global.userModel;
   getData() async {
-    loading(value: true);
+    // loading(value: true);
     await loginController.getUserById();
     await activeSubsCon.activeSubscriptionPlan();
-    loading(value: false);
+    // loading(value: false);
     if (mounted) setState(() {});
     if (data != null) {
       imgController.imgUrl = Global.userModel?.avatar;

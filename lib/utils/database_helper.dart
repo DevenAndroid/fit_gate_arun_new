@@ -63,7 +63,7 @@ class DataBaseHelper {
   static Future<http.Response> get(
     String path,
   ) async {
-    loading(value: true);
+    // loading(value: true);
     http.Response response = await http.get(
       Uri.parse(path),
       headers: {

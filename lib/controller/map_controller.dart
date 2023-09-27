@@ -20,6 +20,7 @@ class MapController extends GetxController {
   String? searchValue;
   int nextPage = 1;
   var packageList = <GymDetailsModel>[].obs;
+  var nearbyGymList = <GymDetailsModel>[].obs;
 
   PaginationDataModel paginationData = PaginationDataModel();
 
@@ -28,22 +29,23 @@ class MapController extends GetxController {
     return encoder.convert(jsonObject);
   }
 
-  getPackageListByName({
+  getFilterData({
     String? packageName,
     String? subUserType,
     String? distance,
     String? amenities,
     String? lat,
     String? lon,
+    bool isCurrentLocation = false,
   }) async {
-    loading(value: true);
+    // loading(value: true);
     var data = {
       "class_type": "",
       "sub_user_type": subUserType ?? "",
       "distance": distance ?? "",
       "amenities": amenities ?? "",
-      "lat": latitude,
-      "lon": longitude,
+      "lat": isCurrentLocation ? lat : latitude,
+      "lon": isCurrentLocation ? lon : longitude,
     };
     http.Response response = await http.post(
         Uri.parse(EndPoints.classTypeFilterGym),
@@ -59,9 +61,10 @@ class MapController extends GetxController {
           .map((e) => GymDetailsModel.fromJson(e))
           .toList();
       packageList.value = list;
+      nearbyGymList.value = list;
       update();
     } else {
-      packageList.value = [];
+      nearbyGymList.value = [];
       update();
     }
   }
@@ -220,13 +223,12 @@ class MapController extends GetxController {
 
   Future<Position> getCurrentLocation() async {
     try {
-      print("QQQQQQQQQQQQQQQQ ------------------------ $latitude ");
       Position position = await determineLoc();
       latitude = position.latitude;
       longitude = position.longitude;
 
-      print('LAT--> ${latitude}');
-      print('LNG--> ${longitude}');
+      print('CURRENT LATITUDE $latitude CURRENT LONGITUDE $longitude');
+
       update();
       return position;
     } on LocationServiceDisabledException catch (e) {

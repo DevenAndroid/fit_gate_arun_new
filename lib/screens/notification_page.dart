@@ -61,43 +61,35 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 16.0, right: 16, top: 10, bottom: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            // flex: 8,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${data.tittle}",
-                                  style: TextStyle(
-                                    color: data.status == '0'
-                                        ? MyColors.orange.withOpacity(0.9)
-                                        : MyColors.orange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  "${data.message}",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: data.status == '0'
-                                        ? MyColors.blue
-                                        : MyColors.black,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ],
+                          Text(
+                            "${data.tittle}",
+                            style: TextStyle(
+                              color: data.status == '0'
+                                  ? MyColors.orange.withOpacity(0.9)
+                                  : MyColors.orange,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
-                          // Spacer(),
-                          Expanded(
-                            flex: 0,
-                            child: Text("${data.createdAt ?? ""}"),
+                          SizedBox(height: 5),
+                          Text(
+                            "${data.message}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: data.status == '0'
+                                  ? MyColors.blue
+                                  : MyColors.black,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
+                          SizedBox(height: 5),
+                          // Spacer(),
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Text("${data.createdAt ?? ""}")),
                         ],
                       ),
                     ),
