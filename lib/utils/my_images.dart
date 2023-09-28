@@ -2,6 +2,7 @@ class MyImages {
   static String baseUrl = "assets/images";
   static String logo = "$baseUrl/logo.png";
   static String splashLogo = "$baseUrl/splashlogo.png";
+  static String appIcon = "$baseUrl/icon.png";
   static String bg = "$baseUrl/bg.png";
   static String home = "$baseUrl/home.png";
   static String check = "$baseUrl/check.png";

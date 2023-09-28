@@ -49,7 +49,7 @@ class CustomJoinFitCard extends StatelessWidget {
     return GestureDetector(
       onTap: onClick,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0.0),
         child: Container(
           height: height ?? MediaQuery.of(context).size.height * 0.15,
           width: width,
@@ -139,7 +139,7 @@ class CustomJoinFitCard extends StatelessWidget {
                                   Expanded(
                                     flex: 0,
                                     child: Text(
-                                      "Save 9BHD!",
+                                      "Save 6BHD!",
                                       style: TextStyle(
                                         color: MyColors.orange,
                                         fontSize: 12,

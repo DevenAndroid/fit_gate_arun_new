@@ -177,7 +177,7 @@ class _SubscriptionState extends State<Subscription> {
                         ),
                         iconSize: 17,
                         height: MediaQuery.of(context).size.height * 0.086,
-                        title: "15BHD / year",
+                        title: "18BHD / year",
                         iconClr: MyColors.grey,
                         isOffer: true,
                         borderRadius: BorderRadius.circular(10),

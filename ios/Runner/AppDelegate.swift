@@ -16,10 +16,10 @@ import GoogleMaps
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-  override func application(_ application: UIApplication,
-          didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-              Messaging.messaging().apnsToken = deviceToken
-//              if (kDebugMode) print("Token: \(deviceToken)")
-              super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-          }
+//  override func application(_ application: UIApplication,
+//          didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+//              Messaging.messaging().apnsToken = deviceToken
+////              if (kDebugMode) print("Token: \(deviceToken)")
+//              super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+//          }
 }

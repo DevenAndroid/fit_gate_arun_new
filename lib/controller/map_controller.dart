@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/models/gym_details_model.dart';
@@ -51,9 +52,10 @@ class MapController extends GetxController {
         Uri.parse(EndPoints.classTypeFilterGym),
         headers: await header,
         body: jsonEncode(data));
-
+    log("class type request : " + jsonEncode(data));
     print("ENCODED ${jsonEncode(data)}");
     print("RESPONSE" + response.body);
+    log("class type response : " + response.body);
     var parsedData = jsonDecode(response.body);
     loading(value: false);
     if (parsedData['statusCode'] == 200) {
@@ -79,6 +81,7 @@ class MapController extends GetxController {
     var parsedData = jsonDecode(response.body);
     print("PARSED DATA ------------  111111111111 $parsedData");
     print("gggggg....      " + response.body);
+    log(response.body);
     if (parsedData['statusCode'] == 200) {
       var list = (parsedData['data'] as List)
           .map((e) => GymDetailsModel.fromJson(e))

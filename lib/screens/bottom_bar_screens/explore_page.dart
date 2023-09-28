@@ -41,6 +41,19 @@ class _ExplorePageState extends State<ExplorePage> {
   List<MarkerList> list = [];
   String searchText = "";
   final scrollController = ScrollController();
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+
+  void addCustomIcon() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)), "assets/pin.png")
+        .then(
+      (icon) {
+        setState(() {
+          markerIcon = icon;
+        });
+      },
+    );
+  }
 
   Future onMapCreated(GoogleMapController controller) async {
     await mapController.getLatLan();
@@ -55,7 +68,8 @@ class _ExplorePageState extends State<ExplorePage> {
                   mapController.latLngList[i].addressLatitude!.toString()),
               double.parse(
                   mapController.latLngList[i].addressLongitude!.toString())),
-          icon: BitmapDescriptor.defaultMarker,
+          //   icon: BitmapDescriptor.defaultMarker,
+          icon: markerIcon,
           // infoWindow: InfoWindow(title: "", onTap: () {}),
           onTap: () {
             print("@@@@@@@@@@@@");
@@ -243,6 +257,7 @@ class _ExplorePageState extends State<ExplorePage> {
   int selectedIndex = 0;
   @override
   void initState() {
+    addCustomIcon();
     onMapCreated;
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       getGymDetails();

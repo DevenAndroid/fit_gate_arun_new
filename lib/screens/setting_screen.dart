@@ -975,7 +975,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     img: MyImages.logOut,
                                   ),
                                 ),
-                                // SizedBox(width: 15),
+                                SizedBox(width: 15),
                                 Expanded(
                                   flex: 4,
                                   child: GetBuilder<DeleteUserController>(

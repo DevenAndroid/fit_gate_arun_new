@@ -35,8 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var data = await jsonDecode(pref.getString('isLogin').toString());
-    var logout = await pref.getBool('isLogout');
+    var data = jsonDecode(pref.getString('isLogin').toString());
+    var logout = pref.getBool('isLogout');
     // print("SPLASH ----- $data");
     print("LOGOUT::$logout");
     print("^^^^^^^^^^^ $data");
@@ -113,18 +113,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
         body: Stack(
       children: [
-        Image.asset(
+        /*    Image.asset(
           MyImages.bg,
           fit: BoxFit.cover,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-        ),
-        Positioned(
-          left: 50,
-          right: 50,
-          top: MediaQuery.of(context).size.height * 0.14,
+        ),*/
+        Center(
           child: Image.asset(
-            MyImages.splashLogo,
+            MyImages.appIcon,
             // color: MyColors.white,
             width: MediaQuery.of(context).size.width * 0.6,
             height: MediaQuery.of(context).size.height * 0.75,

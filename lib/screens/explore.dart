@@ -71,6 +71,10 @@ class _ExploreState extends State<Explore> {
                 child: ImageButton(
                   onTap: () {
                     filterBottomSheet(context);
+                    /*   showDialog(
+                      context: context,
+                      builder: (context) => FilterPage(),
+                    );*/
                   },
                   image: MyImages.filter,
                 ),
@@ -95,7 +99,7 @@ class _ExploreState extends State<Explore> {
         ),
         body: Column(
           children: [
-            SizedBox(height: 18),
+            /*  SizedBox(height: 18),
             Text("Search Near by gyms",
                 style: TextStyle(
                   fontSize: 17,
@@ -162,7 +166,7 @@ class _ExploreState extends State<Explore> {
                   ],
                 ),
               ),
-            ),
+            ),*/
             // SizedBox(height: 15),
             Expanded(
               child: Padding(
@@ -241,7 +245,8 @@ class _GymTileState extends State<GymTile> {
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: widget.gymModel.sub_user_type == "pro"
+              color: widget.gymModel.classType == "emerald" ||
+                      widget.gymModel.classType == "pro"
                   ? MyColors.orange.withOpacity(0.50)
                   : MyColors.border.withOpacity(.40),
               width: 1,
@@ -285,7 +290,7 @@ class _GymTileState extends State<GymTile> {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 3.0),
+                    padding: const EdgeInsets.only(top: 1.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -297,7 +302,31 @@ class _GymTileState extends State<GymTile> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 2),
+                        if (widget.gymModel.announcement != "")
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: MyColors.orange,
+                                  width: 1,
+                                  style: BorderStyle.solid,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100))),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 0),
+                              child: Text(
+                                "${widget.gymModel.announcement}",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: MyColors.orange),
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: 2),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +346,7 @@ class _GymTileState extends State<GymTile> {
                             ),
                             SizedBox(width: 3),
                             Text(
-                              "${widget.gymModel.review} Review",
+                              "${widget.gymModel.review ?? 0} Review",
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: MyColors.grey,
@@ -327,7 +356,7 @@ class _GymTileState extends State<GymTile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 2),
                         Row(
                           children: [
                             Expanded(
@@ -361,9 +390,13 @@ class _GymTileState extends State<GymTile> {
                 Expanded(
                   flex: 0,
                   child: Text(
-                    "${widget.gymModel.sub_user_type?[0].toUpperCase()}${widget.gymModel.sub_user_type?.substring(1)}",
+                    widget.gymModel.classType == "emerald" ||
+                            widget.gymModel.classType == "pro"
+                        ? "Pro"
+                        : "Free",
                     style: TextStyle(
-                        color: widget.gymModel.sub_user_type == "pro"
+                        color: widget.gymModel.classType == "emerald" ||
+                                widget.gymModel.classType == "pro"
                             ? MyColors.orange
                             : MyColors.grey),
                   ),

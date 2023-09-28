@@ -204,7 +204,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 img: MyImages.activity,
                               ),
                             ),
-                            SizedBox(width: 20),
+                            SizedBox(width: 15),
                             Expanded(
                               child: CustomJoinFitCard(
                                 onClick: () {

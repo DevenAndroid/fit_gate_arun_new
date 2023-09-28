@@ -4,7 +4,10 @@ import 'package:fit_gate/custom_widgets/custom_btns/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controller/bottom_controller.dart';
+import '../custom_widgets/custom_btns/icon_button.dart';
 import '../utils/my_color.dart';
+import '../utils/my_images.dart';
 
 filterBottomSheet(context) {
   return showModalBottomSheet(
