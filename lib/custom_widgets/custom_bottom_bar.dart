@@ -4,7 +4,7 @@
 // import '../screens/bottom_bar_screens/account_screen.dart';
 // import '../screens/bottom_bar_screens/home_page.dart';
 // import '../screens/check_in_page.dart';
-// import '../screens/explore_page.dart';
+// import '../screens/map_page.dart';
 // import '../utils/my_color.dart';
 // import '../utils/my_images.dart';
 //

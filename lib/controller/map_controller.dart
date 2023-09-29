@@ -20,7 +20,9 @@ class MapController extends GetxController {
   late GoogleMapController googleMapController;
   String? searchValue;
   int nextPage = 1;
-  var packageList = <GymDetailsModel>[].obs;
+  // bool isFilter = false;
+  // var packageList = <GymDetailsModel>[].obs;
+  var getAllGymList = <GymDetailsModel>[].obs;
   var nearbyGymList = <GymDetailsModel>[].obs;
 
   PaginationDataModel paginationData = PaginationDataModel();
@@ -48,10 +50,8 @@ class MapController extends GetxController {
       "lat": isCurrentLocation ? lat : latitude,
       "lon": isCurrentLocation ? lon : longitude,
     };
-    http.Response response = await http.post(
-        Uri.parse(EndPoints.classTypeFilterGym),
-        headers: await header,
-        body: jsonEncode(data));
+    http.Response response =
+        await http.post(Uri.parse(EndPoints.classTypeFilterGym), headers: await header, body: jsonEncode(data));
     log("class type request : " + jsonEncode(data));
     print("ENCODED ${jsonEncode(data)}");
     print("RESPONSE" + response.body);
@@ -59,10 +59,8 @@ class MapController extends GetxController {
     var parsedData = jsonDecode(response.body);
     loading(value: false);
     if (parsedData['statusCode'] == 200) {
-      var list = (parsedData['data'] as List)
-          .map((e) => GymDetailsModel.fromJson(e))
-          .toList();
-      packageList.value = list;
+      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
+      getAllGymList.value = list;
       nearbyGymList.value = list;
       update();
     } else {
@@ -72,8 +70,7 @@ class MapController extends GetxController {
   }
 
   getGym() async {
-    print(
-        "PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
+    print("PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
     http.Response response = await http.get(
       Uri.parse(EndPoints.getGym + "?user_id=${Global.userModel?.id}"),
       headers: await header,
@@ -83,30 +80,24 @@ class MapController extends GetxController {
     print("gggggg....      " + response.body);
     log(response.body);
     if (parsedData['statusCode'] == 200) {
-      var list = (parsedData['data'] as List)
-          .map((e) => GymDetailsModel.fromJson(e))
-          .toList();
-      packageList.value = list;
+      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
+      getAllGymList.value = list;
       update();
     } else {
-      packageList.value = [];
+      getAllGymList.value = [];
       update();
     }
   }
 
   getLocation({String? search}) async {
     var data = {"page_no": nextPage, "search": search ?? ""};
-    var response = await http.post(Uri.parse(EndPoints.searchGym),
-        headers: await header, body: jsonEncode(data));
+    var response = await http.post(Uri.parse(EndPoints.searchGym), headers: await header, body: jsonEncode(data));
     var parsedData = jsonDecode(response.body);
 
     if (parsedData['status'] == 200) {
-      var list = (parsedData['data'] as List)
-          .map((e) => GymDetailsModel.fromJson(e))
-          .toList();
+      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
 
-      paginationData =
-          PaginationDataModel.fromJson(parsedData['paginate_data']);
+      paginationData = PaginationDataModel.fromJson(parsedData['paginate_data']);
       print("PAGINATION DATA -----------     $paginationData");
       update();
       return searchList.value = list;
@@ -118,8 +109,7 @@ class MapController extends GetxController {
   Position? position;
   Future getLocation1() async {
     print("CURRENT LOCATION");
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
+    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     print("POSITIONNNNNN --------------       ${position}");
 
     return position;
@@ -136,11 +126,9 @@ class MapController extends GetxController {
     // loading(value: false);
     print("LOCATION  DATA ------------- $data");
     if (data['statusCode'] == 200) {
-      print(
-          "MAP DATA ========++++++++++++++++ |||||||||||||||||  ${data['data']}");
+      print("MAP DATA ========++++++++++++++++ |||||||||||||||||  ${data['data']}");
 
-      var list =
-          (data['data'] as List).map((e) => LatLngModel.fromJson(e)).toList();
+      var list = (data['data'] as List).map((e) => LatLngModel.fromJson(e)).toList();
       print("LIST ----############ $list");
       update();
       return latLngList.value = list;
@@ -211,14 +199,11 @@ class MapController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      snackBar(
-          "Location services are permanently disabled. Please click here to Enable",
-          onTap: () {
+      snackBar("Location services are permanently disabled. Please click here to Enable", onTap: () {
         openAppSettings();
       }, duration: 20000);
       update();
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     return await Geolocator.getCurrentPosition();

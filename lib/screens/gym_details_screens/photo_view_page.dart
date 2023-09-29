@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/models/gym_details_model.dart';
+import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -11,15 +13,13 @@ import '../../utils/end_points.dart';
 class PhotoViewPage extends StatefulWidget {
   final GymDetailsModel? gymDetailsModel;
   final int index;
-  const PhotoViewPage({Key? key, this.gymDetailsModel, this.index = 0})
-      : super(key: key);
+  const PhotoViewPage({Key? key, this.gymDetailsModel, this.index = 0}) : super(key: key);
 
   @override
   State<PhotoViewPage> createState() => _PhotoViewPageState();
 }
 
 class _PhotoViewPageState extends State<PhotoViewPage> {
-
   late PageController controller;
 
   @override
@@ -33,38 +33,38 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
     var size = MediaQuery.of(context).size;
     var details = widget.gymDetailsModel!;
     return Scaffold(
-      appBar: CustomAppBar(
-          title: "",
-          image: "",
-          onTap: () {
-            Get.back();
-          }),
-      body: Container(
-        child: SizedBox(
-          height: size.height,
-          width: size.width,
-          child: PhotoViewGallery.builder(
-            pageController: controller,
-            itemCount: details.pictures!.length,
-            builder: (BuildContext context, int index) {
-              return PhotoViewGalleryPageOptions(
-                minScale: PhotoViewComputedScale.contained * 0.5,
-                imageProvider: NetworkImage(
-                    "${EndPoints.imgBaseUrl}${details.pictures?[index]}"),
-              );
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+            splashRadius: 1,
+            onPressed: () {
+              Get.back();
             },
-            loadingBuilder: (context, event) => Center(
-              child: CircularProgressIndicator(
-                color: Colors.transparent,
-                value: event == null
-                    ? loading(value: true)
-                    : loading(value: false),
-              ),
-            ),
-            backgroundDecoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(10),
-            ),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: MyColors.black,
+              size: 22,
+            )),
+      ),
+      body: SizedBox(
+        height: size.height,
+        width: size.width,
+        child: PhotoViewGallery.builder(
+          pageController: controller,
+          itemCount: details.pictures!.length,
+          builder: (BuildContext context, int index) {
+            return PhotoViewGalleryPageOptions(
+              minScale: PhotoViewComputedScale.contained * 0.5,
+              imageProvider: CachedNetworkImageProvider("${EndPoints.imgBaseUrl}${details.pictures?[index]}"),
+            );
+          },
+          loadingBuilder: (context, event) => Center(
+            child: CircularProgressIndicator(color: MyColors.orange),
+          ),
+          backgroundDecoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),

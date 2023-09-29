@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fit_gate/custom_widgets/custom_btns/custom_button.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/auth/sign_up_screen.dart';
@@ -5,6 +7,7 @@ import 'package:fit_gate/utils/my_color.dart';
 import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -46,7 +49,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     // chewieController.dispose();
 
     super.dispose();
@@ -76,26 +79,34 @@ class _IntroScreenState extends State<IntroScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
                       MyImages.logo,
-                      height: 110,
+                      height: 115,
                       width: 200,
                     ),
                     // Spacer(),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.orange,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          MyImages.intro,
-                          height: 20,
-                          width: 20,
+                    GestureDetector(
+                      onTap: () {
+                        // if (Platform.isAndroid) {
+                        launchUrl(Uri.parse("https://api.whatsapp.com/send/?phone=97337049009"));
+                        // } else {}
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.orange,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            MyImages.intro,
+                            height: 20,
+                            width: 20,
+                          ),
                         ),
                       ),
                     )
@@ -103,36 +114,32 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
                 // SizedBox(height: 30),
                 Text(
-                  "Muscle Up Your\nBody Physique",
+                  "Discover nearby gyms\nGet exclusive offers 🇧🇭",
                   style: TextStyle(
                     color: MyColors.white,
-                    fontSize: 33,
+                    fontSize: 22,
                     height: 1.2,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Explore amazing features and offers with\nPro Subscription",
+                  "Each new day is a opportunity to improve yourself. Take it. And make the most out of it.",
                   style: TextStyle(
                     color: MyColors.white,
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.w100,
                   ),
                 ),
                 Spacer(),
                 CustomButton(
-                  title: "Get Started",
+                  title: "Start Now",
                   borderRadius: BorderRadius.circular(12),
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.setInt("intro", 1);
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => SignUpScreen()),
-                        (route) => false);
+                    // SharedPreferences pref = await SharedPreferences.getInstance();
+                    // pref.setInt("intro", 1);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
                   },
                 ),
                 SizedBox(height: 25),
@@ -143,13 +150,9 @@ class _IntroScreenState extends State<IntroScreen> {
                   borderRadius: BorderRadius.circular(12),
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.setInt("intro", 1);
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => LoginScreen()),
-                        (route) => false);
+                    // SharedPreferences pref = await SharedPreferences.getInstance();
+                    // pref.setInt("intro", 1);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
                   },
                 ),
                 SizedBox(height: 15),

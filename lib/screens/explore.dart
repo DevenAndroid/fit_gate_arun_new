@@ -7,7 +7,7 @@ import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/models/gym_details_model.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
-import 'package:fit_gate/screens/bottom_bar_screens/explore_page.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/map_page.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/home_page.dart';
 import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
 import 'package:fit_gate/utils/end_points.dart';
@@ -63,7 +63,7 @@ class _ExploreState extends State<Explore> {
               centerTitle: true,
               backgroundColor: Colors.white,
               title: Text(
-                "Explore",
+                "Explore ${mapController.nearbyGymList.length}",
                 style: TextStyle(color: MyColors.black),
               ),
               leading: Padding(
@@ -86,8 +86,7 @@ class _ExploreState extends State<Explore> {
                     return ImageButton(
                       image: MyImages.map,
                       onTap: () {
-                        bottomController.setSelectedScreen(true,
-                            screenName: ExplorePage());
+                        bottomController.setSelectedScreen(true, screenName: MapPage());
                         Get.to(() => BottomNavigationScreen());
                       },
                     );
@@ -172,14 +171,13 @@ class _ExploreState extends State<Explore> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: GetBuilder<MapController>(builder: (data) {
-                  return data.packageList.isEmpty
+                  return data.getAllGymList.isEmpty
                       ? Center(child: Text("No data found"))
                       : ListView.builder(
-                          itemCount: data.packageList.length,
+                          itemCount: data.getAllGymList.length,
                           itemBuilder: (c, i) {
-                            var gymData = data.packageList[i];
-                            return GetBuilder<BottomController>(
-                                builder: (controller) {
+                            var gymData = data.getAllGymList[i];
+                            return GetBuilder<BottomController>(builder: (controller) {
                               return GymTile(
                                 gymModel: gymData,
                                 onClick: () {
@@ -245,8 +243,7 @@ class _GymTileState extends State<GymTile> {
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: widget.gymModel.classType == "emerald" ||
-                      widget.gymModel.classType == "pro"
+              color: widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro"
                   ? MyColors.orange.withOpacity(0.50)
                   : MyColors.border.withOpacity(.40),
               width: 1,
@@ -280,8 +277,7 @@ class _GymTileState extends State<GymTile> {
                             ),
                             fit: BoxFit.cover,
                             height: MediaQuery.of(context).size.height * 0.12,
-                            imageUrl:
-                                "${EndPoints.imgBaseUrl}${widget.gymModel.pictures?[0]}",
+                            imageUrl: "${EndPoints.imgBaseUrl}${widget.gymModel.pictures?[0]}",
                             errorWidget: (c, u, r) => Container(),
                           ),
                         ),
@@ -311,18 +307,13 @@ class _GymTileState extends State<GymTile> {
                                   width: 1,
                                   style: BorderStyle.solid,
                                 ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(100))),
+                                borderRadius: BorderRadius.all(Radius.circular(100))),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 0),
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
                               child: Text(
                                 "${widget.gymModel.announcement}",
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: MyColors.orange),
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyColors.orange),
                               ),
                             ),
                           ),
@@ -363,9 +354,7 @@ class _GymTileState extends State<GymTile> {
                               flex: 0,
                               child: ImageButton(
                                 padding: EdgeInsets.all(0),
-                                image: widget.opening != null
-                                    ? MyImages.clock
-                                    : MyImages.car,
+                                image: widget.opening != null ? MyImages.clock : MyImages.car,
                                 color: MyColors.grey,
                                 width: 13,
                               ),
@@ -374,7 +363,7 @@ class _GymTileState extends State<GymTile> {
                             Expanded(
                               child: Text(
                                 widget.opening ??
-                                    "${distance.toStringAsFixed(2)} km",
+                                    "${widget.gymModel.distance != null ? double.parse(widget.gymModel.distance.toString()).toStringAsFixed(2) : distance.toStringAsFixed(2)} km",
                                 style: TextStyle(
                                   color: MyColors.grey,
                                   fontSize: 13.8,
@@ -390,13 +379,9 @@ class _GymTileState extends State<GymTile> {
                 Expanded(
                   flex: 0,
                   child: Text(
-                    widget.gymModel.classType == "emerald" ||
-                            widget.gymModel.classType == "pro"
-                        ? "Pro"
-                        : "Free",
+                    widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro" ? "Pro" : "Free",
                     style: TextStyle(
-                        color: widget.gymModel.classType == "emerald" ||
-                                widget.gymModel.classType == "pro"
+                        color: widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro"
                             ? MyColors.orange
                             : MyColors.grey),
                   ),
@@ -416,16 +401,10 @@ class _GymTileState extends State<GymTile> {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
-        c((double.parse('${widget.gymModel.addressLatitude}') -
-                    mapController.latitude) *
-                p) /
-            2 +
+        c((double.parse('${widget.gymModel.addressLatitude}') - mapController.latitude) * p) / 2 +
         c(mapController.latitude * p) *
             c(double.parse('${widget.gymModel.addressLatitude}') * p) *
-            (1 -
-                c((double.parse('${widget.gymModel.addressLongitude}') -
-                        mapController.longitude) *
-                    p)) /
+            (1 - c((double.parse('${widget.gymModel.addressLongitude}') - mapController.longitude) * p)) /
             2;
     // return 12742 * asin(sqrt(a));
     distance = 12742 * asin(sqrt(a));

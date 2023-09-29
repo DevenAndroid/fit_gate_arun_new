@@ -6,6 +6,7 @@ class GymDetailsModel {
   String? phoneNumber;
   String? review;
   String? rating;
+  String? distance;
   String? announcement;
   String? logo;
   List<String>? pictures;
@@ -26,6 +27,7 @@ class GymDetailsModel {
       this.name,
       this.facilityName,
       this.email,
+      this.distance,
       this.phoneNumber,
       this.review,
       this.rating,
@@ -54,6 +56,7 @@ class GymDetailsModel {
     review = json['review'] ?? "";
     rating = json['rating'] ?? "";
     announcement = json['announcement'] ?? "";
+    distance = json['distance'] ?? "";
     pictures = json['pictures'].cast<String>();
     amenities = json['amenities'].cast<String>();
     classType = json['class_type'];
@@ -66,6 +69,7 @@ class GymDetailsModel {
       });
     }
     about = json['about'];
+    distance = json['distance'];
     addressAddress = json['address_address'];
     addressLatitude = json['address_latitude'];
     addressLongitude = json['address_longitude'];

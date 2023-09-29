@@ -29,7 +29,7 @@ import '../../custom_widgets/custom_btns/custom_button.dart';
 import '../../models/user_model.dart';
 import '../../utils/my_color.dart';
 import '../../utils/my_images.dart';
-import 'explore_page.dart';
+import 'map_page.dart';
 
 List<String> fg = [
   "Limited gyms (Free)",
@@ -79,7 +79,6 @@ class _HomePageState extends State<HomePage> {
         lon: 50.55770000000007.toString());
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
-
     // InAppUpdate.checkForUpdate().then((updateInfo) {
     //   log("^^^^^^^^^^^ $updateInfo");
     //   if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
@@ -102,6 +101,8 @@ class _HomePageState extends State<HomePage> {
     //   }
     // });
   }
+
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -151,17 +152,11 @@ class _HomePageState extends State<HomePage> {
                               child: Text.rich(TextSpan(children: [
                                 TextSpan(
                                   text: "Log in ",
-                                  style: TextStyle(
-                                      color: MyColors.orange,
-                                      fontSize: 16.5,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: MyColors.orange, fontSize: 16.5, fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: " to enjoy the full experience",
-                                  style: TextStyle(
-                                      color: MyColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal),
+                                  style: TextStyle(color: MyColors.white, fontSize: 16, fontWeight: FontWeight.normal),
                                 )
                               ])),
                             ),
@@ -175,18 +170,19 @@ class _HomePageState extends State<HomePage> {
                         fit: StackFit.expand,
                         children: [
                           CarouselSlider(
-                            carouselController:
-                                carouselController, // Give the controller
+                            carouselController: carouselController, // Give the controller
                             options: CarouselOptions(
-                              // initialPage: 0,
-                              enableInfiniteScroll: false,
-                              viewportFraction: 1,
-                              padEnds: true,
-
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 2),
-                              autoPlayCurve: Curves.linear,
-                            ),
+                                // initialPage: 0,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1,
+                                padEnds: true,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(seconds: 2),
+                                autoPlayCurve: Curves.linear,
+                                onPageChanged: (val, _) {
+                                  pageIndex = val;
+                                  setState(() {});
+                                }),
 
                             items: banner.getBannerList.map((featuredImage) {
                               return Padding(
@@ -208,8 +204,7 @@ class _HomePageState extends State<HomePage> {
                             }).toList(),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -222,8 +217,7 @@ class _HomePageState extends State<HomePage> {
                                   boxShape: BoxShape.circle,
                                   onTap: () {
                                     carouselController.previousPage(
-                                        duration: Duration(seconds: 1),
-                                        curve: Curves.easeOut);
+                                        duration: Duration(seconds: 1), curve: Curves.easeOut);
                                   },
                                 ),
                                 ImageButton(
@@ -234,9 +228,14 @@ class _HomePageState extends State<HomePage> {
                                   bgColor: MyColors.orange,
                                   boxShape: BoxShape.circle,
                                   onTap: () {
-                                    carouselController.nextPage(
-                                        duration: Duration(seconds: 1),
-                                        curve: Curves.easeOut);
+                                    if (pageIndex == banner.getBannerList.length - 1) {
+                                      print("||||||| $pageIndex");
+                                      carouselController.animateToPage(0,
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                    } else {
+                                      carouselController.nextPage(
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                    }
                                   },
                                 ),
                               ],
@@ -371,8 +370,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                               child: Text(
                                 "Enjoy free Offers",
                                 style: TextStyle(
@@ -409,12 +407,10 @@ class _HomePageState extends State<HomePage> {
                           right: 20,
                           child: Align(
                             alignment: Alignment.bottomRight,
-                            child: GetBuilder<BottomController>(
-                                builder: (controller) {
+                            child: GetBuilder<BottomController>(builder: (controller) {
                               return CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.18,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.033,
+                                height: MediaQuery.of(context).size.height * 0.033,
                                 title: "Join",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -424,8 +420,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
                                   controller.getIndex(0);
-                                  controller.setSelectedScreen(true,
-                                      screenName: Subscription());
+                                  controller.setSelectedScreen(true, screenName: Subscription());
                                 },
                               );
                             }),
@@ -461,18 +456,16 @@ class _HomePageState extends State<HomePage> {
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: data.nearbyGymList.length < 4
-                          ? data.nearbyGymList.length
-                          : 3,
+                      itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,
                       itemBuilder: (c, i) {
                         var gymData = data.nearbyGymList[i];
-                        return GetBuilder<BottomController>(
-                            builder: (controller) {
+                        return GetBuilder<BottomController>(builder: (controller) {
                           return GymTile(
                             gymModel: gymData,
                             onClick: () {
                               index = i;
                               setState(() {});
+                              controller.getIndex(1);
                               controller.setSelectedScreen(
                                 true,
                                 screenName: GymDetailsScreen(

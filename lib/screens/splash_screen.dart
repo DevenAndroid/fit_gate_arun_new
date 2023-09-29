@@ -36,9 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
   checkUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var data = jsonDecode(pref.getString('isLogin').toString());
-    var logout = pref.getBool('isLogout');
-    // print("SPLASH ----- $data");
-    print("LOGOUT::$logout");
     print("^^^^^^^^^^^ $data");
     if (data != null) {
       // await mapController.getCurrentLocation();
@@ -74,9 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     } else {
-      isBoardingView == 1
-          ? Get.offAll(() => LoginScreen())
-          : Get.offAll(() => IntroScreen());
+      Get.offAll(() => IntroScreen());
     }
     // else if (delete == true) {
     //   print("SPLASH DELETE ==========  $delete");

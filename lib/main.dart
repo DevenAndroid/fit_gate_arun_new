@@ -38,8 +38,8 @@ Future<void> main() async {
         ));
   }
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  isBoardingView = prefs.getInt('intro');
-  print("$isBoardingView");
+  // isBoardingView = prefs.getInt('intro');
+  // print("$isBoardingView");
   notification();
 
   runApp(MyApp());
@@ -73,8 +73,7 @@ class MyApp extends StatelessWidget {
         title: "Fit Gate",
         theme: ThemeData(
           fontFamily: "Poppins",
-          colorScheme: ColorScheme.fromSwatch()
-              .copyWith(secondary: MyColors.grey.withOpacity(.5)),
+          colorScheme: ColorScheme.fromSwatch().copyWith(secondary: MyColors.grey.withOpacity(.5)),
         ),
         home: SplashScreen(),
         debugShowCheckedModeBanner: false,
