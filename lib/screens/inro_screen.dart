@@ -25,12 +25,14 @@ class _IntroScreenState extends State<IntroScreen> {
     super.initState();
     _controller = VideoPlayerController.asset("assets/intro_video.mp4")
       ..initialize().then((_) {
-        _controller.play();
-        _controller.setLooping(true);
-
-        // Ensure the first frame is shown after the video is initialized
-        setState(() {});
+        setState(() {
+          _controller.play();
+          _controller.setLooping(true);
+          // Ensure the first frame is shown after the video is initialized
+          print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        });
       });
+
     // chewieController = ChewieController(
     //   videoPlayerController: _controller,
     //   autoPlay: true,
@@ -49,7 +51,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   void dispose() {
-    // _controller.dispose();
+    _controller.dispose();
+    // _controller.pause();
     // chewieController.dispose();
 
     super.dispose();
@@ -73,7 +76,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     child: VideoPlayer(_controller),
                   ),
                 )
-              : Container(),
+              : Center(child: CircularProgressIndicator()),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
             child: Column(

@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? verificationCode = "";
   final auth = FirebaseAuth.instance;
   final loginController = Get.put(LoginController());
+  bool logout = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
           // resizeToAvoidBottomInset: false,
           appBar: CustomAppBar(
-            onTap: () {
-              push(context: context, screen: IntroScreen());
-              snackbarKey.currentState?.hideCurrentSnackBar();
+            onTap: () async {
+              // SharedPreferences pref = await SharedPreferences.getInstance();
+              // logout = pref.getBool("isLogout") ?? false;
+              // if (logout) {
+              //   Navigator.push(context, MaterialPageRoute(builder: (_) => IntroScreen()));
+              // } else {
+              // push(context: context, screen: IntroScreen());
+              // Navigator.push(context, MaterialPageRoute(builder: (_) => IntroScreen()));
+              Navigator.pop(context);
+              // }
+              // snackbarKey.currentState?.hideCurrentSnackBar();
               phone.clear();
             },
             // skipp: true,

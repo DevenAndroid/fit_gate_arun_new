@@ -23,6 +23,9 @@ filterBottomSheet(context) {
         int amenitiesIndex = 0;
         int? kmIndex;
         List<String> selectedAmenities = [];
+        for (var value in amenities) {
+          value.selected = false;
+        }
         // bool select = false;
         var img = Get.put(ImageController());
         return StatefulBuilder(builder: (context, setState) {

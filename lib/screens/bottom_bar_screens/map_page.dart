@@ -241,6 +241,7 @@ class _MapPageState extends State<MapPage> {
       getGymDetails();
     });
     header;
+    print("((((((((((((((((((((((( ${markers}");
     // getLocation();
     super.initState();
   }
@@ -455,7 +456,7 @@ class _MapPageState extends State<MapPage> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0, left: 15, right: 15),
+                        padding: const EdgeInsets.only(top: .0, left: 15, right: 15),
                         child: search.text.isEmpty
                             ? SizedBox()
                             : ListView.builder(
@@ -483,15 +484,8 @@ class _MapPageState extends State<MapPage> {
                                         color: MyColors.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("${a.addressAddress}"),
-                                            SizedBox(height: 5)
-                                            // Divider()
-                                          ],
-                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+                                        child: Text("${a.facilityName}"),
                                       ),
                                     ),
                                   );

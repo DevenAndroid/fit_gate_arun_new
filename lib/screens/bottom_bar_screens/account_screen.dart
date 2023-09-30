@@ -68,8 +68,7 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
           body: SingleChildScrollView(
               child: Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15, bottom: 20, top: 14),
+            padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 20, top: 14),
             child: GetBuilder<BottomController>(
                 builder: (controller) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,18 +79,12 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  print(
-                                      "------------- URl ====== ${imgController.imgUrl}");
+                                  print("------------- URl ====== ${imgController.imgUrl}");
                                 },
-                                child: imgController.imgUrl == null &&
-                                        Global.userModel?.avatar == null
-                                    ? CustomCircleAvatar(
-                                        image:
-                                            AssetImage("assets/images/1.png"))
+                                child: imgController.imgUrl == null && Global.userModel?.avatar == null
+                                    ? CustomCircleAvatar(image: AssetImage("assets/images/1.png"))
                                     : CachedNetworkImage(
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                CircleAvatar(
+                                        imageBuilder: (context, imageProvider) => CircleAvatar(
                                           radius: 45,
                                           backgroundImage: imageProvider,
                                         ),
@@ -105,16 +98,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                             ),
                                           ),
                                         ),
-                                        imageUrl:
-                                            "${Global.userModel!.avatar.toString()}",
+                                        imageUrl: "${Global.userModel!.avatar.toString()}",
                                         errorWidget: (c, u, r) => Container(),
                                       ),
                               ),
                               SizedBox(height: 10),
                               Text(
                                 Global.userModel?.name ?? "Username",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 18),
+                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                               ),
                             ],
                           ),
@@ -124,51 +115,86 @@ class _AccountScreenState extends State<AccountScreen> {
                         //     ?
                         Text(
                           "Subscription Plan ",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                         ),
                         // : SizedBox(),
                         SizedBox(height: 15),
                         // Global.activeSubscriptionModel?.status == 'ACTIVE'
                         //    ?
 
-                        GetBuilder<BottomController>(builder: (controller) {
-                          return CustomAccountCard(
-                            onClick: () {
-                              // controller.getIndex(1);
-                              // controller.setSelectedScreen(true,
-                              //     screenName: Subscription());
-                            },
-                            // expiryDate: Global.userModel?.subscriptionTo,
-                            title: "Pro",
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              height: MediaQuery.of(context).size.height * 0.08,
-                              padding: EdgeInsets.all(9),
-                              decoration: BoxDecoration(
-                                color: MyColors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ImageButton(
-                                padding: EdgeInsets.zero,
-                                image: MyImages.diamond,
-                                // width: 29,
-                                // height: 29,
-                                // height: 100,
-                                // width: MediaQuery.of(context).size.width * 0.9,
-                                // height: MediaQuery.of(context).size.height * 4,
-                                // color: MyColors.orange,
-                                // size: iconSize ?? 50,
-                              ),
+                        // GetBuilder<BottomController>(builder: (controller) {
+                        //   return CustomAccountCard(
+                        //     onClick: () {
+                        //       // controller.getIndex(1);
+                        //       // controller.setSelectedScreen(true,
+                        //       //     screenName: Subscription());
+                        //     },
+                        //     // expiryDate: Global.userModel?.subscriptionTo,
+                        //     title: "Free",
+                        //     child: Container(
+                        //       width: MediaQuery.of(context).size.width * 0.1,
+                        //       height: MediaQuery.of(context).size.height * 0.08,
+                        //       padding: EdgeInsets.all(9),
+                        //       decoration: BoxDecoration(
+                        //         color: MyColors.white,
+                        //         borderRadius: BorderRadius.circular(10),
+                        //       ),
+                        //       child: ImageButton(
+                        //         padding: EdgeInsets.zero,
+                        //         image: MyImages.diamond,
+                        //         // width: 29,
+                        //         // height: 29,
+                        //         // height: 100,
+                        //         // width: MediaQuery.of(context).size.width * 0.9,
+                        //         // height: MediaQuery.of(context).size.height * 4,
+                        //         // color: MyColors.orange,
+                        //         // size: iconSize ?? 50,
+                        //       ),
+                        //     ),
+                        //   );
+                        // }),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: MyColors.lightGrey,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Free",
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle,
+                                      color: MyColors.orange,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      "Enjoy free offers",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: MyColors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          );
-                        }),
+                          ),
+                        ),
                         // : SizedBox(),
                         SizedBox(height: 15),
                         Text(
                           "Other Option",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 12),
                         Row(
@@ -180,8 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   //     "ACTIVE") {
                                   chooseOption = 1;
                                   setState(() {});
-                                  controller.setSelectedScreen(true,
-                                      screenName: ActivityLogsScreen());
+                                  controller.setSelectedScreen(true, screenName: ActivityLogsScreen());
                                   Get.to(() => BottomNavigationScreen());
 
                                   // } else {
@@ -197,8 +222,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   spreadRadius: 7,
                                   blurRadius: 20,
                                 ),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
+                                height: MediaQuery.of(context).size.height * 0.06,
                                 title: "Activities",
                                 borderRadius: BorderRadius.circular(10),
                                 img: MyImages.activity,
@@ -210,8 +234,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 onClick: () {
                                   chooseOption = 2;
                                   setState(() {});
-                                  controller.setSelectedScreen(true,
-                                      screenName: SettingScreen());
+                                  controller.setSelectedScreen(true, screenName: SettingScreen());
                                   Get.to(() => BottomNavigationScreen());
                                 },
                                 selectedIndex: chooseOption,
@@ -222,8 +245,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   blurRadius: 20,
                                 ),
                                 iconSize: 17,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
+                                height: MediaQuery.of(context).size.height * 0.06,
                                 title: "Settings",
                                 iconClr: MyColors.grey,
                                 borderRadius: BorderRadius.circular(10),

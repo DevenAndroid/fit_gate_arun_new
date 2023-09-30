@@ -26,13 +26,14 @@ class MapController extends GetxController {
   var nearbyGymList = <GymDetailsModel>[].obs;
 
   PaginationDataModel paginationData = PaginationDataModel();
-
+  bool loadingValue = true;
+  // bool hasData = false;
   String getJson(jsonObject, {name}) {
     var encoder = const JsonEncoder.withIndent("     ");
     return encoder.convert(jsonObject);
   }
 
-  getFilterData({
+  Future getFilterData({
     String? packageName,
     String? subUserType,
     String? distance,
@@ -41,6 +42,8 @@ class MapController extends GetxController {
     String? lon,
     bool isCurrentLocation = false,
   }) async {
+    loadingValue = true;
+    update();
     // loading(value: true);
     var data = {
       "class_type": "",
@@ -50,6 +53,9 @@ class MapController extends GetxController {
       "lat": isCurrentLocation ? lat : latitude,
       "lon": isCurrentLocation ? lon : longitude,
     };
+    // Future.delayed(
+    //   Duration(seconds: 2),
+    //   () async {
     http.Response response =
         await http.post(Uri.parse(EndPoints.classTypeFilterGym), headers: await header, body: jsonEncode(data));
     log("class type request : " + jsonEncode(data));
@@ -57,19 +63,30 @@ class MapController extends GetxController {
     print("RESPONSE" + response.body);
     log("class type response : " + response.body);
     var parsedData = jsonDecode(response.body);
-    loading(value: false);
     if (parsedData['statusCode'] == 200) {
+      loadingValue = false;
+      update();
       var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
-      getAllGymList.value = list;
-      nearbyGymList.value = list;
+      // parsedData['data'] != [] ? hasData = true : hasData = false;
+      if (isCurrentLocation) {
+        nearbyGymList.value = list;
+      } else {
+        getAllGymList.value = list;
+      }
+
       update();
     } else {
+      loadingValue = false;
+      getAllGymList.value = [];
       nearbyGymList.value = [];
       update();
     }
+    //   },
+    // );
   }
 
   getGym() async {
+    loadingValue = true;
     print("PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
     http.Response response = await http.get(
       Uri.parse(EndPoints.getGym + "?user_id=${Global.userModel?.id}"),
@@ -80,10 +97,12 @@ class MapController extends GetxController {
     print("gggggg....      " + response.body);
     log(response.body);
     if (parsedData['statusCode'] == 200) {
+      loadingValue = false;
       var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
       getAllGymList.value = list;
       update();
     } else {
+      loadingValue = false;
       getAllGymList.value = [];
       update();
     }

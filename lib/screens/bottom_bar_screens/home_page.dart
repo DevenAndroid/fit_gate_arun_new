@@ -71,12 +71,13 @@ class _HomePageState extends State<HomePage> {
     //   Global.activeSubscriptionModel = activeData;
     // }
     mapController.getLocation1();
-    mapController.getFilterData(
-        isCurrentLocation: true,
-        // lat: mapController.position?.latitude.toString(),
-        // lon: mapController.position?.longitude.toString(),
-        lat: 26.0667.toString(),
-        lon: 50.55770000000007.toString());
+    await mapController.getFilterData(
+      isCurrentLocation: true,
+      lat: mapController.position?.latitude.toString(),
+      lon: mapController.position?.longitude.toString(),
+      // lat: 26.0667.toString(),
+      // lon: 50.55770000000007.toString(),
+    );
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
     // InAppUpdate.checkForUpdate().then((updateInfo) {
@@ -341,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                   Global.userModel?.phoneNumber == null
                       ? SizedBox()
                       : Text(
-                          "Subscription Plan: Free/Pro",
+                          "Subscription Plan: Free",
                           style: TextStyle(
                             color: MyColors.black,
                             fontSize: 17,
@@ -451,33 +452,37 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GetBuilder<MapController>(builder: (data) {
-              return data.nearbyGymList.isEmpty
-                  ? Center(child: Text("Nearby gyms not found"))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,
-                      itemBuilder: (c, i) {
-                        var gymData = data.nearbyGymList[i];
-                        return GetBuilder<BottomController>(builder: (controller) {
-                          return GymTile(
-                            gymModel: gymData,
-                            onClick: () {
-                              index = i;
-                              setState(() {});
-                              controller.getIndex(1);
-                              controller.setSelectedScreen(
-                                true,
-                                screenName: GymDetailsScreen(
-                                  index: index,
-                                  gymDetailsModel: gymData,
-                                ),
+              return data.loadingValue == true
+                  ? SizedBox(
+                      height: 100,
+                      child: Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5)))
+                  : data.nearbyGymList == []
+                      ? Center(child: Text("No data found"))
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,
+                          itemBuilder: (c, i) {
+                            var gymData = data.nearbyGymList[i];
+                            return GetBuilder<BottomController>(builder: (controller) {
+                              return GymTile(
+                                gymModel: gymData,
+                                onClick: () {
+                                  index = i;
+                                  setState(() {});
+                                  controller.getIndex(1);
+                                  controller.setSelectedScreen(
+                                    true,
+                                    screenName: GymDetailsScreen(
+                                      index: index,
+                                      gymDetailsModel: gymData,
+                                    ),
+                                  );
+                                  Get.to(() => BottomNavigationScreen());
+                                },
                               );
-                              Get.to(() => BottomNavigationScreen());
-                            },
-                          );
-                        });
-                      });
+                            });
+                          });
             }),
           ],
         ),

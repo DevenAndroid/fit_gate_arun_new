@@ -11,6 +11,7 @@ import 'package:fit_gate/controller/auth_controllers/reg_controller.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,8 +48,7 @@ class VerifyPhoneScreen extends StatefulWidget {
   State<VerifyPhoneScreen> createState() => _VerifyPhoneScreenState();
 }
 
-class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
-    with SingleTickerProviderStateMixin {
+class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTickerProviderStateMixin {
   TextEditingController code = TextEditingController();
   final auth = FirebaseAuth.instance;
   final regController = Get.put(RegisterController());
@@ -167,8 +167,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
             onTap: () {
               // Get.back();
               if (widget.isEmail == true) {
-                bottomController.setSelectedScreen(true,
-                    screenName: SettingScreen());
+                bottomController.setSelectedScreen(true, screenName: SettingScreen());
                 Get.to(() => BottomNavigationScreen());
               } else {
                 code.clear();
@@ -178,20 +177,14 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15, bottom: 20, top: 20),
+              padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 20, top: 20),
               child: SingleChildScrollView(
                 child: Column(
                   // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      widget.isEmail == true
-                          ? ""
-                          : "Code is sent to ${widget.phone}",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: MyColors.grey),
+                      widget.isEmail == true ? "" : "Code is sent to ${widget.phone}",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: MyColors.grey),
                     ),
                     SizedBox(height: 40),
                     Pinput(
@@ -199,8 +192,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
                       autofocus: true,
                       length: widget.isEmail == true ? 4 : 6,
                       submittedPinTheme: submittedPinTheme,
-                      androidSmsAutofillMethod:
-                          AndroidSmsAutofillMethod.smsRetrieverApi,
+                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
                       onChanged: (v) async {
@@ -209,9 +201,9 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
                         //     await checkOtp();
                         //   }
                         // } else {
-                          if (code.text.length == 6) {
-                            await checkOtp();
-                          }
+                        if (code.text.length == 6) {
+                          await checkOtp();
+                        }
                         // }
                       },
                       onSubmitted: (pin) async {
@@ -250,10 +242,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
                     SizedBox(height: 15),
                     Text(
                       "Didn't receive code? ",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: MyColors.grey),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: MyColors.grey),
                     ),
                     SizedBox(height: 15),
                     GestureDetector(
@@ -263,9 +252,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: enableResend
-                                ? MyColors.orange
-                                : MyColors.orange.withOpacity(.40)),
+                            color: enableResend ? MyColors.orange : MyColors.orange.withOpacity(.40)),
                       ),
                     ),
 
@@ -323,35 +310,33 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen>
       print("object");
       if (code.text.isEmpty) {
         snackBar("Please enter OTP");
-      }
-      else {
+      } else {
         try {
-          var credential = PhoneAuthProvider.credential(
-              verificationId: verificationId, smsCode: code.text);
+          var credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: code.text);
           await auth.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
-            log("Firebase Login Success.......          ${value.user!.uid}");
+              log("Firebase Login Success.......          ${value.user!.uid}");
               var loginToken = await FirebaseMessaging.instance.getToken();
-              await loginController.userLogin(
+              await loginController
+                  .userLogin(
                 widget.phone,
                 loginToken,
-              ).then((value1) {
-                if(value1 == false)return;
+              )
+                  .then((value1) {
+                if (value1 == false) return;
 
                 log("API Login Success.......          ${value.user!.uid}");
                 print(auth.currentUser!.displayName.toString() != "true");
                 print(value.user!.displayName.toString() != "true");
 
-                if(value.user!.displayName.toString() != "true"){
-                  Get.to(()=> UserInfoScreen());
+                if (value.user!.displayName.toString() != "true") {
+                  Get.to(() => UserInfoScreen());
 
                   log("UserInfoScreen Success.......          ${value.user!.uid}");
                   return;
                 } else {
                   Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => BottomNavigationScreen()),
-                          (route) => false);
+                      context, MaterialPageRoute(builder: (_) => BottomNavigationScreen()), (route) => false);
 
                   log("BottomNavigationScreen Success.......          ${value.user!.uid}");
                 }
