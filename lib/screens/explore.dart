@@ -179,10 +179,11 @@ class _ExploreState extends State<Explore> {
                 child: GetBuilder<MapController>(builder: (data) {
                   return data.loadingValue
                       ? Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5))
-                      : data.getAllGymList.isEmpty
+                      : data.getAllGymList == []
                           ? Center(child: Text("No data found"))
                           : ListView.builder(
                               itemCount: data.getAllGymList.length,
+                              cacheExtent: 9999,
                               itemBuilder: (c, i) {
                                 var gymData = data.getAllGymList[i];
                                 return GetBuilder<BottomController>(builder: (controller) {
@@ -251,7 +252,7 @@ class _GymTileState extends State<GymTile> {
             color: MyColors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro"
+              color: widget.gymModel.sub_user_type == "pro"
                   ? MyColors.orange.withOpacity(0.50)
                   : MyColors.border.withOpacity(.40),
               width: 1,
@@ -280,7 +281,26 @@ class _GymTileState extends State<GymTile> {
                             placeholder: (c, url) => Center(
                               child: CircularProgressIndicator(
                                 color: MyColors.orange,
-                                strokeWidth: 2.5,
+                                strokeWidth: 1.5,
+                              ),
+                            ),
+                            // Container(
+                            //                               decoration: BoxDecoration(
+                            //                                 image: DecorationImage(
+                            //                                   image: CachedNetworkImageProvider(url),
+                            //                                   fit: BoxFit.cover,
+                            //                                 ),
+                            //                               ),
+                            //                             ),
+                            placeholderFadeInDuration: Duration(seconds: 0),
+
+                            useOldImageOnUrlChange: true,
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             fit: BoxFit.cover,
@@ -387,11 +407,8 @@ class _GymTileState extends State<GymTile> {
                 Expanded(
                   flex: 0,
                   child: Text(
-                    widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro" ? "Pro" : "Free",
-                    style: TextStyle(
-                        color: widget.gymModel.classType == "emerald" || widget.gymModel.classType == "pro"
-                            ? MyColors.orange
-                            : MyColors.grey),
+                    widget.gymModel.sub_user_type == "pro" ? "Pro" : "Free",
+                    style: TextStyle(color: widget.gymModel.sub_user_type == "pro" ? MyColors.orange : MyColors.grey),
                   ),
                 ),
               ],

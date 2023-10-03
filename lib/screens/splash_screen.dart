@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAll(() => UserInfoScreen());
         return;
       }
-      // await mapController.getCurrentLocation();
+      await mapController.getCurrentLocation();
       mapController.getLocation1();
 
       await Future.wait<void>([
@@ -60,6 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
         loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
         activePlan.activeSubscriptionPlan(),
         mapController.getGym(),
+        mapController.getFilterData(
+          isCurrentLocation: true,
+          lat: mapController.latitude.toString(),
+          lon: mapController.longitude.toString(),
+          // lat: 26.0667.toString(),
+          // lon: 50.55770000000007.toString(),
+        ),
       ]);
 
       if (Global.userModel?.deleteStatus == '1') {
@@ -119,8 +126,8 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Image.asset(
             MyImages.appIcon,
             // color: MyColors.white,
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: MediaQuery.of(context).size.height * 0.75,
+            width: MediaQuery.of(context).size.width * 0.52,
+            height: MediaQuery.of(context).size.height * 0.70,
           ),
         ),
         // isDenied

@@ -219,8 +219,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 iconSize: 17,
                                 boxShadow: BoxShadow(
                                   color: MyColors.grey.withOpacity(0.15),
-                                  spreadRadius: 7,
-                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                  blurRadius: 24,
                                 ),
                                 height: MediaQuery.of(context).size.height * 0.06,
                                 title: "Activities",
@@ -228,7 +228,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 img: MyImages.activity,
                               ),
                             ),
-                            SizedBox(width: 15),
+                            SizedBox(width: 20),
                             Expanded(
                               child: CustomJoinFitCard(
                                 onClick: () {
@@ -241,8 +241,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 index: 2,
                                 boxShadow: BoxShadow(
                                   color: MyColors.grey.withOpacity(0.15),
-                                  spreadRadius: 7,
-                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                  blurRadius: 24,
                                 ),
                                 iconSize: 17,
                                 height: MediaQuery.of(context).size.height * 0.06,

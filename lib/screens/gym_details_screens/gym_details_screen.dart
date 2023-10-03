@@ -285,6 +285,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                         height: 100,
                         width: MediaQuery.of(context).size.width,
                         child: ListView.builder(
+                            cacheExtent: 9999,
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             itemCount: details.pictures?.length,
@@ -421,6 +422,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                 // SizedBox(height: 7),
                                 // Text("${details.workingHour![0].day}"),
                                 ListView.builder(
+                                    cacheExtent: 9999,
                                     itemCount: details.workingHour?.length,
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
@@ -441,7 +443,10 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                               child: Text(
                                                 "${details.workingHour![i].day![0].toUpperCase()}${details.workingHour![i].day?.substring(1)}",
                                                 style: TextStyle(
-                                                    fontSize: 13, fontWeight: FontWeight.w600, color: MyColors.orange),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: MyColors.orange,
+                                                ),
                                               ),
                                             ),
                                             Padding(

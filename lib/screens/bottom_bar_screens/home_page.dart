@@ -70,13 +70,13 @@ class _HomePageState extends State<HomePage> {
     //       await jsonDecode(pref.getString('isActivated').toString()));
     //   Global.activeSubscriptionModel = activeData;
     // }
-    mapController.getLocation1();
+    mapController.getCurrentLocation();
     await mapController.getFilterData(
       isCurrentLocation: true,
-      lat: mapController.position?.latitude.toString(),
-      lon: mapController.position?.longitude.toString(),
-      // lat: 26.0667.toString(),
-      // lon: 50.55770000000007.toString(),
+      lat: mapController.latitude.toString(),
+      lon: mapController.longitude.toString(),
+      // lat: 26.4334567.toString(),
+      // lon: 50.5327707.toString(),
     );
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                         fit: StackFit.expand,
                         children: [
                           CarouselSlider(
-                            carouselController: carouselController, // Give the controller
+                            carouselController: carouselController,
                             options: CarouselOptions(
                                 // initialPage: 0,
                                 enableInfiniteScroll: false,
@@ -184,7 +184,6 @@ class _HomePageState extends State<HomePage> {
                                   pageIndex = val;
                                   setState(() {});
                                 }),
-
                             items: banner.getBannerList.map((featuredImage) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5),
@@ -459,6 +458,7 @@ class _HomePageState extends State<HomePage> {
                   : data.nearbyGymList == []
                       ? Center(child: Text("No data found"))
                       : ListView.builder(
+                          cacheExtent: 9999,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,

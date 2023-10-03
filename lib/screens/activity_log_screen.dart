@@ -43,8 +43,7 @@ class _ActivityLogsScreenState extends State<ActivityLogsScreen> {
       onWillPop: () {
         bottomController.getIndex(3);
 
-        return bottomController.setSelectedScreen(true,
-            screenName: AccountScreen());
+        return bottomController.setSelectedScreen(true, screenName: AccountScreen());
       },
       child: SafeArea(
         child: Scaffold(
@@ -52,20 +51,18 @@ class _ActivityLogsScreenState extends State<ActivityLogsScreen> {
             title: "Activity Logs",
             // image: MyImages.notification,
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 12.0, right: 12, bottom: 20, top: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
+          body: Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 20, top: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: Container(
                     height: MediaQuery.of(context).size.height * 0.12,
                     // width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(MyImages.activityLog),
-                          fit: BoxFit.cover),
+                      image: DecorationImage(image: AssetImage(MyImages.activityLog), fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
@@ -75,16 +72,13 @@ class _ActivityLogsScreenState extends State<ActivityLogsScreen> {
                           SizedBox(width: 15),
                           Expanded(
                             flex: 1,
-                            child: imgController.imgUrl == null ||
-                                    Global.userModel?.avatar == ""
+                            child: imgController.imgUrl == null || Global.userModel?.avatar == ""
                                 ? CircleAvatar(
                                     radius: 30,
-                                    backgroundImage:
-                                        AssetImage("assets/images/1.png"),
+                                    backgroundImage: AssetImage("assets/images/1.png"),
                                   )
                                 : CachedNetworkImage(
-                                    imageBuilder: (context, imageProvider) =>
-                                        CircleAvatar(
+                                    imageBuilder: (context, imageProvider) => CircleAvatar(
                                       radius: 45,
                                       backgroundImage: imageProvider,
                                     ),
@@ -119,66 +113,65 @@ class _ActivityLogsScreenState extends State<ActivityLogsScreen> {
                       ),
                     ),
                   ),
-                  /* CustomAccountCard(
-                    title: Global.userModel?.name ?? "Username",
-                    bgImg: MyImages.activityLog,
-                    child: imgController.imgUrl == null ||
-                            Global.userModel?.avatar == ""
-                        ? CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage("assets/images/1.png"),
-                          )
-                        : CachedNetworkImage(
-                            imageBuilder: (context, imageProvider) =>
-                                CircleAvatar(
-                              radius: 45,
-                              backgroundImage: imageProvider,
-                            ),
-                            placeholder: (c, url) => CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              radius: 45,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.5,
-                                  color: MyColors.white,
-                                ),
+                ),
+                /* CustomAccountCard(
+                  title: Global.userModel?.name ?? "Username",
+                  bgImg: MyImages.activityLog,
+                  child: imgController.imgUrl == null ||
+                          Global.userModel?.avatar == ""
+                      ? CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage("assets/images/1.png"),
+                        )
+                      : CachedNetworkImage(
+                          imageBuilder: (context, imageProvider) =>
+                              CircleAvatar(
+                            radius: 45,
+                            backgroundImage: imageProvider,
+                          ),
+                          placeholder: (c, url) => CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 45,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: MyColors.white,
                               ),
                             ),
-                            imageUrl: "${imgController.imgUrl}",
-                            errorWidget: (c, u, r) => Container(),
                           ),
-                    // CircleAvatar(
-                    //         radius: 30,
-                    //         backgroundImage:
-                    //             NetworkImage("${imgController.imgUrl}"),
-                    //       ),
-                  ),*/
-                  SizedBox(height: 10),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.65,
-                    child: GetBuilder<CheckInController>(builder: (controller) {
-                      return controller.checkInList.isEmpty
-                          ? Center(
-                              child: Text("You don't have activity logs yet"))
-                          : ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              itemCount: controller.checkInList.length,
-                              itemBuilder: (c, i) {
-                                var data = controller.checkInList[i];
-                                return Padding(
-                                  padding: const EdgeInsets.all(9.0),
-                                  child: CustomActivityLogCard(
-                                    checkInModel: data,
-                                    // title: "Fitness Heroes",
-                                    // desc: "24/08/22 2:28 AM",
-                                  ),
-                                );
-                              },
-                            );
-                    }),
-                  ),
-                ],
-              ),
+                          imageUrl: "${imgController.imgUrl}",
+                          errorWidget: (c, u, r) => Container(),
+                        ),
+                  // CircleAvatar(
+                  //         radius: 30,
+                  //         backgroundImage:
+                  //             NetworkImage("${imgController.imgUrl}"),
+                  //       ),
+                ),*/
+                SizedBox(height: 10),
+                Expanded(
+                  child: GetBuilder<CheckInController>(builder: (controller) {
+                    return controller.checkInList.isEmpty
+                        ? Center(child: Text("You don't have activity logs yet"))
+                        : ListView.builder(
+                            cacheExtent: 9999,
+                            physics: BouncingScrollPhysics(),
+                            itemCount: controller.checkInList.length,
+                            itemBuilder: (c, i) {
+                              var data = controller.checkInList[i];
+                              return Padding(
+                                padding: const EdgeInsets.all(9.0),
+                                child: CustomActivityLogCard(
+                                  checkInModel: data,
+                                  // title: "Fitness Heroes",
+                                  // desc: "24/08/22 2:28 AM",
+                                ),
+                              );
+                            },
+                          );
+                  }),
+                ),
+              ],
             ),
           ),
         ),

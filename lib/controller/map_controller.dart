@@ -26,7 +26,7 @@ class MapController extends GetxController {
   var nearbyGymList = <GymDetailsModel>[].obs;
 
   PaginationDataModel paginationData = PaginationDataModel();
-  bool loadingValue = true;
+  bool loadingValue = false;
   // bool hasData = false;
   String getJson(jsonObject, {name}) {
     var encoder = const JsonEncoder.withIndent("     ");
@@ -42,7 +42,7 @@ class MapController extends GetxController {
     String? lon,
     bool isCurrentLocation = false,
   }) async {
-    loadingValue = true;
+    // loadingValue = true;
     update();
     // loading(value: true);
     var data = {

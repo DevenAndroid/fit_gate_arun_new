@@ -69,8 +69,7 @@ class CustomActivityLogCard extends StatelessWidget {
                 imageBuilder: (context, imageProvider) => Container(
                   height: 50,
                   width: 50,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(image: imageProvider)),
+                  decoration: BoxDecoration(image: DecorationImage(image: imageProvider)),
                 ),
                 placeholder: (c, url) => Center(
                   child: CircularProgressIndicator(
@@ -78,6 +77,7 @@ class CustomActivityLogCard extends StatelessWidget {
                     color: MyColors.orange,
                   ),
                 ),
+                fit: BoxFit.cover,
                 imageUrl: "${EndPoints.imgBaseUrl}${checkInModel?.logo}",
                 errorWidget: (c, u, r) => Container(),
               ),
@@ -89,7 +89,7 @@ class CustomActivityLogCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${checkInModel?.name}",
+                    "${checkInModel?.facilityName}",
                     style: TextStyle(
                       color: MyColors.black,
                       fontSize: 17,

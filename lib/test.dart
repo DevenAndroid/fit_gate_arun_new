@@ -42,8 +42,7 @@ class _SubscriptionState extends State<Subscription> {
               title: "Subscription",
               onTap: () {
                 bottomController.getIndex(0);
-                bottomController.setSelectedScreen(true,
-                    screenName: HomePage());
+                bottomController.setSelectedScreen(true, screenName: HomePage());
                 Get.to(BottomNavigationScreen());
               },
             ),
@@ -72,8 +71,7 @@ class _SubscriptionState extends State<Subscription> {
                       children: [
                         Text(
                           "Free",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 10),
                         Row(
@@ -147,11 +145,9 @@ class _SubscriptionState extends State<Subscription> {
                         index: 1,
                         iconSize: 17,
                         boxShadow: BoxShadow(
-                          color: chooseOption == 1
-                              ? MyColors.orange.withOpacity(.10)
-                              : MyColors.grey.withOpacity(0.15),
-                          spreadRadius: 7,
-                          blurRadius: 20,
+                          color: chooseOption == 1 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
+                          spreadRadius: 2,
+                          blurRadius: 24,
                         ),
                         height: MediaQuery.of(context).size.height * 0.086,
                         title: "2 BHD / month",
@@ -169,11 +165,9 @@ class _SubscriptionState extends State<Subscription> {
                         selectedIndex: chooseOption,
                         index: 2,
                         boxShadow: BoxShadow(
-                          color: chooseOption == 2
-                              ? MyColors.orange.withOpacity(.10)
-                              : MyColors.grey.withOpacity(0.15),
-                          spreadRadius: 7,
-                          blurRadius: 20,
+                          color: chooseOption == 2 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
+                          spreadRadius: 2,
+                          blurRadius: 24,
                         ),
                         iconSize: 17,
                         height: MediaQuery.of(context).size.height * 0.086,
@@ -216,8 +210,8 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+    _controller = VideoPlayerController.networkUrl(
+        Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
       ..initialize().then((_) {
         _controller.play();
         _controller.setLooping(true);

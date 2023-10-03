@@ -28,31 +28,35 @@ class ScannerController extends GetxController {
       update();
       barcode = code;
       controller?.dispose();
-      if(loadionmg == true){
+      if (loadionmg == true) {
         return;
       }
       loadionmg = true;
       String gg = "";
       try {
         gg = await scannerQR(context, qrId: barcode!.code);
-      } catch(e){
+      } catch (e) {
         loadionmg = false;
       }
       loadionmg = false;
       if (isCheckIn == false) {
+        bottomController.getIndex(3);
         bottomController.setSelectedScreen(true,
             screenName: ActivityLogsScreen(
               result: barcode!.code,
             ));
+        qrViewController.dispose();
         return snackBar(gg);
       }
       await checkInController.checkInLog();
-      print("CODE      ________++++++++++${barcode?.code}");
+      print("SCANNER CODE ::::::        ${barcode?.code}");
+      bottomController.getIndex(3);
       bottomController.setSelectedScreen(true,
           screenName: ActivityLogsScreen(
             result: barcode!.code,
           ));
       Get.to(() => BottomNavigationScreen());
+      qrViewController.dispose();
       return snackBar(gg);
     });
     qrViewController?.pauseCamera();
@@ -67,7 +71,6 @@ class ScannerController extends GetxController {
     );
     print("Goodwork${qrId}");
     print("Responce.......   ${response.body}");
-
 
     var parsedData = jsonDecode(response.body);
     print("QR IDD +++++++++++   ${qrId}");

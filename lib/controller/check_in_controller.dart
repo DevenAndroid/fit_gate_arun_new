@@ -13,9 +13,6 @@ class CheckInController extends GetxController {
   var checkInList = <CheckInModel>[].obs;
 
   checkInLog() async {
-    print(jsonEncode({
-      "user_id": Global.userModel?.id,
-    }));
     loading(value: true);
     http.Response response = await http.post(Uri.parse(EndPoints.checkInLog),
         body: jsonEncode({
@@ -23,14 +20,12 @@ class CheckInController extends GetxController {
         }),
         headers: await header);
     var parsedData = jsonDecode(response.body);
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ${await header}");
     loading(value: false);
     if (parsedData['statusCode'] == 200) {
-      var list = (parsedData['data'] as List)
-          .map((e) => CheckInModel.fromJson(e))
-          .toList();
+      var list = (parsedData['data'] as List).map((e) => CheckInModel.fromJson(e)).toList();
       checkInList.value = list;
-      print(
-          "CHECK IN USERRRR +|+++++++++++++++++++++++++++++++  ${parsedData}");
+      print("CHECK IN USERRRR +|+++++++++++++++++++++++++++++++  ${parsedData}");
       update();
     } else if (parsedData['statusCode'] == 401) {
       snackBar(parsedData['error']);
