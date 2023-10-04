@@ -10,6 +10,7 @@ class MyColors {
   static Color blue = Color(0xff0A65A5);
   static Color green = Color(0xff59C23A);
   static Color brown = Color(0xffB12D2D);
+  static Color darkRed = Color(0xffFF2E2E);
   static Color lightIndigo = Color(0xffF0F3FF);
   static Color lightRed = Color(0xffFFEBEB);
   static Color grey = Color(0xff999999);

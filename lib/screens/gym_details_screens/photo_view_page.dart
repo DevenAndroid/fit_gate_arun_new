@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/models/gym_details_model.dart';
+import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -39,7 +41,8 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
         leading: IconButton(
             splashRadius: 1,
             onPressed: () {
-              Get.back();
+              // Get.back();
+              Navigator.pop(context, PageTransition(child: GymDetailsScreen(), type: PageTransitionType.leftToRight));
             },
             icon: Icon(
               Icons.arrow_back_ios,

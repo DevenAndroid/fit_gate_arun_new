@@ -106,7 +106,7 @@ class _MapPageState extends State<MapPage> {
   //   return position;
   // }
 
-  Future goToPlace({required latitude, required longitude, id, name, index, GymDetailsModel? gymDetailsModel}) async {
+  Future goToPlace({required latitude, required longitude, index, GymDetailsModel? gymDetailsModel}) async {
     await _googleMapController
         ?.animateCamera(CameraUpdate.newLatLngZoom(LatLng(double.parse(latitude), double.parse(longitude)), 16));
     // setState(() {
@@ -470,9 +470,7 @@ class _MapPageState extends State<MapPage> {
                                       searchText.isEmpty
                                           ? SizedBox()
                                           : goToPlace(
-                                              id: a.id.toString(),
                                               index: i,
-                                              name: a.addressAddress,
                                               latitude: a.addressLatitude,
                                               longitude: a.addressLongitude,
                                               gymDetailsModel: a);

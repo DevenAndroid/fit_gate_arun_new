@@ -92,7 +92,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
           loading(value: false);
           print("FAILEDDDDD");
           print("ERORRRRR $e");
-          snackBar("Something went wrong");
+          showToast("Something went wrong");
         },
         codeSent: (String? verificationID, int? resendToken) {
           print("CODE SENT");
@@ -112,7 +112,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
       );
     } on FirebaseAuthException catch (e) {
       print("ERRORRRRRRR $e");
-      snackBar("Something went wrong");
+      showToast("Something went wrong");
     }
   }
 
@@ -309,7 +309,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
     if (widget.isLogin == true) {
       print("object");
       if (code.text.isEmpty) {
-        snackBar("Please enter OTP");
+        showToast("Please enter OTP");
       } else {
         try {
           var credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: code.text);
@@ -347,7 +347,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
         } on FirebaseAuthException catch (e) {
           print(e.code);
           if (e.code == 'invalid-verification-code') {
-            return snackBar("Invalid OTP");
+            return showToast("Invalid OTP");
           }
           // else {
           //   return snackBar("${e.message}");
@@ -367,7 +367,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
 // }
     } else if (widget.isEmail == true) {
       if (code.text.isEmpty) {
-        snackBar("please enter code");
+        showToast("please enter code");
       } else {
         var reg = await emailController.emailVerification(
           code: code.text,

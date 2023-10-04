@@ -6,6 +6,7 @@ import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/firebase_notification.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/splash_screen.dart';
+import 'package:fit_gate/test.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

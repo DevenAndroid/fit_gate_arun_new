@@ -37,13 +37,13 @@ class _ExploreState extends State<Explore> {
   int? selectedIndex;
   @override
   void initState() {
-    getData();
+    // getData();
     super.initState();
   }
 
   @override
   void dispose() {
-    mapController.getAllGymList.value = [];
+    // mapController.getAllGymList.value = [];
     super.dispose();
   }
 
@@ -177,33 +177,31 @@ class _ExploreState extends State<Explore> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: GetBuilder<MapController>(builder: (data) {
-                  return data.loadingValue
-                      ? Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5))
-                      : data.getAllGymList == []
-                          ? Center(child: Text("No data found"))
-                          : ListView.builder(
-                              itemCount: data.getAllGymList.length,
-                              cacheExtent: 9999,
-                              itemBuilder: (c, i) {
-                                var gymData = data.getAllGymList[i];
-                                return GetBuilder<BottomController>(builder: (controller) {
-                                  return GymTile(
-                                    gymModel: gymData,
-                                    onClick: () {
-                                      index = i;
-                                      setState(() {});
-                                      controller.setSelectedScreen(
-                                        true,
-                                        screenName: GymDetailsScreen(
-                                          index: index,
-                                          gymDetailsModel: gymData,
-                                        ),
-                                      );
-                                      Get.to(() => BottomNavigationScreen());
-                                    },
+                  return data.getAllGymList.isEmpty
+                      ? Center(child: Text("No data found"))
+                      : ListView.builder(
+                          itemCount: data.getAllGymList.length,
+                          cacheExtent: 9999,
+                          itemBuilder: (c, i) {
+                            var gymData = data.getAllGymList[i];
+                            return GetBuilder<BottomController>(builder: (controller) {
+                              return GymTile(
+                                gymModel: gymData,
+                                onClick: () {
+                                  index = i;
+                                  setState(() {});
+                                  controller.setSelectedScreen(
+                                    true,
+                                    screenName: GymDetailsScreen(
+                                      index: index,
+                                      gymDetailsModel: gymData,
+                                    ),
                                   );
-                                });
-                              });
+                                  Get.to(() => BottomNavigationScreen());
+                                },
+                              );
+                            });
+                          });
                 }),
               ),
             ),

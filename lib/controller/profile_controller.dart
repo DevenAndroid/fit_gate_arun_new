@@ -34,15 +34,14 @@ class ProfileController extends GetxController {
       "gender": gender,
       "avatar": avatar,
       "subscription_type": subscriptionType,
-      "area" : area,
-      "dob" : dob,
-      "country_name" : country_name,
+      "area": area,
+      "dob": dob,
+      "country_name": country_name,
     };
     try {
       log("Sending data......      $map");
-      http.Response response = await http.post(Uri.parse(EndPoints.profile),
-          body: jsonEncode(map),
-          headers: await header);
+      http.Response response =
+          await http.post(Uri.parse(EndPoints.profile), body: jsonEncode(map), headers: await header);
 
       loading(value: false);
       log("Receiving data......      ${response.body}");
@@ -61,14 +60,12 @@ class ProfileController extends GetxController {
         var loginController = Get.put(LoginController());
         await loginController.getUserById();
         update();
-        isEmail == true
-            ? ""
-            : snackBar("Profile updated", color: Colors.green.shade600);
+        isEmail == true ? "" : showToast("Profile updated", color: Colors.green.shade600);
         return parsedData;
       } else if (parsedData['statusCode'] == 401) {
-        snackBar(parsedData['error']);
+        showToast(parsedData['error']);
       }
-    } catch(e){
+    } catch (e) {
       loading(value: false);
     }
   }

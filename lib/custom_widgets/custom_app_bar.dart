@@ -3,9 +3,11 @@
 import 'package:fit_gate/check_connection.dart';
 import 'package:fit_gate/controller/notification_controller.dart';
 import 'package:fit_gate/global_functions.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/account_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/bottom_controller.dart';
@@ -86,7 +88,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
         leading: GestureDetector(
             onTap: widget.onTap ??
                 () {
-                  print("object");
+                  // Navigator.push(
+                  //     context,
+                  //     PageTransition(
+                  //         child: bottomController.setScreen(false, screenName: AccountScreen()),
+                  //         type: PageTransitionType.leftToRight));
                   bottomController.setSelectedScreen(false, screenName: BottomNavigationScreen());
                   // Get.to(() => BottomNavigationScreen());
                   // context.go('/page2');
@@ -175,7 +181,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
           //             color: imageClr ?? MyColors.black,
           //             padding: EdgeInsets.all(18),
           //           ),
-
           widget.actionIcon == null
               ? SizedBox()
               : GestureDetector(

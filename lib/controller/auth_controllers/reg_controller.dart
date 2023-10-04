@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/models/user_model.dart';
 import 'package:fit_gate/utils/database_helper.dart';
@@ -26,11 +27,18 @@ class RegisterController extends GetxController {
   }) async {
     try {
       print("TRYYYYYYYY ------");
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId!, smsCode: code!);
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId!, smsCode: code!);
       await auth.signInWithCredential(credential).then((value) {
         if (value.user != null) {
           registerApiCall(phone, context, companyId, fcmToken, countryCode);
+          MapController().getGym();
+          MapController().getFilterData(
+            isCurrentLocation: true,
+            lat: MapController().currentLatitude.toString(),
+            lon: MapController().currentLongitude.toString(),
+            // lat: 26.4334567.toString(),
+            // lon: 50.5327707.toString(),
+          );
         } else {
           // Navigator.pushAndRemoveUntil(
           //     context,
@@ -74,10 +82,7 @@ class RegisterController extends GetxController {
         loading(value: false);
         Global.userModel = UserModel.fromJson(parsedData['data']);
         pref.setString('isLogin', jsonEncode(parsedData['data']));
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => UserInfoScreen()),
-            (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => UserInfoScreen()), (route) => false);
       }
     } catch (e) {
       loading(value: false);

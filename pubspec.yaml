@@ -54,7 +54,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   webview_flutter: ^4.0.1
   connectivity_plus: ^3.0.3
-  chewie: ^1.7.1
+#  chewie: ^1.7.1
+  page_transition: ^2.1.0
+  persistent_bottom_nav_bar: ^5.0.2
 
 
 

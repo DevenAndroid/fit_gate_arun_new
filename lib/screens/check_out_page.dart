@@ -1,6 +1,7 @@
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/account_screen.dart';
 import 'package:fit_gate/screens/subscription_page.dart';
+import 'package:fit_gate/test.dart';
 import 'package:fit_gate/utils/end_points.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,10 +29,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
       ..loadRequest(
         Uri.parse("${EndPoints.paymentPage}/${widget.id}"),
         method: LoadRequestMethod.get,
-        headers: {
-          "content-type": "application/json",
-          "Authorization": "Bearer ${Global.userModel?.id}"
-        },
+        headers: {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"},
         // body: Uint8List.fromList(
         //   utf8.encode(
         //     jsonEncode({"id": widget.id, "token": Global.userModel?.id}),
@@ -45,24 +43,21 @@ class _CheckOutPageState extends State<CheckOutPage> {
             print('++++++++++++++++++++++++++++      $url');
             if (url.split("/").last == "success_payment") {
               bottomController.getIndex(3);
-              bottomController.setSelectedScreen(true,
-                  screenName: AccountScreen());
+              bottomController.setSelectedScreen(true, screenName: AccountScreen());
               setState(() {});
             }
           }));
     return WillPopScope(
       onWillPop: () {
         // bottomController.getIndex(0);
-        return bottomController.setSelectedScreen(true,
-            screenName: SubscriptionPage());
+        return bottomController.setSelectedScreen(true, screenName: SubscriptionScreen());
       },
       child: Scaffold(
           appBar: CustomAppBar(
             title: "Check Out",
             // image: MyImages.notification,
             onTap: () {
-              bottomController.setSelectedScreen(true,
-                  screenName: SubscriptionPage());
+              bottomController.setSelectedScreen(true, screenName: SubscriptionScreen());
               // Get.to(() => BottomNavigationScreen());
             },
           ),

@@ -12,6 +12,7 @@ import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/auth_controllers/login_controller.dart';
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // } else {
               // push(context: context, screen: IntroScreen());
               // Navigator.push(context, MaterialPageRoute(builder: (_) => IntroScreen()));
-              Navigator.pop(context);
+              Navigator.pop(context, PageTransition(child: IntroScreen(), type: PageTransitionType.leftToRight));
               // }
               // snackbarKey.currentState?.hideCurrentSnackBar();
               phone.clear();
@@ -222,10 +223,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // }
                                 } else {
                                   print("INVALID NUMBER ");
-                                  snackBar("Please enter the valid number");
+                                  showToast("Please enter the valid number");
                                 }
                               } else {
-                                snackBar("Please enter the number");
+                                showToast("Please enter the number");
                               }
                             },
                           ),

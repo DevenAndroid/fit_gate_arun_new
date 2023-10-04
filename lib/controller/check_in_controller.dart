@@ -28,7 +28,7 @@ class CheckInController extends GetxController {
       print("CHECK IN USERRRR +|+++++++++++++++++++++++++++++++  ${parsedData}");
       update();
     } else if (parsedData['statusCode'] == 401) {
-      snackBar(parsedData['error']);
+      showToast(parsedData['error']);
     } else {
       checkInList.value = [];
     }

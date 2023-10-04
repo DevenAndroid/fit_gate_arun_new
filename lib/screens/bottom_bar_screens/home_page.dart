@@ -17,6 +17,7 @@ import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
 import 'package:fit_gate/screens/explore.dart';
 import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
+import 'package:fit_gate/screens/subscription_page.dart';
 import 'package:fit_gate/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   CarouselController carouselController = CarouselController();
 
   getSubscriptionList() async {
-    await login.getUserById();
+    // await login.getUserById();
     print("MNAME---> ${Global.userModel?.middleName}");
     // await mapController.getCurrentLocation();
     var pref = await SharedPreferences.getInstance();
@@ -73,11 +74,12 @@ class _HomePageState extends State<HomePage> {
     mapController.getCurrentLocation();
     await mapController.getFilterData(
       isCurrentLocation: true,
-      lat: mapController.latitude.toString(),
-      lon: mapController.longitude.toString(),
+      lat: mapController.currentLatitude.toString(),
+      lon: mapController.currentLongitude.toString(),
       // lat: 26.4334567.toString(),
       // lon: 50.5327707.toString(),
     );
+    await mapController.getGym();
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
     // InAppUpdate.checkForUpdate().then((updateInfo) {
@@ -174,6 +176,7 @@ class _HomePageState extends State<HomePage> {
                             carouselController: carouselController,
                             options: CarouselOptions(
                                 // initialPage: 0,
+
                                 enableInfiniteScroll: false,
                                 viewportFraction: 1,
                                 padEnds: true,
@@ -420,7 +423,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
                                   controller.getIndex(0);
-                                  controller.setSelectedScreen(true, screenName: Subscription());
+                                  controller.setSelectedScreen(true, screenName: SubscriptionScreen());
                                 },
                               );
                             }),
@@ -451,12 +454,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GetBuilder<MapController>(builder: (data) {
-              return data.loadingValue == true
-                  ? SizedBox(
-                      height: 100,
-                      child: Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5)))
-                  : data.nearbyGymList == []
-                      ? Center(child: Text("No data found"))
+              return
+                  // data.loadingValue
+                  //   ? Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5))
+                  //   :
+                  data.nearbyGymList.isEmpty
+                      ? SizedBox(
+                          height: 100, child: Center(child: Text("Nearby gyms found", textAlign: TextAlign.center)))
                       : ListView.builder(
                           cacheExtent: 9999,
                           shrinkWrap: true,

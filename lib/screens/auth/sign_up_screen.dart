@@ -7,11 +7,13 @@ import 'package:fit_gate/custom_widgets/custom_app_bar.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/auth/verify_phone_screen.dart';
+import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../controller/auth_controllers/login_controller.dart';
 import '../../custom_widgets/custom_btns/custom_button.dart';
@@ -74,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               image: "",
               // skipp: true,
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context, PageTransition(child: IntroScreen(), type: PageTransitionType.leftToRight));
               },
             ),
             body: Column(
@@ -200,7 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           loading(value: false);
                                           print("FAILEDDDDD");
                                           print("ERORRRRR $e");
-                                          snackBar("Something went wrong");
+                                          showToast("Something went wrong");
                                         },
                                         codeSent: (String? verificationID, int? resendToken) {
                                           print("CODE SENT");
@@ -224,7 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       );
                                     } catch (e) {
                                       print("ERRORRRRRRR $e");
-                                      snackBar("Something went wrong");
+                                      showToast("Something went wrong");
                                     }
                                   }
                                   // else {
@@ -233,10 +235,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   // }
                                 } else {
                                   print("INVALID NUMBER ");
-                                  return snackBar("Please enter valid number");
+                                  return showToast("Please enter valid number");
                                 }
                               } else {
-                                return snackBar("Please enter number");
+                                return showToast("Please enter number");
                               }
                             },
                             height: MediaQuery.of(context).size.height * 0.06,

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
@@ -15,6 +16,7 @@ import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dar
 import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/my_images.dart';
@@ -36,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   checkUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var data = jsonDecode(pref.getString('isLogin').toString());
-    print("^^^^^^^^^^^ $data");
+    log("^^^^^^^^^^^ $data");
     if (data != null) {
       // await mapController.getCurrentLocation();
       UserModel setData = UserModel.fromJson(data);
@@ -58,24 +60,28 @@ class _SplashScreenState extends State<SplashScreen> {
       await Future.wait<void>([
         loginCon.getUserById(),
         loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
-        activePlan.activeSubscriptionPlan(),
+        // activePlan.activeSubscriptionPlan(),
         mapController.getGym(),
         mapController.getFilterData(
           isCurrentLocation: true,
-          lat: mapController.latitude.toString(),
-          lon: mapController.longitude.toString(),
-          // lat: 26.0667.toString(),
-          // lon: 50.55770000000007.toString(),
+          lat: mapController.currentLatitude.toString(),
+          lon: mapController.currentLongitude.toString(),
+          // lat: 26.4334567.toString(),
+          // lon: 50.5327707.toString(),
         ),
       ]);
 
       if (Global.userModel?.deleteStatus == '1') {
-        Timer(Duration(seconds: 1), () {
+        Timer(Duration(seconds: 0), () {
           Get.off(() => LoginScreen());
         });
       } else {
         Timer(Duration(seconds: 0), () {
           Get.off(() => BottomNavigationScreen());
+          // Navigator.pushAndRemoveUntil(
+          //     context,
+          //     PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight, ctx: context),
+          //     (route) => false);
         });
       }
     } else {

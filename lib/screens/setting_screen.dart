@@ -109,7 +109,9 @@ class _SettingScreenState extends State<SettingScreen> {
         email.text = (Global.userModel!.email == null ? "" : Global.userModel!.email!);
         dropdownValue = Global.userModel?.subscriptionPlan;
         imgController.imgUrl = Global.userModel?.avatar;
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
         print("IMAGEURLLLLLL ---------- IFFFF +++++++++++++++     ${imgController.imgUrl}");
       } else {
         SharedPreferences pref = await SharedPreferences.getInstance();
@@ -176,7 +178,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       print("object");
                       if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(email.text)) {
-                        snackBar("Please enter valid email");
+                        showToast("Please enter valid email");
                       }
                     }
                     // else if (name.text.isEmpty) {
@@ -578,11 +580,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                               borderRadius: BorderRadius.circular(10),
                                               onTap: () async {
                                                 if (email.text.isEmpty) {
-                                                  snackBar("Please enter email");
+                                                  showToast("Please enter email");
                                                 } else if (!RegExp(
                                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                     .hasMatch(email.text)) {
-                                                  snackBar("please enter valid email");
+                                                  showToast("please enter valid email");
                                                 } else {
                                                   // if (((name.text.isNotEmpty &&
                                                   //             mName.text

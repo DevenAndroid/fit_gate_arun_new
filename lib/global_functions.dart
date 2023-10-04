@@ -20,10 +20,7 @@ Future<Map<String, String>> get header async {
       "content-type": "application/json",
     };
   Global.userModel = UserModel.fromJson(jsonDecode(pref.getString("isLogin")!));
-  return {
-    "content-type": "application/json",
-    "Authorization": "Bearer ${Global.userModel?.id}"
-  };
+  return {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"};
 }
 
 Widget launchWebView(url) {
@@ -50,12 +47,10 @@ Future<T?> push<T>({
   bool pushUntil = false,
 }) {
   if (pushUntil) {
-    return Navigator.of(context).pushAndRemoveUntil<T>(
-        MaterialPageRoute(builder: (_) => screen),
-        (Route<dynamic> route) => false);
+    return Navigator.of(context)
+        .pushAndRemoveUntil<T>(MaterialPageRoute(builder: (_) => screen), (Route<dynamic> route) => false);
   }
-  return Navigator.of(context)
-      .push<T>(MaterialPageRoute(builder: (_) => screen));
+  return Navigator.of(context).push<T>(MaterialPageRoute(builder: (_) => screen));
 }
 
 //  await Permission.location.request();
@@ -77,8 +72,7 @@ Future<T?> push<T>({
 //   ));
 // }
 
-final GlobalKey<ScaffoldMessengerState> snackbarKey =
-    GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();
 
 dynamic snackBar(msg, {Color? color, VoidCallback? onTap, duration}) {
   final SnackBar snackBar = SnackBar(
@@ -96,8 +90,18 @@ dynamic snackBar(msg, {Color? color, VoidCallback? onTap, duration}) {
   );
 }
 
-dynamic loading(
-    {@required bool? value, String? title, bool closeOverlays = false}) {
+showToast(
+  message, {
+  Color? color,
+}) {
+  EasyLoading.instance
+    ..toastPosition = EasyLoadingToastPosition.top
+    ..textColor = MyColors.white
+    ..backgroundColor = color ?? Colors.red.shade700;
+  EasyLoading.showToast(message);
+}
+
+dynamic loading({@required bool? value, String? title, bool closeOverlays = false}) {
   if (value!) {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
@@ -167,4 +171,24 @@ dynamic loading(
 class Global {
   static UserModel? userModel;
   static ActiveSubscriptionModel? activeSubscriptionModel;
+}
+
+class SlideRightRoute extends PageRouteBuilder {
+  final Widget widget;
+  SlideRightRoute({required this.widget})
+      : super(
+          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+            return widget;
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
 }

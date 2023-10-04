@@ -42,7 +42,7 @@ class MapController extends GetxController {
     String? lon,
     bool isCurrentLocation = false,
   }) async {
-    // loadingValue = true;
+    loadingValue = true;
     update();
     // loading(value: true);
     var data = {
@@ -86,7 +86,7 @@ class MapController extends GetxController {
   }
 
   getGym() async {
-    loadingValue = true;
+    // loadingValue = true;
     print("PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
     http.Response response = await http.get(
       Uri.parse(EndPoints.getGym + "?user_id=${Global.userModel?.id}"),
@@ -97,12 +97,12 @@ class MapController extends GetxController {
     print("gggggg....      " + response.body);
     log(response.body);
     if (parsedData['statusCode'] == 200) {
-      loadingValue = false;
+      // loadingValue = false;
       var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
       getAllGymList.value = list;
       update();
     } else {
-      loadingValue = false;
+      // loadingValue = false;
       getAllGymList.value = [];
       update();
     }
@@ -121,7 +121,7 @@ class MapController extends GetxController {
       update();
       return searchList.value = list;
     } else if (parsedData['statusCode'] == 401) {
-      snackBar(parsedData['error']);
+      showToast(parsedData['error']);
     }
   }
 
@@ -202,6 +202,8 @@ class MapController extends GetxController {
 
   double latitude = 26.2235;
   double longitude = 50.5876;
+  double? currentLatitude;
+  double? currentLongitude;
   LocationPermission? permission;
   Future<Position> determineLoc() async {
     bool serviceEnabled;
@@ -234,6 +236,8 @@ class MapController extends GetxController {
       latitude = position.latitude;
       longitude = position.longitude;
 
+      currentLatitude = position.latitude;
+      currentLongitude = position.longitude;
       print('CURRENT LATITUDE $latitude CURRENT LONGITUDE $longitude');
 
       update();

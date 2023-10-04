@@ -46,7 +46,7 @@ class ScannerController extends GetxController {
               result: barcode!.code,
             ));
         qrViewController.dispose();
-        return snackBar(gg);
+        return showToast(gg);
       }
       await checkInController.checkInLog();
       print("SCANNER CODE ::::::        ${barcode?.code}");
@@ -57,7 +57,7 @@ class ScannerController extends GetxController {
           ));
       Get.to(() => BottomNavigationScreen());
       qrViewController.dispose();
-      return snackBar(gg);
+      return showToast(gg);
     });
     qrViewController?.pauseCamera();
     qrViewController?.resumeCamera();

@@ -1,6 +1,9 @@
+import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../controller/notification_controller.dart';
 import '../custom_widgets/custom_app_bar.dart';
@@ -38,7 +41,9 @@ class _NotificationPageState extends State<NotificationPage> {
           image: "",
           onTap: () {
             notifyController.countNotification();
-            Get.back();
+            // Get.back();
+            Navigator.pop(
+                context, PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight));
           }),
       body: GetBuilder<NotificationController>(builder: (controller) {
         return controller.notificationList.isEmpty
@@ -59,19 +64,16 @@ class _NotificationPageState extends State<NotificationPage> {
                       // await notifyController.notification();
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, right: 16, top: 10, bottom: 10),
+                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "${data.tittle}",
                             style: TextStyle(
-                              color: data.status == '0'
-                                  ? MyColors.orange.withOpacity(0.9)
-                                  : MyColors.orange,
+                              color: data.status == '0' ? MyColors.orange.withOpacity(0.9) : MyColors.orange,
                               fontSize: 17,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           SizedBox(height: 5),
@@ -79,17 +81,13 @@ class _NotificationPageState extends State<NotificationPage> {
                             "${data.message}",
                             style: TextStyle(
                               fontSize: 15,
-                              color: data.status == '0'
-                                  ? MyColors.blue
-                                  : MyColors.black,
-                              fontWeight: FontWeight.w900,
+                              color: data.status == '0' ? MyColors.blue : MyColors.black,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                           SizedBox(height: 5),
                           // Spacer(),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: Text("${data.createdAt ?? ""}")),
+                          Align(alignment: Alignment.topRight, child: Text("${data.createdAt ?? ""}")),
                         ],
                       ),
                     ),
