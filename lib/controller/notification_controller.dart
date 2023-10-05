@@ -13,22 +13,19 @@ class NotificationController extends GetxController {
     // var response = await DataBaseHelper.post(EndPoints.get_notification, {
     //   "user_id": Global.userModel?.id,
     // });
-    http.Response response =
-        await http.post(Uri.parse(EndPoints.get_notification),
-            body: jsonEncode({
-              "user_id": Global.userModel?.id,
-            }),
-            headers: await header);
+    http.Response response = await http.post(Uri.parse(EndPoints.get_notification),
+        body: jsonEncode({
+          "user_id": Global.userModel?.id,
+        }),
+        headers: await header);
     var parsedData = jsonDecode(response.body);
     // print('NOTIFYYYYY -----------        $parsedData');
     if (parsedData['statusCode'] == 200) {
-      var list = (parsedData['data'] as List)
-          .map((e) => NotificationModel.fromJson(e))
-          .toList();
+      var list = (parsedData['data'] as List).map((e) => NotificationModel.fromJson(e)).toList();
       notificationList.value = list;
       update();
     } else if (parsedData['statusCode'] == 401) {
-      snackBar(parsedData['error']);
+      showToast(parsedData['error']);
     } else {
       notificationList.value = [];
     }
@@ -37,11 +34,8 @@ class NotificationController extends GetxController {
   updateNotification({String? notifyId}) async {
     // var response = await DataBaseHelper.post(EndPoints.update_notification,
     //     {"user_id": Global.userModel?.id, "notify_id": notifyId});
-    http.Response response = await http.post(
-        Uri.parse(EndPoints.update_notification),
-        body: jsonEncode(
-            {"user_id": Global.userModel?.id, "notify_id": notifyId}),
-        headers: await header);
+    http.Response response = await http.post(Uri.parse(EndPoints.update_notification),
+        body: jsonEncode({"user_id": Global.userModel?.id, "notify_id": notifyId}), headers: await header);
     var parsedData = jsonDecode(response.body);
     if (parsedData['statusCode'] == 200) {
       // print(

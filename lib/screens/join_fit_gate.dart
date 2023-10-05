@@ -160,11 +160,8 @@ class _JoinFitGatePageState extends State<JoinFitGatePage> {
                     return Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: joinUser == 1
-                            ? MyColors.grey.withOpacity(.30)
-                            : MyColors.white,
-                        border:
-                            Border.all(color: MyColors.grey.withOpacity(0.20)),
+                        color: joinUser == 1 ? MyColors.grey.withOpacity(.30) : MyColors.white,
+                        border: Border.all(color: MyColors.grey.withOpacity(0.20)),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
@@ -174,15 +171,11 @@ class _JoinFitGatePageState extends State<JoinFitGatePage> {
                             items: joinUser == 1
                                 ? []
                                 : controller.getCompanyList.isEmpty
-                                    ? ['No company Found']
-                                        .map((e) =>
-                                            DropdownMenuItem(child: Text('$e')))
-                                        .toList()
+                                    ? ['No company Found'].map((e) => DropdownMenuItem(child: Text('$e'))).toList()
                                     : controller.getCompanyList
                                         .map((items) => DropdownMenuItem(
                                               value: "${items.id}",
-                                              child:
-                                                  Text(items.name.toString()),
+                                              child: Text(items.name.toString()),
                                             ))
                                         .toList(),
                             onChanged: (newVal) {
@@ -194,8 +187,7 @@ class _JoinFitGatePageState extends State<JoinFitGatePage> {
                             value: dropdownValue,
                             hint: Text(
                               "Select Company",
-                              style: TextStyle(
-                                  color: MyColors.black, fontSize: 16),
+                              style: TextStyle(color: MyColors.black, fontSize: 16),
                             ),
                             style: TextStyle(
                               color: MyColors.black,
@@ -222,10 +214,9 @@ class _JoinFitGatePageState extends State<JoinFitGatePage> {
             child: CustomButton(
               onTap: () {
                 if (widget.userType == null) {
-                  return snackBar("Please choose type before register");
-                } else if (widget.userType == 'employee' &&
-                    dropdownValue == null) {
-                  return snackBar("Please choose company name before register");
+                  return showToast("Please choose type before register");
+                } else if (widget.userType == 'employee' && dropdownValue == null) {
+                  return showToast("Please choose company name before register");
                 } else {
                   Get.to(() => SignUpScreen(
                         userType: widget.userType,

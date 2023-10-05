@@ -52,10 +52,11 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_share: ^2.0.0
   flutter_rating_bar: ^4.0.1
-  webview_flutter: ^4.4.1
-  connectivity_plus: ^4.0.2
-  chewie: ^1.7.1
-
+  webview_flutter: ^4.0.1
+  connectivity_plus: ^3.0.3
+#  chewie: ^1.7.1
+  page_transition: ^2.1.0
+  persistent_bottom_nav_bar: ^5.0.2
 
 
 
@@ -85,7 +86,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/icon.png"
+  image_path: "assets/images/launcher_icon.png"
   remove_alpha_ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -110,6 +111,7 @@ flutter:
   assets:
     - assets/images/
     - assets/
+    - assets/intro_video.mp4
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

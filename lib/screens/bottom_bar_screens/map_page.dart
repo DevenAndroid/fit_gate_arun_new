@@ -20,22 +20,21 @@ import '../../controller/bottom_controller.dart';
 import '../../custom_widgets/custom_google_map.dart';
 import '../../utils/my_color.dart';
 
-class ExplorePage extends StatefulWidget {
+class MapPage extends StatefulWidget {
   final Function(int)? index;
   final bool? isExpPage;
-  ExplorePage({Key? key, this.index, this.isExpPage}) : super(key: key);
+  MapPage({Key? key, this.index, this.isExpPage}) : super(key: key);
 
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
+  State<MapPage> createState() => _MapPageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> {
+class _MapPageState extends State<MapPage> {
   final mapController = Get.put(MapController());
   final bottomController = Get.put(BottomController());
   TextEditingController search = TextEditingController();
   GoogleMapController? _googleMapController;
-  CustomInfoWindowController infoWindowController =
-      CustomInfoWindowController();
+  CustomInfoWindowController infoWindowController = CustomInfoWindowController();
   final homeScaffoldKey = GlobalKey<ScaffoldState>();
   Set<Marker> markers = {};
   List<MarkerList> list = [];
@@ -44,9 +43,7 @@ class _ExplorePageState extends State<ExplorePage> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
   void addCustomIcon() {
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), "assets/pin.png")
-        .then(
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), "assets/pin.png").then(
       (icon) {
         setState(() {
           markerIcon = icon;
@@ -63,11 +60,8 @@ class _ExplorePageState extends State<ExplorePage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(
-              double.parse(
-                  mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(
-                  mapController.latLngList[i].addressLongitude!.toString())),
+          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
           //   icon: BitmapDescriptor.defaultMarker,
           icon: markerIcon,
           // infoWindow: InfoWindow(title: "", onTap: () {}),
@@ -85,24 +79,19 @@ class _ExplorePageState extends State<ExplorePage> {
                       true,
                       screenName: GymDetailsScreen(
                         index: i,
-                        gymDetailsModel:
-                            mapController.latLngList[i].gymDetailsModel,
+                        gymDetailsModel: mapController.latLngList[i].gymDetailsModel,
                       ),
                     );
                     Get.to(() => BottomNavigationScreen());
                   },
                 );
               }),
-              LatLng(
-                  double.parse(
-                      mapController.latLngList[i].addressLatitude.toString()),
-                  double.parse(
-                      mapController.latLngList[i].addressLongitude.toString())),
+              LatLng(double.parse(mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(mapController.latLngList[i].addressLongitude.toString())),
             );
           },
         );
-        if (mapController.latLngList[i].gymDetailsModel!.status == "accept")
-          markers.add(marker);
+        if (mapController.latLngList[i].gymDetailsModel!.status == "accept") markers.add(marker);
       }
     });
   }
@@ -117,15 +106,9 @@ class _ExplorePageState extends State<ExplorePage> {
   //   return position;
   // }
 
-  Future goToPlace(
-      {required latitude,
-      required longitude,
-      id,
-      name,
-      index,
-      GymDetailsModel? gymDetailsModel}) async {
-    await _googleMapController?.animateCamera(CameraUpdate.newLatLngZoom(
-        LatLng(double.parse(latitude), double.parse(longitude)), 16));
+  Future goToPlace({required latitude, required longitude, index, GymDetailsModel? gymDetailsModel}) async {
+    await _googleMapController
+        ?.animateCamera(CameraUpdate.newLatLngZoom(LatLng(double.parse(latitude), double.parse(longitude)), 16));
     // setState(() {
     //   var marker = MarkerList(Marker(
     //     markerId: MarkerId(id),
@@ -177,12 +160,9 @@ class _ExplorePageState extends State<ExplorePage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(
-              double.parse(
-                  mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(
-                  mapController.latLngList[i].addressLongitude!.toString())),
-          icon: BitmapDescriptor.defaultMarker,
+          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
+          icon: markerIcon,
           infoWindow: InfoWindow(title: "", onTap: () {}),
           onTap: () {
             print("@@@@@@@@@@@@11");
@@ -208,8 +188,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   },
                 );
               }),
-              LatLng(double.parse(latitude.toString()),
-                  double.parse(longitude.toString())),
+              LatLng(double.parse(latitude.toString()), double.parse(longitude.toString())),
             );
           },
         );
@@ -240,8 +219,7 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   void changeMapMode(GoogleMapController mapController) {
-    getJsonFile("assets/map_style.json")
-        .then((value) => setMapStyle(value, mapController));
+    getJsonFile("assets/map_style.json").then((value) => setMapStyle(value, mapController));
   }
 
   void setMapStyle(String mapStyle, GoogleMapController mapController) {
@@ -263,6 +241,7 @@ class _ExplorePageState extends State<ExplorePage> {
       getGymDetails();
     });
     header;
+    print("((((((((((((((((((((((( ${markers}");
     // getLocation();
     super.initState();
   }
@@ -288,12 +267,9 @@ class _ExplorePageState extends State<ExplorePage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(
-              double.parse(
-                  mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(
-                  mapController.latLngList[i].addressLongitude!.toString())),
-          icon: BitmapDescriptor.defaultMarker,
+          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
+          icon: markerIcon,
           onTap: () {
             print("@@@@@@@@@@@@44");
             infoWindowController.addInfoWindow!(
@@ -311,19 +287,15 @@ class _ExplorePageState extends State<ExplorePage> {
                       true,
                       screenName: GymDetailsScreen(
                         index: i,
-                        gymDetailsModel:
-                            mapController.latLngList[i].gymDetailsModel,
+                        gymDetailsModel: mapController.latLngList[i].gymDetailsModel,
                       ),
                     );
                     Get.to(() => BottomNavigationScreen());
                   },
                 );
               }),
-              LatLng(
-                  double.parse(
-                      mapController.latLngList[i].addressLatitude.toString()),
-                  double.parse(
-                      mapController.latLngList[i].addressLongitude.toString())),
+              LatLng(double.parse(mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(mapController.latLngList[i].addressLongitude.toString())),
             );
           },
         );
@@ -337,7 +309,7 @@ class _ExplorePageState extends State<ExplorePage> {
     header;
     return WillPopScope(
       onWillPop: () {
-        bottomController.getIndex(0);
+        bottomController.getIndex(1);
 
         return bottomController.setSelectedScreen(true, screenName: Explore());
       },
@@ -382,8 +354,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     _googleMapController = controller;
                     changeMapMode(_googleMapController!);
                     onMapCreated(_googleMapController!);
-                    print(
-                        "GOOGLE MAP CONTROLLER -------> $_googleMapController");
+                    print("GOOGLE MAP CONTROLLER -------> $_googleMapController");
                     // getMapLatLng(_googleMapController!);
                     infoWindowController.googleMapController = controller;
                     setState(() {});
@@ -415,8 +386,8 @@ class _ExplorePageState extends State<ExplorePage> {
               CustomInfoWindow(
                 controller: infoWindowController,
                 width: 380,
-                height: 130,
-                // offset: 35,
+                height: 140,
+                // offset: 35,26.13375693911818, 50.582237085047154
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 45),
@@ -429,13 +400,11 @@ class _ExplorePageState extends State<ExplorePage> {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: GetBuilder<BottomController>(
-                                builder: (bottomController) {
+                            child: GetBuilder<BottomController>(builder: (bottomController) {
                               return GestureDetector(
                                 onTap: () {
                                   search.clear();
-                                  bottomController.setSelectedScreen(true,
-                                      screenName: Explore());
+                                  bottomController.setSelectedScreen(true, screenName: Explore());
                                   Get.to(() => BottomNavigationScreen());
                                 },
                                 child: Container(
@@ -459,8 +428,7 @@ class _ExplorePageState extends State<ExplorePage> {
                           Expanded(
                             flex: 7,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15.0, right: 15),
+                              padding: const EdgeInsets.only(left: 15.0, right: 15),
                               child: Focus(
                                 child: CustomTextField(
                                   controller: search,
@@ -472,8 +440,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                     setState(() {
                                       searchText = val;
                                     });
-                                    mapController.getLocation(
-                                        search: searchText);
+                                    mapController.getLocation(search: searchText);
                                     print("00000000 $searchText");
                                   },
                                 ),
@@ -489,8 +456,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10.0, left: 15, right: 15),
+                        padding: const EdgeInsets.only(top: .0, left: 15, right: 15),
                         child: search.text.isEmpty
                             ? SizedBox()
                             : ListView.builder(
@@ -504,31 +470,20 @@ class _ExplorePageState extends State<ExplorePage> {
                                       searchText.isEmpty
                                           ? SizedBox()
                                           : goToPlace(
-                                              id: a.id.toString(),
                                               index: i,
-                                              name: a.addressAddress,
                                               latitude: a.addressLatitude,
                                               longitude: a.addressLongitude,
                                               gymDetailsModel: a);
                                       search.clear();
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
+                                      FocusManager.instance.primaryFocus?.unfocus();
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: MyColors.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("${a.addressAddress}"),
-                                            SizedBox(height: 5)
-                                            // Divider()
-                                          ],
-                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+                                        child: Text("${a.facilityName}"),
                                       ),
                                     ),
                                   );

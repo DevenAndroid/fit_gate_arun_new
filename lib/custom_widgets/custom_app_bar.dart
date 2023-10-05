@@ -3,9 +3,11 @@
 import 'package:fit_gate/check_connection.dart';
 import 'package:fit_gate/controller/notification_controller.dart';
 import 'package:fit_gate/global_functions.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/account_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/bottom_controller.dart';
@@ -57,13 +59,10 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   final bottomController = Get.put(BottomController());
   final notificationCon = Get.put(NotificationController());
-  bool logout = false;
   countNotification() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
     await notificationCon.countNotification();
-    logout = await pref.getBool('isLogout') ?? false;
+
     if (mounted) setState(() {});
-    print("logouttttttttt  $logout -- $isArrowShow");
   }
 
   @override
@@ -81,8 +80,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leadingWidth: 45,
-        bottom: PreferredSize(
-            child: CheckConnection(), preferredSize: Size.fromHeight(70)),
+        bottom: PreferredSize(child: CheckConnection(), preferredSize: Size.fromHeight(70)),
         title: Text(
           "${widget.title}",
           style: TextStyle(color: widget.color ?? MyColors.black),
@@ -90,27 +88,28 @@ class _CustomAppBarState extends State<CustomAppBar> {
         leading: GestureDetector(
             onTap: widget.onTap ??
                 () {
-                  print("object");
-                  bottomController.setSelectedScreen(false,
-                      screenName: BottomNavigationScreen());
+                  // Navigator.push(
+                  //     context,
+                  //     PageTransition(
+                  //         child: bottomController.setScreen(false, screenName: AccountScreen()),
+                  //         type: PageTransitionType.leftToRight));
+                  bottomController.setSelectedScreen(false, screenName: BottomNavigationScreen());
                   // Get.to(() => BottomNavigationScreen());
                   // context.go('/page2');
                 },
             child: widget.leadingImage != null
                 ? SizedBox()
-                : logout == true && isArrowShow == true
-                    ? SizedBox()
-                    : GestureDetector(
-                        child: Container(
-                          color: Colors.transparent,
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            widget.leadingImage ?? MyImages.arrowLeft,
-                            color: widget.leadingImageClr ?? MyColors.black,
-                            height: 18,
-                            width: 18,
-                          ),
-                          /*ImageButton(
+                : GestureDetector(
+                    child: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        widget.leadingImage ?? MyImages.arrowLeft,
+                        color: widget.leadingImageClr ?? MyColors.black,
+                        height: 18,
+                        width: 18,
+                      ),
+                      /*ImageButton(
                         padding: EdgeInsets.only(
                             left: 20, top: 18, bottom: 11, right: 17),
                         image: widget.leadingImage ?? MyImages.arrowBack,
@@ -118,8 +117,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         width: 20,
                         color: widget.leadingImageClr ?? MyColors.black,
                       ),*/
-                        ),
-                      )),
+                    ),
+                  )),
         actions: [
           widget.image != null
               ? SizedBox()
@@ -182,7 +181,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
           //             color: imageClr ?? MyColors.black,
           //             padding: EdgeInsets.all(18),
           //           ),
-
           widget.actionIcon == null
               ? SizedBox()
               : GestureDetector(
@@ -209,10 +207,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                             "PREFFFFF   +----+----+-----+------+    ----+ ----+ ${await pref.setBool('isSkip', true)}");
 
                         print("PHONE NO>:${Global.userModel?.phoneNumber}");
-                        push(
-                            context: context,
-                            screen: BottomNavigationScreen(),
-                            pushUntil: true);
+                        push(context: context, screen: BottomNavigationScreen(), pushUntil: true);
                         //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => BottomNavigationScreen()), (route) => false);
                       },
                       height: MediaQuery.of(context).size.height * 0.04,

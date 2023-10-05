@@ -32,7 +32,16 @@ class LoginController extends GetxController {
       loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
+      // await Future.wait<void>([
       MapController().getGym();
+      MapController().getFilterData(
+        isCurrentLocation: true,
+        lat: MapController().currentLatitude.toString(),
+        lon: MapController().currentLongitude.toString(),
+        // lat: 26.4334567.toString(),
+        // lon: 50.5327707.toString(),
+      );
+      // ]);
       update();
       return true;
     } else {
@@ -55,7 +64,7 @@ class LoginController extends GetxController {
     } else {
       // isLogin == true ? ""
       loading(value: false);
-      snackBar(parsedData['message']);
+      showToast(parsedData['message']);
       return false;
     }
   }
@@ -69,7 +78,7 @@ class LoginController extends GetxController {
     if (parsedData['statusCode'] == 200) {
       return true;
     } else {
-      snackBar(parsedData['message'].toString());
+      showToast(parsedData['message'].toString());
       return false;
     }
   }

@@ -31,10 +31,8 @@ Future<UserInfoModal> userinfoRepo({
 
     print(map);
 
-    http.Response response = await http.post(
-        Uri.parse("https://admin.fitgate.live/api/register-two"),
-        headers: await header,
-        body: jsonEncode(map));
+    http.Response response = await http.post(Uri.parse("https://admin.fitgate.live/api/register-two"),
+        headers: await header, body: jsonEncode(map));
     log("Sign IN DATA${map}");
     log("Sign IN DATA${await header}");
     log("Sign IN DATA${response.body}");
@@ -44,7 +42,7 @@ Future<UserInfoModal> userinfoRepo({
       print(jsonDecode(response.body));
       print("data submitted");
       if (parsedData['message'] != "Updated successfully") {
-        snackBar("Please fill all details");
+        showToast("Please fill all details");
       }
       return UserInfoModal.fromJson(jsonDecode(response.body));
     } else {

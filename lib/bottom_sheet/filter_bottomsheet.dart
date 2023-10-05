@@ -23,6 +23,9 @@ filterBottomSheet(context) {
         int amenitiesIndex = 0;
         int? kmIndex;
         List<String> selectedAmenities = [];
+        for (var value in amenities) {
+          value.selected = false;
+        }
         // bool select = false;
         var img = Get.put(ImageController());
         return StatefulBuilder(builder: (context, setState) {
@@ -48,15 +51,13 @@ filterBottomSheet(context) {
                     Center(
                       child: Text(
                         "Filters",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(height: 20),
                     Text(
                       "Gym Type",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 10),
                     Row(
@@ -91,8 +92,7 @@ filterBottomSheet(context) {
                     SizedBox(height: 20),
                     Text(
                       "Distance",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 10),
                     // Wrap(
@@ -136,14 +136,11 @@ filterBottomSheet(context) {
                         (int index) {
                           return ChoiceChip(
                             backgroundColor: MyColors.lightGrey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             label: Text(
                               '${km[index].title}',
                               style: TextStyle(
-                                color: kmIndex == index
-                                    ? MyColors.white
-                                    : MyColors.grey,
+                                color: kmIndex == index ? MyColors.white : MyColors.grey,
                               ),
                             ),
                             selectedColor: MyColors.orange,
@@ -162,8 +159,7 @@ filterBottomSheet(context) {
                     SizedBox(height: 20),
                     Text(
                       "Amenities",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 10),
                     Wrap(
@@ -172,18 +168,13 @@ filterBottomSheet(context) {
                       children: List.generate(
                         amenities.length,
                         (index) => FilterChip(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          backgroundColor: amenities[index].selected
-                              ? MyColors.orange
-                              : MyColors.lightGrey,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          backgroundColor: amenities[index].selected ? MyColors.orange : MyColors.lightGrey,
                           // shape: OutlinedBorder(),
                           label: Text(
                             amenities[index].title,
                             style: TextStyle(
-                              color: amenities[index].selected
-                                  ? MyColors.white
-                                  : MyColors.grey,
+                              color: amenities[index].selected ? MyColors.white : MyColors.grey,
                             ),
                           ),
                           pressElevation: 0,
@@ -204,8 +195,7 @@ filterBottomSheet(context) {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 18),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 18),
                       child: Row(
                         children: [
                           Expanded(
@@ -225,6 +215,8 @@ filterBottomSheet(context) {
                                 for (var value in amenities) {
                                   value.selected = false;
                                 }
+                                kmIndex = null;
+                                typeIndex = 0;
                                 // km.remove(km.last.selected);
                                 setState(() {});
                                 // Navigator.pop(context);
@@ -235,8 +227,7 @@ filterBottomSheet(context) {
                           Expanded(
                             child: GetBuilder<MapController>(builder: (data) {
                               return CustomButton(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
+                                height: MediaQuery.of(context).size.height * 0.06,
                                 title: "Confirm",
                                 onTap: () async {
                                   var amenities = selectedAmenities
@@ -244,13 +235,10 @@ filterBottomSheet(context) {
                                       .replaceAll("[", "")
                                       .replaceAll("]", "")
                                       .replaceAll(", ", ",");
-
+                                  // data.isFilter = true;
                                   await data.getFilterData(
-                                    amenities:
-                                        amenitiesIndex == 0 ? "" : amenities,
-                                    distance: kmIndex == null
-                                        ? ""
-                                        : km[kmIndex ?? 0].title,
+                                    amenities: amenitiesIndex == 0 ? "" : amenities,
+                                    distance: kmIndex == null ? "" : km[kmIndex ?? 0].value,
                                     subUserType: typeIndex == 1
                                         ? "free"
                                         : typeIndex == 2
@@ -275,11 +263,11 @@ filterBottomSheet(context) {
 }
 
 List<FilterModel> km = [
-  FilterModel(title: "Less then 5KM"),
-  FilterModel(title: "Less then 10KM"),
-  FilterModel(title: "Less then 15KM"),
-  FilterModel(title: "Less then 20KM"),
-  FilterModel(title: "Less then 25KM"),
+  FilterModel(title: "Less then 5KM", value: "5"),
+  FilterModel(title: "Less then 10KM", value: "10"),
+  FilterModel(title: "Less then 15KM", value: "15"),
+  FilterModel(title: "Less then 20KM", value: "20"),
+  FilterModel(title: "Less then 25KM", value: "25"),
 ];
 List<FilterModel> amenities = [
   FilterModel(title: "Sauna"),
@@ -338,9 +326,10 @@ class Tile extends StatelessWidget {
 
 class FilterModel {
   final String title;
+  final String? value;
   bool selected;
 
-  FilterModel({required this.title, this.selected = false});
+  FilterModel({required this.title, this.selected = false, this.value});
 }
 // SizedBox(
 //                       // height: 200,

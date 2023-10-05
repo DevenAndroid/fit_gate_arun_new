@@ -17,10 +17,7 @@ class DataBaseHelper {
       response = await http.post(
         Uri.parse(path),
         body: jsonEncode(data),
-        headers: {
-          "content-type": "application/json",
-          "Authorization": "Bearer ${Global.userModel?.id}"
-        },
+        headers: {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"},
       );
 
       var parsedData = jsonDecode(response.body);
@@ -40,16 +37,16 @@ class DataBaseHelper {
           return response;
         case 400:
           loading(value: false);
-          snackBar(parsedData['message']);
+          showToast(parsedData['message']);
           // toast(parsedData['message']);
           return response;
         case 401:
           loading(value: false);
-          snackBar(parsedData['error']);
+          showToast(parsedData['error']);
           return response;
         case 500:
           loading(value: false);
-          snackBar("Something went wrong");
+          showToast("Something went wrong");
           return response;
         default:
           return response;
@@ -66,10 +63,7 @@ class DataBaseHelper {
     // loading(value: true);
     http.Response response = await http.get(
       Uri.parse(path),
-      headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer ${Global.userModel?.id}"
-      },
+      headers: {"content-type": "application/json", "Authorization": "Bearer ${Global.userModel?.id}"},
     );
     var parsedData = jsonDecode(response.body);
 
@@ -90,7 +84,7 @@ class DataBaseHelper {
         return response;
       case 401:
         loading(value: false);
-        snackBar(parsedData['error']);
+        showToast(parsedData['error']);
         return response;
       case 500:
         loading(value: false);

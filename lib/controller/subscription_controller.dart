@@ -98,7 +98,7 @@ class SubscriptionController extends GetxController {
         headers: await header);
     var parsedData = jsonDecode(response.body);
     if (parsedData['statusCode'] == 200) {
-      snackBar("Plan is successfully deleted");
+      showToast("Plan is successfully deleted");
       return true;
     } else {
       return false;

@@ -27,8 +27,7 @@ import '../notification_page.dart';
 class GymDetailsScreen extends StatefulWidget {
   final GymDetailsModel? gymDetailsModel;
   final int? index;
-  const GymDetailsScreen({Key? key, this.gymDetailsModel, this.index})
-      : super(key: key);
+  const GymDetailsScreen({Key? key, this.gymDetailsModel, this.index}) : super(key: key);
 
   @override
   State<GymDetailsScreen> createState() => _GymDetailsScreenState();
@@ -46,8 +45,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
   Position? position;
   Future getLocation() async {
     print("CURRENT LOCATION");
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
+    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     print("POSITIONNNNNN --------------       ${position}");
     return position;
   }
@@ -56,24 +54,31 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
     await mapController.getGym();
   }
 
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+
+  void addCustomIcon() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(44, 44)), "assets/pin.png").then(
+      (icon) {
+        setState(() {
+          markerIcon = icon;
+        });
+      },
+    );
+  }
+
   Future goToPlace() async {
-    await _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(
-                double.parse(
-                    widget.gymDetailsModel!.addressLatitude.toString()),
-                double.parse(
-                    widget.gymDetailsModel!.addressLongitude.toString())),
-            zoom: 16.0)));
+    await _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(double.parse(widget.gymDetailsModel!.addressLatitude.toString()),
+            double.parse(widget.gymDetailsModel!.addressLongitude.toString())),
+        zoom: 16.0)));
     setState(() {
       markers.add(MarkerList(
         Marker(
           markerId: MarkerId("id"),
+          icon: markerIcon,
           infoWindow: InfoWindow(title: widget.gymDetailsModel?.addressAddress),
-          position: LatLng(
-              double.parse(widget.gymDetailsModel!.addressLatitude.toString()),
-              double.parse(
-                  widget.gymDetailsModel!.addressLongitude.toString())),
+          position: LatLng(double.parse(widget.gymDetailsModel!.addressLatitude.toString()),
+              double.parse(widget.gymDetailsModel!.addressLongitude.toString())),
         ),
       ));
     });
@@ -81,13 +86,8 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
 
   //format time in am / pm
   String formatTimeOfDay(TimeOfDay selectedTime) {
-    DateTime tempDate = DateFormat.Hms().parse(selectedTime.hour.toString() +
-        ":" +
-        selectedTime.minute.toString() +
-        ":" +
-        '0' +
-        ":" +
-        '0');
+    DateTime tempDate = DateFormat.Hms()
+        .parse(selectedTime.hour.toString() + ":" + selectedTime.minute.toString() + ":" + '0' + ":" + '0');
     var dateFormat = DateFormat("h:mm a");
     return (dateFormat.format(tempDate));
   }
@@ -101,10 +101,12 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
 
   @override
   void initState() {
+    addCustomIcon();
     getGymDetails();
     mapController.getLocation1();
     goToPlace();
     getDailyDate();
+
     super.initState();
   }
 
@@ -149,8 +151,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       leading: GestureDetector(
                           onTap: () {
                             print("object");
-                            bottomController.setSelectedScreen(true,
-                                screenName: Explore());
+                            bottomController.setSelectedScreen(true, screenName: Explore());
                             // Get.to(() => BottomNavigationScreen());
                             // context.go('/page2');
                           },
@@ -182,8 +183,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                               color: Colors.transparent,
                               alignment: Alignment.center,
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 20.0, top: 18, left: 20, bottom: 11),
+                                padding: const EdgeInsets.only(right: 20.0, top: 18, left: 20, bottom: 11),
                                 child: Stack(
                                   children: [
                                     Icon(
@@ -239,8 +239,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                             strokeWidth: 2.5,
                           ),
                         ),
-                        imageUrl:
-                            "${EndPoints.imgBaseUrl}${details.logo.toString()}",
+                        imageUrl: "${EndPoints.imgBaseUrl}${details.logo.toString()}",
                         errorWidget: (c, u, r) => Container(),
                       ),
                     ),
@@ -279,14 +278,14 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                     children: [
                       Text(
                         "Gym Photos",
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
                       SizedBox(
                         height: 100,
                         width: MediaQuery.of(context).size.width,
                         child: ListView.builder(
+                            cacheExtent: 9999,
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             itemCount: details.pictures?.length,
@@ -301,8 +300,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                         ));
                                   },
                                   child: CachedNetworkImage(
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
+                                    imageBuilder: (context, imageProvider) => Container(
                                       height: 40,
                                       width: 100,
                                       decoration: BoxDecoration(
@@ -320,8 +318,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                         color: MyColors.orange,
                                       ),
                                     ),
-                                    imageUrl:
-                                        "${EndPoints.imgBaseUrl}${details.pictures?[index]}",
+                                    imageUrl: "${EndPoints.imgBaseUrl}${details.pictures?[index]}",
                                     errorWidget: (c, u, r) => Container(),
                                   ),
                                 ),
@@ -331,8 +328,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Gym Details",
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
                       Column(
@@ -341,8 +337,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                           GestureDetector(
                             onTap: () {
                               print('PHONE CLICK');
-                              launchUrl(
-                                  Uri.parse("tel:+${details.phoneNumber}"));
+                              launchUrl(Uri.parse("tel:+${details.phoneNumber}"));
                             },
                             child: Row(
                               children: [
@@ -363,18 +358,15 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, top: 10, bottom: 10),
-                            child: Text(
-                                "${details.about ?? 'No details available'}"),
+                            padding: const EdgeInsets.only(left: 8.0, top: 10, bottom: 10),
+                            child: Text("${details.about ?? 'No details available'}"),
                           ),
                         ],
                       ),
                       SizedBox(height: 10),
                       Text(
                         "Working Hours",
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
                       Row(
@@ -402,35 +394,26 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                 Row(
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         "Days",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Spacer(),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         "Open",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Spacer(),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         "Close",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Spacer(),
@@ -439,6 +422,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                 // SizedBox(height: 7),
                                 // Text("${details.workingHour![0].day}"),
                                 ListView.builder(
+                                    cacheExtent: 9999,
                                     itemCount: details.workingHour?.length,
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
@@ -455,27 +439,23 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                         children: [
                                           TableRow(children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "${details.workingHour![i].day![0].toUpperCase()}${details.workingHour![i].day?.substring(1)}",
                                                 style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: MyColors.orange),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: MyColors.orange,
+                                                ),
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                  "${details.workingHour![i].start}"),
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text("${details.workingHour![i].start}"),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                  "${details.workingHour![i].end}"),
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text("${details.workingHour![i].end}"),
                                             ),
                                           ]),
                                         ],
@@ -490,8 +470,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       SizedBox(height: 10),
                       Text(
                         "Amenities",
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       GridView.builder(
                         shrinkWrap: true,
@@ -506,14 +485,13 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                             title: details.amenities![index],
                           );
                         },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 9 / 1.9),
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 9 / 1.9),
                       ),
                       SizedBox(height: 10),
                       Text(
                         "Gym Location",
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
                       Container(
@@ -527,11 +505,8 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                           child: GoogleMap(
                             initialCameraPosition: CameraPosition(
                               zoom: 16,
-                              target: LatLng(
-                                  double.parse(
-                                      details.addressLatitude.toString()),
-                                  double.parse(
-                                      details.addressLongitude.toString())),
+                              target: LatLng(double.parse(details.addressLatitude.toString()),
+                                  double.parse(details.addressLongitude.toString())),
                             ),
                             myLocationEnabled: true,
                             zoomControlsEnabled: false,
@@ -574,8 +549,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                                 // 'https://www.google.com/maps/dir/${position?.latitude},${position?.longitude}/${widget.gymDetailsModel?.addressAddress!.replaceAll(',', '+')}/@${lat},$lng,1d$lng!2d$lat!1d$lng!2d$lat';
                                 // 'https://www.google.com/maps/dir/My%20Location/${widget.gymDetailsModel?.addressAddress!.replaceAll(',', '+')}/@${lat},$lng,1d$lng!2d$lat!1d$lng!2d$lat';
                                  'https://www.google.com/maps/dir/current%20location/Hatkeshwar';*/
-                            var url =
-                                'https://maps.google.com/?saddr=My%20Location&daddr=$lat,$lng';
+                            var url = 'https://maps.google.com/?saddr=My%20Location&daddr=$lat,$lng';
                             /*Navigator.push(
                                 context,
                                 MaterialPageRoute(

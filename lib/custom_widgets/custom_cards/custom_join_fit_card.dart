@@ -56,15 +56,11 @@ class CustomJoinFitCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: color ?? MyColors.white,
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            border: Border.all(
-                color:
-                    index == selectedIndex ? MyColors.orange : MyColors.white),
+            border: Border.all(color: index == selectedIndex ? MyColors.orange : MyColors.white),
             boxShadow: [
               boxShadow ??
                   BoxShadow(
-                    color: index == selectedIndex
-                        ? MyColors.orange.withOpacity(0.16)
-                        : MyColors.grey.withOpacity(0.20),
+                    color: index == selectedIndex ? MyColors.orange.withOpacity(0.16) : MyColors.grey.withOpacity(0.20),
                     spreadRadius: 7,
                     blurRadius: 22,
                   ),
@@ -77,9 +73,7 @@ class CustomJoinFitCard extends StatelessWidget {
                       flex: 2,
                       child: ImageButton(
                         image: img,
-                        color: index == selectedIndex
-                            ? MyColors.orange
-                            : MyColors.black,
+                        color: index == selectedIndex ? MyColors.orange : MyColors.black,
                         height: iconSize ?? 50,
                       ),
                     ),
@@ -88,9 +82,7 @@ class CustomJoinFitCard extends StatelessWidget {
                       child: Text(
                         "$title",
                         style: TextStyle(
-                          color: index == selectedIndex
-                              ? MyColors.orange
-                              : MyColors.black,
+                          color: index == selectedIndex ? MyColors.orange : MyColors.black,
                           fontSize: fontSize ?? 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -106,9 +98,7 @@ class CustomJoinFitCard extends StatelessWidget {
                         : ImageButton(
                             // padding: EdgeInsets.zero,
                             image: img,
-                            color: index == selectedIndex
-                                ? MyColors.orange
-                                : MyColors.black,
+                            color: index == selectedIndex ? MyColors.orange : MyColors.black,
                             height: iconSize ?? 50,
                           ),
                     Column(
@@ -118,9 +108,7 @@ class CustomJoinFitCard extends StatelessWidget {
                         Text(
                           "$title",
                           style: TextStyle(
-                            color: index == selectedIndex
-                                ? MyColors.orange
-                                : MyColors.black,
+                            color: index == selectedIndex ? MyColors.orange : MyColors.black,
                             fontSize: fontSize ?? 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -201,8 +189,7 @@ class CustomGymCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: MyColors.white,
           borderRadius: borderRadius ?? BorderRadius.circular(8),
-          border:
-              Border.all(color: MyColors.border.withOpacity(0.5), width: 1.5),
+          border: Border.all(color: MyColors.border.withOpacity(0.5), width: 1.5),
           // boxShadow: [
           //   boxShadow ??
           //       BoxShadow(

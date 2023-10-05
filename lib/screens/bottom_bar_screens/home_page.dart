@@ -17,6 +17,7 @@ import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
 import 'package:fit_gate/screens/explore.dart';
 import 'package:fit_gate/screens/gym_details_screens/gym_details_screen.dart';
+import 'package:fit_gate/screens/subscription_page.dart';
 import 'package:fit_gate/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ import '../../custom_widgets/custom_btns/custom_button.dart';
 import '../../models/user_model.dart';
 import '../../utils/my_color.dart';
 import '../../utils/my_images.dart';
-import 'explore_page.dart';
+import 'map_page.dart';
 
 List<String> fg = [
   "Limited gyms (Free)",
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   CarouselController carouselController = CarouselController();
 
   getSubscriptionList() async {
-    await login.getUserById();
+    // await login.getUserById();
     print("MNAME---> ${Global.userModel?.middleName}");
     // await mapController.getCurrentLocation();
     var pref = await SharedPreferences.getInstance();
@@ -70,16 +71,17 @@ class _HomePageState extends State<HomePage> {
     //       await jsonDecode(pref.getString('isActivated').toString()));
     //   Global.activeSubscriptionModel = activeData;
     // }
-    mapController.getLocation1();
-    mapController.getFilterData(
-        isCurrentLocation: true,
-        // lat: mapController.position?.latitude.toString(),
-        // lon: mapController.position?.longitude.toString(),
-        lat: 26.0667.toString(),
-        lon: 50.55770000000007.toString());
+    mapController.getCurrentLocation();
+    await mapController.getFilterData(
+      isCurrentLocation: true,
+      lat: mapController.currentLatitude.toString(),
+      lon: mapController.currentLongitude.toString(),
+      // lat: 26.4334567.toString(),
+      // lon: 50.5327707.toString(),
+    );
+    await mapController.getGym();
     await subscriptionController.subscriptionListGet();
     await banner.getBanner();
-
     // InAppUpdate.checkForUpdate().then((updateInfo) {
     //   log("^^^^^^^^^^^ $updateInfo");
     //   if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
@@ -102,6 +104,8 @@ class _HomePageState extends State<HomePage> {
     //   }
     // });
   }
+
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -151,17 +155,11 @@ class _HomePageState extends State<HomePage> {
                               child: Text.rich(TextSpan(children: [
                                 TextSpan(
                                   text: "Log in ",
-                                  style: TextStyle(
-                                      color: MyColors.orange,
-                                      fontSize: 16.5,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: MyColors.orange, fontSize: 16.5, fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: " to enjoy the full experience",
-                                  style: TextStyle(
-                                      color: MyColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal),
+                                  style: TextStyle(color: MyColors.white, fontSize: 16, fontWeight: FontWeight.normal),
                                 )
                               ])),
                             ),
@@ -175,19 +173,20 @@ class _HomePageState extends State<HomePage> {
                         fit: StackFit.expand,
                         children: [
                           CarouselSlider(
-                            carouselController:
-                                carouselController, // Give the controller
+                            carouselController: carouselController,
                             options: CarouselOptions(
-                              // initialPage: 0,
-                              enableInfiniteScroll: false,
-                              viewportFraction: 1,
-                              padEnds: true,
+                                // initialPage: 0,
 
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 2),
-                              autoPlayCurve: Curves.linear,
-                            ),
-
+                                enableInfiniteScroll: false,
+                                viewportFraction: 1,
+                                padEnds: true,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(seconds: 2),
+                                autoPlayCurve: Curves.linear,
+                                onPageChanged: (val, _) {
+                                  pageIndex = val;
+                                  setState(() {});
+                                }),
                             items: banner.getBannerList.map((featuredImage) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5),
@@ -208,8 +207,7 @@ class _HomePageState extends State<HomePage> {
                             }).toList(),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -222,8 +220,7 @@ class _HomePageState extends State<HomePage> {
                                   boxShape: BoxShape.circle,
                                   onTap: () {
                                     carouselController.previousPage(
-                                        duration: Duration(seconds: 1),
-                                        curve: Curves.easeOut);
+                                        duration: Duration(seconds: 1), curve: Curves.easeOut);
                                   },
                                 ),
                                 ImageButton(
@@ -234,9 +231,14 @@ class _HomePageState extends State<HomePage> {
                                   bgColor: MyColors.orange,
                                   boxShape: BoxShape.circle,
                                   onTap: () {
-                                    carouselController.nextPage(
-                                        duration: Duration(seconds: 1),
-                                        curve: Curves.easeOut);
+                                    if (pageIndex == banner.getBannerList.length - 1) {
+                                      print("||||||| $pageIndex");
+                                      carouselController.animateToPage(0,
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                    } else {
+                                      carouselController.nextPage(
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                    }
                                   },
                                 ),
                               ],
@@ -342,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                   Global.userModel?.phoneNumber == null
                       ? SizedBox()
                       : Text(
-                          "Subscription Plan: Free/Pro",
+                          "Subscription Plan: Free",
                           style: TextStyle(
                             color: MyColors.black,
                             fontSize: 17,
@@ -371,8 +373,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                               child: Text(
                                 "Enjoy free Offers",
                                 style: TextStyle(
@@ -409,12 +410,10 @@ class _HomePageState extends State<HomePage> {
                           right: 20,
                           child: Align(
                             alignment: Alignment.bottomRight,
-                            child: GetBuilder<BottomController>(
-                                builder: (controller) {
+                            child: GetBuilder<BottomController>(builder: (controller) {
                               return CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.18,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.033,
+                                height: MediaQuery.of(context).size.height * 0.033,
                                 title: "Join",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -424,8 +423,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
                                   controller.getIndex(0);
-                                  controller.setSelectedScreen(true,
-                                      screenName: Subscription());
+                                  controller.setSelectedScreen(true, screenName: SubscriptionScreen());
                                 },
                               );
                             }),
@@ -456,35 +454,39 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GetBuilder<MapController>(builder: (data) {
-              return data.nearbyGymList.isEmpty
-                  ? Center(child: Text("Nearby gyms not found"))
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: data.nearbyGymList.length < 4
-                          ? data.nearbyGymList.length
-                          : 3,
-                      itemBuilder: (c, i) {
-                        var gymData = data.nearbyGymList[i];
-                        return GetBuilder<BottomController>(
-                            builder: (controller) {
-                          return GymTile(
-                            gymModel: gymData,
-                            onClick: () {
-                              index = i;
-                              setState(() {});
-                              controller.setSelectedScreen(
-                                true,
-                                screenName: GymDetailsScreen(
-                                  index: index,
-                                  gymDetailsModel: gymData,
-                                ),
+              return
+                  // data.loadingValue
+                  //   ? Center(child: CircularProgressIndicator(color: MyColors.orange, strokeWidth: 1.5))
+                  //   :
+                  data.nearbyGymList.isEmpty
+                      ? SizedBox(
+                          height: 100, child: Center(child: Text("Nearby gyms found", textAlign: TextAlign.center)))
+                      : ListView.builder(
+                          cacheExtent: 9999,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,
+                          itemBuilder: (c, i) {
+                            var gymData = data.nearbyGymList[i];
+                            return GetBuilder<BottomController>(builder: (controller) {
+                              return GymTile(
+                                gymModel: gymData,
+                                onClick: () {
+                                  index = i;
+                                  setState(() {});
+                                  controller.getIndex(1);
+                                  controller.setSelectedScreen(
+                                    true,
+                                    screenName: GymDetailsScreen(
+                                      index: index,
+                                      gymDetailsModel: gymData,
+                                    ),
+                                  );
+                                  Get.to(() => BottomNavigationScreen());
+                                },
                               );
-                              Get.to(() => BottomNavigationScreen());
-                            },
-                          );
-                        });
-                      });
+                            });
+                          });
             }),
           ],
         ),
