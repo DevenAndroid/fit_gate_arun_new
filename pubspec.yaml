@@ -52,9 +52,10 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_share: ^2.0.0
   flutter_rating_bar: ^4.0.1
-  webview_flutter: ^4.0.1
-  connectivity_plus: ^3.0.3
+  webview_flutter: ^4.4.1
+  connectivity_plus: ^4.0.2
   chewie: ^1.7.1
+
 
 
 
