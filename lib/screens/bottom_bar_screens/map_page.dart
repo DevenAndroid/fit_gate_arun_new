@@ -309,7 +309,7 @@ class _MapPageState extends State<MapPage> {
     header;
     return WillPopScope(
       onWillPop: () {
-        bottomController.getIndex(0);
+        bottomController.getIndex(1);
 
         return bottomController.setSelectedScreen(true, screenName: Explore());
       },

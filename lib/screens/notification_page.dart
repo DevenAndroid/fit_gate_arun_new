@@ -1,4 +1,6 @@
+import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/bottom_bar_screens/home_page.dart';
 import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   final notifyController = Get.put(NotificationController());
   // final loginController = Get.put(LoginController());
-  // final bottomCon = Get.put(BottomController());
+  final bottomController = Get.put(BottomController());
   //
   // getNotify() async {
   //   await notifyController.notification();
@@ -35,71 +37,77 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-          title: "Notification",
-          image: "",
-          onTap: () {
-            notifyController.countNotification();
-            // Get.back();
-            Navigator.pop(
-                context, PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight));
-          }),
-      body: GetBuilder<NotificationController>(builder: (controller) {
-        return controller.notificationList.isEmpty
-            ? Center(child: Text("You don't have notification"))
-            : ListView.separated(
-                itemCount: controller.notificationList.length,
-                itemBuilder: (c, i) {
-                  var data = controller.notificationList[i];
-                  // String bin = data.createdAt.toString();
-                  // var format = bin.substring(bin.length - 8);
-                  // var time = DateFormat.jm()
-                  //     .format(DateFormat("hh:mm:ss").parse("$format"));
-                  return InkWell(
-                    onTap: () async {
-                      notifyController.updateNotification(notifyId: data.id);
-                      setState(() {});
-                      data.status = '1';
-                      // await notifyController.notification();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${data.tittle}",
-                            style: TextStyle(
-                              color: data.status == '0' ? MyColors.orange.withOpacity(0.9) : MyColors.orange,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return true;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+            title: "Notification",
+            image: "",
+            onTap: () {
+              notifyController.countNotification();
+              Get.back();
+              // Navigator.pop(
+              //     context, PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight));
+            }),
+        body: GetBuilder<NotificationController>(builder: (controller) {
+          return controller.notificationList.isEmpty
+              ? Center(child: Text("You don't have notification"))
+              : ListView.separated(
+                  itemCount: controller.notificationList.length,
+                  itemBuilder: (c, i) {
+                    var data = controller.notificationList[i];
+                    // String bin = data.createdAt.toString();
+                    // var format = bin.substring(bin.length - 8);
+                    // var time = DateFormat.jm()
+                    //     .format(DateFormat("hh:mm:ss").parse("$format"));
+                    return InkWell(
+                      onTap: () async {
+                        notifyController.updateNotification(notifyId: data.id);
+                        setState(() {});
+                        data.status = '1';
+                        // await notifyController.notification();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16, top: 10, bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${data.tittle}",
+                              style: TextStyle(
+                                color: data.status == '0' ? MyColors.orange.withOpacity(0.9) : MyColors.orange,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "${data.message}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: data.status == '0' ? MyColors.blue : MyColors.black,
-                              fontWeight: FontWeight.w700,
+                            SizedBox(height: 5),
+                            Text(
+                              "${data.message}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: data.status == '0' ? MyColors.blue : MyColors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          // Spacer(),
-                          Align(alignment: Alignment.topRight, child: Text("${data.createdAt ?? ""}")),
-                        ],
+                            SizedBox(height: 5),
+                            // Spacer(),
+                            Align(alignment: Alignment.topRight, child: Text("${data.createdAt ?? ""}")),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(
-                  thickness: 1,
-                  endIndent: 12,
-                  indent: 12,
-                ),
-              );
-      }),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) => Divider(
+                    thickness: 1,
+                    endIndent: 12,
+                    indent: 12,
+                  ),
+                );
+        }),
+      ),
     );
   }
 }
