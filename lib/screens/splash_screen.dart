@@ -4,6 +4,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
 import 'package:fit_gate/controller/map_controller.dart';
@@ -16,9 +19,12 @@ import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dar
 import 'package:fit_gate/screens/inro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../custom_widgets/dialog/custom_dialog.dart';
 import '../utils/my_images.dart';
 import 'auth/secondpage.dart';
 
@@ -32,83 +38,130 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final loginCon = Get.put(LoginController());
   final mapController = Get.put(MapController());
-  final activePlan = Get.put(SubscriptionProvider());
+  final activePlan = Get.put(SubscriptionController());
   var auth = FirebaseAuth.instance.authStateChanges();
 
   checkUser() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var data = jsonDecode(pref.getString('isLogin').toString());
-    log("^^^^^^^^^^^ $data");
-    if (data != null) {
-      // await mapController.getCurrentLocation();
-      UserModel setData = UserModel.fromJson(data);
-      Global.userModel = setData;
-      // var plan = await activePlan.activeSubscriptionPlan();
-      // print("SUB PLAN---> $plan");
-      // if (plan == true) {
-      //   ActiveSubscriptionModel activeData = ActiveSubscriptionModel.fromJson(
-      //       await jsonDecode(pref.getString('isActivated').toString()));
-      //   Global.activeSubscriptionModel = activeData;
-      // }
-      if (FirebaseAuth.instance.currentUser!.displayName.toString() != "true") {
-        Get.offAll(() => UserInfoScreen());
-        return;
-      }
-      await mapController.getCurrentLocation();
-      mapController.getLocation1();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appName = packageInfo.appName;
+    String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
 
-      await Future.wait<void>([
-        loginCon.getUserById(),
-        loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
-        // activePlan.activeSubscriptionPlan(),
-        mapController.getGym(),
-        mapController.getFilterData(
-          isCurrentLocation: true,
-          lat: 25.989668.toString(),
-          lon: 50.560894.toString(),
-          // lat: 26.4334567.toString(),
-          // lon: 50.5327707.toString(),
-        ),
-      ]);
+    print("Platform");
+    print(Platform.isAndroid ? "and" : "ios");
 
-      if (Global.userModel?.deleteStatus == '1') {
-        Timer(Duration(seconds: 0), () {
-          Get.off(() => LoginScreen());
-        });
-      } else {
-        Timer(Duration(seconds: 0), () {
-          Get.off(() => BottomNavigationScreen());
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight, ctx: context),
-          //     (route) => false);
-        });
-      }
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('version')
+        .doc(Platform.isAndroid ? "and" : "ios")
+        .get()
+        .catchError((onError) {
+      print("here is the error" + onError);
+    });
+    print("$appName, $packageName, $version, $buildNumber");
+
+    String liveVersion = snapshot.get('version').toString();
+    String updateVersion = snapshot.get('updateVersion').toString();
+
+    if (liveVersion != version && updateVersion != version) {
+      print("Need to update");
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
+            return CustomDialogForUpdate(
+              title: "Update is required to use this application",
+              label1: "Update",
+              // label2: "Cancel",
+
+              onTap: () {
+                launchUrl(Uri.parse(Platform.isAndroid
+                    ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
+                    : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
+              },
+              /* cancel: () {
+                Navigator.of(context).pop();
+                Get.back();
+              },*/
+            );
+          });
     } else {
-      Get.offAll(() => IntroScreen());
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      var data = jsonDecode(pref.getString('isLogin').toString());
+      log("^^^^^^^^^^^ $data");
+      if (data != null) {
+        // await mapController.getCurrentLocation();
+        UserModel setData = UserModel.fromJson(data);
+        Global.userModel = setData;
+        // var plan = await activePlan.activeSubscriptionPlan();
+        // print("SUB PLAN---> $plan");
+        // if (plan == true) {
+        //   ActiveSubscriptionModel activeData = ActiveSubscriptionModel.fromJson(
+        //       await jsonDecode(pref.getString('isActivated').toString()));
+        //   Global.activeSubscriptionModel = activeData;
+        // }
+        if (FirebaseAuth.instance.currentUser!.displayName.toString() !=
+            "true") {
+          Get.offAll(() => UserInfoScreen());
+          return;
+        }
+        await mapController.getCurrentLocation();
+        mapController.getLocation1();
+
+        await Future.wait<void>([
+          loginCon.getUserById(),
+          loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
+          // activePlan.activeSubscriptionPlan(),
+          mapController.getGym(),
+          mapController.getFilterData(
+            isCurrentLocation: true,
+            lat: mapController.currentLatitude.toString(),
+            lon: mapController.currentLongitude.toString(),
+            // lat: 26.4334567.toString(),
+            // lon: 50.5327707.toString(),
+          ),
+        ]);
+
+        if (Global.userModel?.deleteStatus == '1') {
+          Timer(Duration(seconds: 0), () {
+            Get.off(() => LoginScreen());
+          });
+        } else {
+          Timer(Duration(seconds: 0), () {
+            Get.off(() => BottomNavigationScreen());
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight, ctx: context),
+            //     (route) => false);
+          });
+        }
+      } else {
+        Get.offAll(() => IntroScreen());
+      }
+      // else if (delete == true) {
+      //   print("SPLASH DELETE ==========  $delete");
+      //   Timer(Duration(seconds: 0), () {
+      //     Get.off(() => LoginScreen());
+      //   });
+      // } else if (logout == true) {
+      //   Timer(Duration(seconds: 0), () {
+      //     Get.off(() => LoginScreen());
+      //   });
+      // } else if (skip == true) {
+      //   Get.off(() => BottomNavigationScreen());
+      // } else {
+      //   if (info == true) {
+      //     Timer(Duration(seconds: 1), () {
+      //       Get.off(() => SignUpScreen());
+      //     });
+      //   } else {
+      //     Timer(Duration(seconds: 1), () {
+      //       Get.off(() => InfoPage());
+      //     });
+      //   }
+      // }
     }
-    // else if (delete == true) {
-    //   print("SPLASH DELETE ==========  $delete");
-    //   Timer(Duration(seconds: 0), () {
-    //     Get.off(() => LoginScreen());
-    //   });
-    // } else if (logout == true) {
-    //   Timer(Duration(seconds: 0), () {
-    //     Get.off(() => LoginScreen());
-    //   });
-    // } else if (skip == true) {
-    //   Get.off(() => BottomNavigationScreen());
-    // } else {
-    //   if (info == true) {
-    //     Timer(Duration(seconds: 1), () {
-    //       Get.off(() => SignUpScreen());
-    //     });
-    //   } else {
-    //     Timer(Duration(seconds: 1), () {
-    //       Get.off(() => InfoPage());
-    //     });
-    //   }
-    // }
   }
 
   @override
@@ -120,30 +173,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(
-      children: [
-        /*    Image.asset(
+          children: [
+            /*    Image.asset(
           MyImages.bg,
           fit: BoxFit.cover,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
         ),*/
-        Center(
-          child: Image.asset(
-            MyImages.appIcon,
-            // color: MyColors.white,
-            width: MediaQuery.of(context).size.width * 0.52,
-            height: MediaQuery.of(context).size.height * 0.70,
-          ),
-        ),
-        // isDenied
-        //     ? Positioned(
-        //         bottom: 10,
-        //         child: Text('data'),
-        //       )
-        //     : SizedBox(),
-      ],
-    ));
+            Center(
+              child: Image.asset(
+                MyImages.appIcon,
+                // color: MyColors.white,
+                width: MediaQuery.of(context).size.width * 0.52,
+                height: MediaQuery.of(context).size.height * 0.70,
+              ),
+            ),
+            // isDenied
+            //     ? Positioned(
+            //         bottom: 10,
+            //         child: Text('data'),
+            //       )
+            //     : SizedBox(),
+          ],
+        ));
   }
 }
 

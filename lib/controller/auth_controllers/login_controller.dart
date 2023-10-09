@@ -15,6 +15,7 @@ import '../../models/user_model.dart';
 
 class LoginController extends GetxController {
   var auth = FirebaseAuth.instance;
+
   // var checkPhone;
   Future<bool> userLogin(String? phone, String? fcmToken) async {
     loading(value: true);
@@ -32,16 +33,15 @@ class LoginController extends GetxController {
       loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
-      // await Future.wait<void>([
-      MapController().getGym();
-      MapController().getFilterData(
+
+      await MapController().getFilterData(
         isCurrentLocation: true,
         lat: 25.989668.toString(),
         lon: 50.560894.toString(),
         // lat: 26.4334567.toString(),
         // lon: 50.5327707.toString(),
       );
-      // ]);
+
       update();
       return true;
     } else {

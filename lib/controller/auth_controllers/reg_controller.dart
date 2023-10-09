@@ -27,18 +27,12 @@ class RegisterController extends GetxController {
   }) async {
     try {
       print("TRYYYYYYYY ------");
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId!, smsCode: code!);
-      await auth.signInWithCredential(credential).then((value) {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId!, smsCode: code!);
+      await auth.signInWithCredential(credential).then((value) async {
         if (value.user != null) {
-          registerApiCall(phone, context, companyId, fcmToken, countryCode);
-          MapController().getGym();
-          MapController().getFilterData(
-            isCurrentLocation: true,
-            lat: MapController().currentLatitude.toString(),
-            lon: MapController().currentLongitude.toString(),
-            // lat: 26.4334567.toString(),
-            // lon: 50.5327707.toString(),
-          );
+          await registerApiCall(
+              phone, context, companyId, fcmToken, countryCode);
         } else {
           // Navigator.pushAndRemoveUntil(
           //     context,
@@ -82,7 +76,18 @@ class RegisterController extends GetxController {
         loading(value: false);
         Global.userModel = UserModel.fromJson(parsedData['data']);
         pref.setString('isLogin', jsonEncode(parsedData['data']));
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => UserInfoScreen()), (route) => false);
+        await MapController().getGym();
+        await MapController().getFilterData(
+          isCurrentLocation: true,
+          lat: MapController().currentLatitude.toString(),
+          lon: MapController().currentLongitude.toString(),
+          // lat: 26.4334567.toString(),
+          // lon: 50.5327707.toString(),
+        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => UserInfoScreen()),
+            (route) => false);
       }
     } catch (e) {
       loading(value: false);
