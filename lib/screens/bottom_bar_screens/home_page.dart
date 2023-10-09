@@ -48,7 +48,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final indexCon = Get.put(ImageController());
   final notificationCon = Get.put(NotificationController());
-  final subscriptionController = Get.put(SubscriptionController());
+  final subscriptionController = Get.put(SubscriptionProvider());
   final mapController = Get.put(MapController());
   final banner = Get.put(BannerController());
   final login = Get.put(LoginController());
@@ -64,8 +64,7 @@ class _HomePageState extends State<HomePage> {
     var data = await jsonDecode(pref.getString('isLogin').toString());
     UserModel setData = UserModel.fromJson(data);
     Global.userModel = setData;
-    var plan = await subscriptionController.activeSubscriptionPlan();
-    print("SUB PLAN---> $plan");
+    // var plan = await subscriptionController.activeSubscriptionPlan();
     // if (plan == true) {
     //   ActiveSubscriptionModel activeData = ActiveSubscriptionModel.fromJson(
     //       await jsonDecode(pref.getString('isActivated').toString()));
@@ -80,7 +79,7 @@ class _HomePageState extends State<HomePage> {
       // lon: 50.5327707.toString(),
     );
     await mapController.getGym();
-    await subscriptionController.subscriptionListGet();
+    // await subscriptionController.subscriptionListGet();
     await banner.getBanner();
     // InAppUpdate.checkForUpdate().then((updateInfo) {
     //   log("^^^^^^^^^^^ $updateInfo");

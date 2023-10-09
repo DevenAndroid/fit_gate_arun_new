@@ -32,7 +32,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final loginCon = Get.put(LoginController());
   final mapController = Get.put(MapController());
-  final activePlan = Get.put(SubscriptionController());
+  final activePlan = Get.put(SubscriptionProvider());
   var auth = FirebaseAuth.instance.authStateChanges();
 
   checkUser() async {
@@ -64,8 +64,8 @@ class _SplashScreenState extends State<SplashScreen> {
         mapController.getGym(),
         mapController.getFilterData(
           isCurrentLocation: true,
-          lat: mapController.currentLatitude.toString(),
-          lon: mapController.currentLongitude.toString(),
+          lat: 25.989668.toString(),
+          lon: 50.560894.toString(),
           // lat: 26.4334567.toString(),
           // lon: 50.5327707.toString(),
         ),

@@ -41,9 +41,10 @@ class CustomSubscriptionPlanCard extends StatelessWidget {
       this.borderClr,
       required this.bgImage,
       this.gymPackage,
-      this.model, required this.title11})
+      this.model,
+      required this.title11})
       : super(key: key);
-  final subscriptionController = Get.put(SubscriptionController());
+  final subscriptionController = Get.put(SubscriptionProvider());
 
   @override
   Widget build(BuildContext context) {

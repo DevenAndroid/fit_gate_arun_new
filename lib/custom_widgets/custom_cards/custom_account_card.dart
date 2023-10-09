@@ -38,7 +38,7 @@ class CustomAccountCard extends StatelessWidget {
     return outputFormat.format(inputDate);
   }
 
-  final subscriptionController = Get.put(SubscriptionController());
+  final subscriptionController = Get.put(SubscriptionProvider());
   final bottomController = Get.put(BottomController());
 
   @override
@@ -49,8 +49,7 @@ class CustomAccountCard extends StatelessWidget {
         height: height ?? MediaQuery.of(context).size.height * 0.12,
         // width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(bgImg ?? MyImages.proBg), fit: BoxFit.cover),
+          image: DecorationImage(image: AssetImage(bgImg ?? MyImages.proBg), fit: BoxFit.cover),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -113,45 +112,40 @@ class CustomAccountCard extends StatelessWidget {
                   ? SizedBox()
                   : GestureDetector(
                       onTap: () async {
-                        if (Global.activeSubscriptionModel?.status ==
-                            "ACTIVE") {
+                        if (Global.activeSubscriptionModel?.status == "ACTIVE") {
                           showDialog(
                               context: context,
                               builder: (_) => CustomDialog(
-                                    title:
-                                        "Are sure you want to delete subscription?",
+                                    title: "Are sure you want to delete subscription?",
                                     label1: "Yes",
                                     label2: "No",
                                     cancel: () {
                                       Get.back();
                                     },
                                     onTap: () async {
-                                      loading(value: true);
-                                      await subscriptionController
-                                          .deleteSubscriptionPlan(Global
-                                              .activeSubscriptionModel
-                                              ?.subscriptionId);
-                                      print(Global.activeSubscriptionModel
-                                          ?.subscriptionId);
-                                      await subscriptionController
-                                          .activeSubscriptionPlan();
-                                      Global.activeSubscriptionModel = null;
-                                      loading(value: false);
-                                      bottomController.setSelectedScreen(true,
-                                          screenName: AccountScreen());
-                                      Get.back();
+                                      // loading(value: true);
+                                      // await subscriptionController
+                                      //     .deleteSubscriptionPlan(Global
+                                      //         .activeSubscriptionModel
+                                      //         ?.subscriptionId);
+                                      // print(Global.activeSubscriptionModel
+                                      //     ?.subscriptionId);
+                                      // await subscriptionController
+                                      //     .activeSubscriptionPlan();
+                                      // Global.activeSubscriptionModel = null;
+                                      // loading(value: false);
+                                      // bottomController.setSelectedScreen(true,
+                                      //     screenName: AccountScreen());
+                                      // Get.back();
                                     },
                                   ));
                         }
                       },
                       child: Container(
-                          decoration: BoxDecoration(
-                              color: MyColors.white,
-                              borderRadius: BorderRadius.circular(5)),
+                          decoration: BoxDecoration(color: MyColors.white, borderRadius: BorderRadius.circular(5)),
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Icon(Icons.delete_outline,
-                                size: 20, color: Colors.red.shade700),
+                            child: Icon(Icons.delete_outline, size: 20, color: Colors.red.shade700),
                           )),
                     )
             ],

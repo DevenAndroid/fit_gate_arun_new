@@ -33,13 +33,13 @@ class _AccountScreenState extends State<AccountScreen> {
   final indexCon = Get.put(BottomController());
   var imgController = Get.put(ImageController());
   var loginController = Get.put(LoginController());
-  final activeSubsCon = Get.put(SubscriptionController());
+  final activeSubsCon = Get.put(SubscriptionProvider());
   int chooseOption = 0;
   var data = Global.userModel;
   getData() async {
     // loading(value: true);
     await loginController.getUserById();
-    await activeSubsCon.activeSubscriptionPlan();
+    // await activeSubsCon.activeSubscriptionPlan();
     // loading(value: false);
     if (mounted) setState(() {});
     if (data != null) {
@@ -114,7 +114,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         // Global.activeSubscriptionModel?.status == 'ACTIVE'
                         //     ?
                         Text(
-                          "Subscription Plan ",
+                          "Subscription Plan",
                           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                         ),
                         // : SizedBox(),

@@ -194,6 +194,7 @@
 //   }
 // }
 
+import 'package:fit_gate/controller/subscription_controller.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/home_page.dart';
 import 'package:fit_gate/utils/my_color.dart';
@@ -210,6 +211,7 @@ import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dar
 import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class SubscriptionScreen extends StatefulWidget {
@@ -222,6 +224,15 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int chooseOption = 0;
   final bottomController = Get.put(BottomController());
+  getData() async {
+    await context.read<SubscriptionProvider>().fetchOffer();
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -360,6 +371,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         onClick: () {
                           chooseOption = 2;
                           setState(() {});
+                          // PurchaseApi.purchasePackage(context.read<SubscriptionProvider>().package.first);
                         },
                         selectedIndex: chooseOption,
                         index: 2,

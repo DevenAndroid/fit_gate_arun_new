@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fit_gate/controller/map_controller.dart';
+import 'package:fit_gate/controller/subscription_controller.dart';
 import 'package:fit_gate/firebase_notification.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/splash_screen.dart';
@@ -11,6 +12,7 @@ import 'package:fit_gate/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'check_connection.dart';
@@ -62,24 +64,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(MapController());
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+      ],
+      child: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
 
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: GetMaterialApp(
-        title: "Fit Gate",
-        theme: ThemeData(
-          fontFamily: "Poppins",
-          colorScheme: ColorScheme.fromSwatch().copyWith(secondary: MyColors.grey.withOpacity(.5)),
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: GetMaterialApp(
+          title: "Fit Gate",
+          theme: ThemeData(
+            fontFamily: "Poppins",
+            colorScheme: ColorScheme.fromSwatch().copyWith(secondary: MyColors.grey.withOpacity(.5)),
+          ),
+          home: SplashScreen(),
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: snackbarKey,
+          builder: EasyLoading.init(),
         ),
-        home: SplashScreen(),
-        debugShowCheckedModeBanner: false,
-        scaffoldMessengerKey: snackbarKey,
-        builder: EasyLoading.init(),
       ),
     );
   }

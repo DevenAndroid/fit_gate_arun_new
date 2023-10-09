@@ -36,8 +36,8 @@ class LoginController extends GetxController {
       MapController().getGym();
       MapController().getFilterData(
         isCurrentLocation: true,
-        lat: MapController().currentLatitude.toString(),
-        lon: MapController().currentLongitude.toString(),
+        lat: 25.989668.toString(),
+        lon: 50.560894.toString(),
         // lat: 26.4334567.toString(),
         // lon: 50.5327707.toString(),
       );
