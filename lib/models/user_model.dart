@@ -104,3 +104,44 @@ class UserModel {
     return data;
   }
 }
+
+class VersionModel {
+  String? id;
+  String? currentAndroidVersion;
+  String? currentIosVersion;
+  String? upgradeAndroidVersion;
+  String? upgradeIosVersion;
+  String? createdAt;
+  String? updatedAt;
+
+  VersionModel(
+      {this.id,
+      this.currentAndroidVersion,
+      this.currentIosVersion,
+      this.upgradeAndroidVersion,
+      this.upgradeIosVersion,
+      this.createdAt,
+      this.updatedAt});
+
+  VersionModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    currentAndroidVersion = json['current_android_version'];
+    currentIosVersion = json['current_ios_version'];
+    upgradeAndroidVersion = json['upgrade_android_version'];
+    upgradeIosVersion = json['upgrade_ios_version'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['current_android_version'] = this.currentAndroidVersion;
+    data['current_ios_version'] = this.currentIosVersion;
+    data['upgrade_android_version'] = this.upgradeAndroidVersion;
+    data['upgrade_ios_version'] = this.upgradeIosVersion;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}

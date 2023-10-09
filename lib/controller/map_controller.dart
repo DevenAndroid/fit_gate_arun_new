@@ -238,7 +238,8 @@ class MapController extends GetxController {
 
       currentLatitude = position.latitude;
       currentLongitude = position.longitude;
-      print('CURRENT LATITUDE $latitude CURRENT LONGITUDE $longitude');
+      // print('CURRENT LATITUDE $latitude CURRENT LONGITUDE $longitude');
+      print('CURRENT LATITUDE $currentLatitude CURRENT LONGITUDE $currentLongitude');
 
       update();
       return position;

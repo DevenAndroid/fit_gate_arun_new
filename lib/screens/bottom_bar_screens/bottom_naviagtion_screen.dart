@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
+import 'package:fit_gate/controller/map_controller.dart';
 import 'package:fit_gate/controller/notification_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:fit_gate/custom_widgets/dialog/custom_dialog.dart';
@@ -29,6 +30,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final indexCon = Get.put(BottomController());
   final loginController = Get.put(LoginController());
   final notifyController = Get.put(NotificationController());
+  final mapController = Get.put(MapController());
 
   List<Widget> myPages = [
     HomePage(),
@@ -37,6 +39,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     AccountScreen(),
   ];
   getNotify() async {
+    await mapController.getCurrentLocation();
     await notifyController.notification();
     await loginController.getUserById();
   }

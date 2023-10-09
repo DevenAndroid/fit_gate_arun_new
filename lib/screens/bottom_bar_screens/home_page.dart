@@ -48,7 +48,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final indexCon = Get.put(ImageController());
   final notificationCon = Get.put(NotificationController());
-  final subscriptionController = Get.put(SubscriptionProvider());
+  // final subscriptionController = Get.put(SubscriptionProvider());
   final mapController = Get.put(MapController());
   final banner = Get.put(BannerController());
   final login = Get.put(LoginController());
@@ -75,9 +75,11 @@ class _HomePageState extends State<HomePage> {
       isCurrentLocation: true,
       lat: mapController.currentLatitude.toString(),
       lon: mapController.currentLongitude.toString(),
-      // lat: 26.4334567.toString(),
-      // lon: 50.5327707.toString(),
+      // lat: 25.989668.toString(),
+      // lon: 50.560894.toString(),
     );
+    print('&&&&&&&&&&&&&&&&&&&&&&&& ${MapController().currentLongitude}');
+    print('${MapController().currentLatitude}');
     await mapController.getGym();
     // await subscriptionController.subscriptionListGet();
     await banner.getBanner();
@@ -154,17 +156,11 @@ class _HomePageState extends State<HomePage> {
                               child: Text.rich(TextSpan(children: [
                                 TextSpan(
                                   text: "Log in ",
-                                  style: TextStyle(
-                                      color: MyColors.orange,
-                                      fontSize: 16.5,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: MyColors.orange, fontSize: 16.5, fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: " to enjoy the full experience",
-                                  style: TextStyle(
-                                      color: MyColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal),
+                                  style: TextStyle(color: MyColors.white, fontSize: 16, fontWeight: FontWeight.normal),
                                 )
                               ])),
                             ),
@@ -195,19 +191,16 @@ class _HomePageState extends State<HomePage> {
                             items: banner.getBannerList.map((featuredImage) {
                               return Container(
                                 width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.width / 0.33,
+                                height: MediaQuery.of(context).size.width / 0.33,
                                 // color: Colors.red,
                                 child: Center(
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5),
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
                                       child: CachedNetworkImage(
                                         fit: BoxFit.cover,
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                        width: MediaQuery.of(context).size.width,
                                         imageUrl: '${featuredImage.image}',
                                         placeholder: (c, __) => Center(
                                             child: CircularProgressIndicator(
@@ -222,8 +215,7 @@ class _HomePageState extends State<HomePage> {
                             }).toList(),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -236,8 +228,7 @@ class _HomePageState extends State<HomePage> {
                                   boxShape: BoxShape.circle,
                                   onTap: () {
                                     carouselController.previousPage(
-                                        duration: Duration(seconds: 1),
-                                        curve: Curves.easeOut);
+                                        duration: Duration(seconds: 1), curve: Curves.easeOut);
                                   },
                                 ),
                                 ImageButton(
@@ -248,16 +239,13 @@ class _HomePageState extends State<HomePage> {
                                   bgColor: MyColors.orange,
                                   boxShape: BoxShape.circle,
                                   onTap: () {
-                                    if (pageIndex ==
-                                        banner.getBannerList.length - 1) {
+                                    if (pageIndex == banner.getBannerList.length - 1) {
                                       print("||||||| $pageIndex");
                                       carouselController.animateToPage(0,
-                                          duration: Duration(seconds: 1),
-                                          curve: Curves.easeOut);
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
                                     } else {
                                       carouselController.nextPage(
-                                          duration: Duration(seconds: 1),
-                                          curve: Curves.easeOut);
+                                          duration: Duration(seconds: 1), curve: Curves.easeOut);
                                     }
                                   },
                                 ),
@@ -393,8 +381,7 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                               child: Text(
                                 "Enjoy free Offers",
                                 style: TextStyle(
@@ -431,12 +418,10 @@ class _HomePageState extends State<HomePage> {
                           right: 20,
                           child: Align(
                             alignment: Alignment.bottomRight,
-                            child: GetBuilder<BottomController>(
-                                builder: (controller) {
+                            child: GetBuilder<BottomController>(builder: (controller) {
                               return CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.18,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.033,
+                                height: MediaQuery.of(context).size.height * 0.033,
                                 title: "Join",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -446,8 +431,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
                                   controller.getIndex(0);
-                                  controller.setSelectedScreen(true,
-                                      screenName: SubscriptionScreen());
+                                  controller.setSelectedScreen(true, screenName: SubscriptionScreen());
                                 },
                               );
                             }),
@@ -484,21 +468,15 @@ class _HomePageState extends State<HomePage> {
                   //   :
                   data.nearbyGymList.isEmpty
                       ? SizedBox(
-                          height: 100,
-                          child: Center(
-                              child: Text("Nearby gyms not found",
-                                  textAlign: TextAlign.center)))
+                          height: 100, child: Center(child: Text("Nearby gyms not found", textAlign: TextAlign.center)))
                       : ListView.builder(
                           cacheExtent: 9999,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: data.nearbyGymList.length < 4
-                              ? data.nearbyGymList.length
-                              : 3,
+                          itemCount: data.nearbyGymList.length < 4 ? data.nearbyGymList.length : 3,
                           itemBuilder: (c, i) {
                             var gymData = data.nearbyGymList[i];
-                            return GetBuilder<BottomController>(
-                                builder: (controller) {
+                            return GetBuilder<BottomController>(builder: (controller) {
                               return GymTile(
                                 gymModel: gymData,
                                 onClick: () {

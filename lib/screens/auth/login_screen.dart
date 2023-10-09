@@ -14,11 +14,13 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../controller/auth_controllers/login_controller.dart';
 import '../../controller/map_controller.dart';
 import '../../custom_widgets/custom_btns/custom_button.dart';
 import '../../custom_widgets/custom_btns/icon_button.dart';
+import '../../custom_widgets/dialog/custom_dialog.dart';
 import '../../utils/my_color.dart';
 import '../../utils/my_images.dart';
 
@@ -44,6 +46,33 @@ class _LoginScreenState extends State<LoginScreen> {
   final auth = FirebaseAuth.instance;
   final loginController = Get.put(LoginController());
   bool logout = false;
+  // getData() async {
+  //   var oldVersion = await loginController.checkVersion(context);
+  //   if (oldVersion == true) {
+  //     showDialog(
+  //         context: context,
+  //         barrierDismissible: false,
+  //         builder: (context) {
+  //           print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
+  //           return CustomDialogForUpdate(
+  //             title: "Update is required to use this application",
+  //             label1: "Update",
+  //             // label2: "Cancel",
+  //
+  //             onTap: () {
+  //               launchUrl(Uri.parse(Platform.isAndroid
+  //                   ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
+  //                   : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
+  //             },
+  //           );
+  //         });
+  //   }
+  // }
+  @override
+  void initState() {
+    // getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // } else {
             // push(context: context, screen: IntroScreen());
             // Navigator.push(context, MaterialPageRoute(builder: (_) => IntroScreen()));
-            Navigator.pop(
-                context,
-                PageTransition(
-                    child: IntroScreen(),
-                    type: PageTransitionType.leftToRight));
+            Navigator.pop(context, PageTransition(child: IntroScreen(), type: PageTransitionType.leftToRight));
             // }
             // snackbarKey.currentState?.hideCurrentSnackBar();
             phone.clear();
@@ -73,20 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
           // leadingImage: "",
           fontWeight: FontWeight.w900,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15.0, right: 15, bottom: 20, top: 10),
-                  child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 20, top: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -100,14 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 20),
                         Text(
                           "Login to continue",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 30),
                         Text(
                           "Phone number",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 5),
                         InternationalPhoneNumberInput(
@@ -139,8 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ignoreBlank: false,
                           // keyboardType: TextInputType.number,
                           keyboardType: Platform.isIOS
-                              ? TextInputType.numberWithOptions(
-                                  signed: true, decimal: true)
+                              ? TextInputType.numberWithOptions(signed: true, decimal: true)
                               : TextInputType.number,
                           formatInput: false,
                           initialValue: PhoneNumber(isoCode: isoCode),
@@ -195,19 +216,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //     isLogin: true,
                                 //   ));
                                 // }
-                                var loginToken =
-                                    await FirebaseMessaging.instance.getToken();
+                                var loginToken = await FirebaseMessaging.instance.getToken();
                                 Get.to(() => VerifyPhoneScreen(
                                       phone: phone.text,
                                       dialCode: dialCode,
                                       isLogin: true,
                                     ));
-                                SharedPreferences sharedpre =
-                                    await SharedPreferences.getInstance();
-                                sharedpre.setString(
-                                    "dailcode", dialCode.toString());
-                                sharedpre.setString("phonenumber",
-                                    phone.text.trim().toString());
+                                SharedPreferences sharedpre = await SharedPreferences.getInstance();
+                                sharedpre.setString("dailcode", dialCode.toString());
+                                sharedpre.setString("phonenumber", phone.text.trim().toString());
                                 print("Token:${loginToken}");
                                 /*  var login = await loginController.userLogin(
                                   phone.text,
@@ -253,10 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () async {
                                 // Navigator.pop(context);
                                 snackbarKey.currentState?.hideCurrentSnackBar();
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => SignUpScreen()));
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
                                 // push(
                                 //     context: context,
                                 //     screen: SignUpScreen(
@@ -266,10 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Text(
                                 " Sign up",
-                                style: TextStyle(
-                                    color: MyColors.orange,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                style: TextStyle(color: MyColors.orange, fontSize: 16, fontWeight: FontWeight.w500),
                               ),
                             ),
                           ],
@@ -280,8 +291,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

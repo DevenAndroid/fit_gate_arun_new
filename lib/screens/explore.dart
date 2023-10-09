@@ -405,8 +405,11 @@ class _GymTileState extends State<GymTile> {
                 Expanded(
                   flex: 0,
                   child: Text(
-                    widget.gymModel.sub_user_type == "pro" ? "Pro" : "Free",
-                    style: TextStyle(color: widget.gymModel.sub_user_type == "pro" ? MyColors.orange : MyColors.grey),
+                    widget.gymModel.sub_user_type == "free" || widget.gymModel.classType == "sapphire" ? "Free" : "Pro",
+                    style: TextStyle(
+                        color: widget.gymModel.sub_user_type == "free" || widget.gymModel.classType == "sapphire"
+                            ? MyColors.grey
+                            : MyColors.orange),
                   ),
                 ),
               ],

@@ -38,58 +38,38 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final loginCon = Get.put(LoginController());
   final mapController = Get.put(MapController());
-  final activePlan = Get.put(SubscriptionController());
+  // final activePlan = Get.put(SubscriptionController());
   var auth = FirebaseAuth.instance.authStateChanges();
 
   checkUser() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String appName = packageInfo.appName;
-    String packageName = packageInfo.packageName;
-    String version = packageInfo.version;
-    String buildNumber = packageInfo.buildNumber;
+    var oldVersion = await loginCon.checkVersion(context);
 
-    print("Platform");
-    print(Platform.isAndroid ? "and" : "ios");
-
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('version')
-        .doc(Platform.isAndroid ? "and" : "ios")
-        .get()
-        .catchError((onError) {
-      print("here is the error" + onError);
-    });
-    print("$appName, $packageName, $version, $buildNumber");
-
-    String liveVersion = snapshot.get('version').toString();
-    String updateVersion = snapshot.get('updateVersion').toString();
-
-    if (liveVersion != version && updateVersion != version) {
-      print("Need to update");
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) {
-            print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
-            return CustomDialogForUpdate(
-              title: "Update is required to use this application",
-              label1: "Update",
-              // label2: "Cancel",
-
-              onTap: () {
-                launchUrl(Uri.parse(Platform.isAndroid
-                    ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
-                    : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
-              },
-              /* cancel: () {
-                Navigator.of(context).pop();
-                Get.back();
-              },*/
-            );
-          });
+    if (oldVersion == true) {
+      showUpdateDialog(context);
     } else {
       SharedPreferences pref = await SharedPreferences.getInstance();
       var data = jsonDecode(pref.getString('isLogin').toString());
       log("^^^^^^^^^^^ $data");
+
+      // if (oldVersion == true) {
+      //   showDialog(
+      //       context: context,
+      //       barrierDismissible: false,
+      //       builder: (context) {
+      //         print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
+      //         return CustomDialogForUpdate(
+      //           title: "Update is required to use this application",
+      //           label1: "Update",
+      //           // label2: "Cancel",
+      //
+      //           onTap: () {
+      //             launchUrl(Uri.parse(Platform.isAndroid
+      //                 ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
+      //                 : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
+      //           },
+      //         );
+      //       });
+      // } else {
       if (data != null) {
         // await mapController.getCurrentLocation();
         UserModel setData = UserModel.fromJson(data);
@@ -101,13 +81,12 @@ class _SplashScreenState extends State<SplashScreen> {
         //       await jsonDecode(pref.getString('isActivated').toString()));
         //   Global.activeSubscriptionModel = activeData;
         // }
-        if (FirebaseAuth.instance.currentUser!.displayName.toString() !=
-            "true") {
+        if (FirebaseAuth.instance.currentUser!.displayName.toString() != "true") {
           Get.offAll(() => UserInfoScreen());
           return;
         }
         await mapController.getCurrentLocation();
-        mapController.getLocation1();
+        await mapController.getLocation1();
 
         await Future.wait<void>([
           loginCon.getUserById(),
@@ -118,11 +97,16 @@ class _SplashScreenState extends State<SplashScreen> {
             isCurrentLocation: true,
             lat: mapController.currentLatitude.toString(),
             lon: mapController.currentLongitude.toString(),
-            // lat: 26.4334567.toString(),
-            // lon: 50.5327707.toString(),
+            // lat: 25.989668.toString(),
+            // lon: 50.560894.toString(),
           ),
         ]);
-
+        print('SPLASH ${mapController.currentLongitude}');
+        print('${mapController.currentLatitude}');
+        // // if (oldVersion == true) {
+        // //   showUpdateDialog(context);
+        // // }
+        // else {
         if (Global.userModel?.deleteStatus == '1') {
           Timer(Duration(seconds: 0), () {
             Get.off(() => LoginScreen());
@@ -136,32 +120,35 @@ class _SplashScreenState extends State<SplashScreen> {
             //     (route) => false);
           });
         }
+        // }
       } else {
         Get.offAll(() => IntroScreen());
       }
-      // else if (delete == true) {
-      //   print("SPLASH DELETE ==========  $delete");
-      //   Timer(Duration(seconds: 0), () {
-      //     Get.off(() => LoginScreen());
-      //   });
-      // } else if (logout == true) {
-      //   Timer(Duration(seconds: 0), () {
-      //     Get.off(() => LoginScreen());
-      //   });
-      // } else if (skip == true) {
-      //   Get.off(() => BottomNavigationScreen());
-      // } else {
-      //   if (info == true) {
-      //     Timer(Duration(seconds: 1), () {
-      //       Get.off(() => SignUpScreen());
-      //     });
-      //   } else {
-      //     Timer(Duration(seconds: 1), () {
-      //       Get.off(() => InfoPage());
-      //     });
-      //   }
-      // }
     }
+    // }
+    // else if (delete == true) {
+    //   print("SPLASH DELETE ==========  $delete");
+    //   Timer(Duration(seconds: 0), () {
+    //     Get.off(() => LoginScreen());
+    //   });
+    // } else if (logout == true) {
+    //   Timer(Duration(seconds: 0), () {
+    //     Get.off(() => LoginScreen());
+    //   });
+    // } else if (skip == true) {
+    //   Get.off(() => BottomNavigationScreen());
+    // } else {
+    //   if (info == true) {
+    //     Timer(Duration(seconds: 1), () {
+    //       Get.off(() => SignUpScreen());
+    //     });
+    //   } else {
+    //     Timer(Duration(seconds: 1), () {
+    //       Get.off(() => InfoPage());
+    //     });
+    //   }
+    // }
+    // }
   }
 
   @override

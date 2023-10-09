@@ -16,6 +16,8 @@ import '../../screens/auth/secondpage.dart';
 
 class RegisterController extends GetxController {
   var auth = FirebaseAuth.instance;
+  final mapController = Get.put(MapController());
+
   regUser(
     context, {
     String? phone,
@@ -27,12 +29,10 @@ class RegisterController extends GetxController {
   }) async {
     try {
       print("TRYYYYYYYY ------");
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId!, smsCode: code!);
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId!, smsCode: code!);
       await auth.signInWithCredential(credential).then((value) async {
         if (value.user != null) {
-          await registerApiCall(
-              phone, context, companyId, fcmToken, countryCode);
+          await registerApiCall(phone, context, companyId, fcmToken, countryCode);
         } else {
           // Navigator.pushAndRemoveUntil(
           //     context,
@@ -76,18 +76,16 @@ class RegisterController extends GetxController {
         loading(value: false);
         Global.userModel = UserModel.fromJson(parsedData['data']);
         pref.setString('isLogin', jsonEncode(parsedData['data']));
-        await MapController().getGym();
-        await MapController().getFilterData(
+        await mapController.getCurrentLocation();
+        await mapController.getGym();
+        await mapController.getFilterData(
           isCurrentLocation: true,
-          lat: MapController().currentLatitude.toString(),
-          lon: MapController().currentLongitude.toString(),
+          lat: mapController.currentLatitude.toString(),
+          lon: mapController.currentLongitude.toString(),
           // lat: 26.4334567.toString(),
           // lon: 50.5327707.toString(),
         );
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => UserInfoScreen()),
-            (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => UserInfoScreen()), (route) => false);
       }
     } catch (e) {
       loading(value: false);

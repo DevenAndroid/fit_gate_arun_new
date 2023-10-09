@@ -1,20 +1,26 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_gate/controller/map_controller.dart';
+import 'package:fit_gate/custom_widgets/dialog/custom_dialog.dart';
 import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/utils/database_helper.dart';
 import 'package:fit_gate/utils/end_points.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/user_model.dart';
 
 class LoginController extends GetxController {
   var auth = FirebaseAuth.instance;
+  final mapController = Get.put(MapController());
 
   // var checkPhone;
   Future<bool> userLogin(String? phone, String? fcmToken) async {
@@ -33,15 +39,16 @@ class LoginController extends GetxController {
       loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
-
-      await MapController().getFilterData(
+      await mapController.getCurrentLocation();
+      await mapController.getFilterData(
         isCurrentLocation: true,
-        lat: 25.989668.toString(),
-        lon: 50.560894.toString(),
-        // lat: 26.4334567.toString(),
-        // lon: 50.5327707.toString(),
+        lat: mapController.currentLatitude.toString(),
+        lon: mapController.currentLongitude.toString(),
+        // lat: 25.989668.toString(),
+        // lon: 50.560894.toString(),
       );
-
+      print('AFTER LOGIN ${mapController.currentLongitude}');
+      print('${mapController.currentLatitude}');
       update();
       return true;
     } else {
@@ -101,6 +108,45 @@ class LoginController extends GetxController {
       update();
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> checkVersion(BuildContext context) async {
+    // loading(value: true);
+    http.Response response = await http.get(
+      Uri.parse(EndPoints.getVersions),
+      headers: await header,
+    );
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String version = packageInfo.version;
+
+    var parsedData = jsonDecode(response.body);
+    var pref = await SharedPreferences.getInstance();
+    print('CURRENT VERSION $version');
+    print('UPGRADE VERSION ${parsedData['data'][0]['upgrade_android_version']}');
+    if (parsedData['statusCode'] == 200) {
+      // loading(value: false);
+      if (Platform.isAndroid) {
+        if (parsedData['data'][0]['upgrade_android_version'] != version &&
+            parsedData['data'][0]['current_android_version'] != version) {
+          // await pref.remove('isLogin');
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        if (parsedData['data'][0]['upgrade_ios_version'] != version &&
+            parsedData['data'][0]['current_ios_version'] != version) {
+          // await pref.remove('isLogin');
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      // loading(value: false);
       return false;
     }
   }

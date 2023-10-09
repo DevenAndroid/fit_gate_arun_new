@@ -9,6 +9,7 @@ class EndPoints {
   static String registration = "${baseUrl}registration";
   static String getUserById = "${baseUrl}get_user_by_id";
   static String deleteUser = "${baseUrl}deleteUser";
+  static String getVersions = "${baseUrl}get_versions";
 
   ///checkUser
   ///

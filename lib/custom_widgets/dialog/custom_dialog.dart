@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../screens/auth/login_screen.dart';
 import '../../utils/my_color.dart';
@@ -49,10 +52,7 @@ class CustomDialog extends StatelessWidget {
               child: Text(
                 "$title",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: MyColors.black),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyColors.black),
               ),
             ),
             Spacer(),
@@ -141,10 +141,7 @@ class CustomDialogForUpdate extends StatelessWidget {
               child: Text(
                 "$title",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: MyColors.black),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyColors.black),
               ),
             ),
             Spacer(),
@@ -182,4 +179,24 @@ class CustomDialogForUpdate extends StatelessWidget {
       return false;
     }
   }*/
+}
+
+showUpdateDialog(BuildContext context) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
+        return CustomDialogForUpdate(
+          title: "Update is required to use this application",
+          label1: "Update",
+          // label2: "Cancel",
+
+          onTap: () {
+            launchUrl(Uri.parse(Platform.isAndroid
+                ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
+                : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
+          },
+        );
+      });
 }
