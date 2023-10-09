@@ -16,6 +16,7 @@ class CustomDialog extends StatelessWidget {
   final String? label2;
   final String? status;
   final String? title;
+  final Color? buttonOneColor;
   CustomDialog(
       {Key? key,
       this.isAdmin,
@@ -24,7 +25,8 @@ class CustomDialog extends StatelessWidget {
       this.label2,
       this.title,
       this.cancel,
-      this.status})
+      this.status,
+      this.buttonOneColor})
       : super(key: key);
 
   @override
@@ -71,8 +73,94 @@ class CustomDialog extends StatelessWidget {
                     height: 40,
                     width: 110,
                     title: label1 ?? "Yes",
+                    bgColor: buttonOneColor,
+                    borderColor: buttonOneColor,
                   ),
                   Spacer(),
+                ],
+              ),
+            ),
+            Spacer()
+          ],
+        ),
+      ),
+    );
+  }
+
+/*  bool? isLogout = false;
+  logOut() async {
+    var pref = await SharedPreferences.getInstance();
+    if (isLogout = true) {
+      await pref.remove("isLogin");
+      await pref.remove("isAdminLogin");
+      return true;
+    } else {
+      return false;
+    }
+  }*/
+}
+
+class CustomDialogForUpdate extends StatelessWidget {
+  final bool? isAdmin;
+  final VoidCallback? onTap;
+  final VoidCallback? cancel;
+  final String? label1;
+  final String? label2;
+  final String? status;
+  final String? title;
+  final Color? buttonOneColor;
+  CustomDialogForUpdate(
+      {Key? key,
+      this.isAdmin,
+      this.onTap,
+      this.label1,
+      this.label2,
+      this.title,
+      this.cancel,
+      this.status,
+      this.buttonOneColor})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      insetPadding: EdgeInsets.all(10),
+      backgroundColor: MyColors.white,
+      child: SizedBox(
+        height: size.height * 0.20,
+        width: size.width * 0.25,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                "$title",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: MyColors.black),
+              ),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomButton(
+                    onTap: onTap,
+                    height: 40,
+                    width: 110,
+                    title: label1 ?? "Yes",
+                    bgColor: buttonOneColor,
+                    borderColor: buttonOneColor,
+                  ),
                 ],
               ),
             ),

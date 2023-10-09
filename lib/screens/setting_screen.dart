@@ -14,6 +14,7 @@ import 'package:fit_gate/global_functions.dart';
 import 'package:fit_gate/screens/auth/login_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/account_screen.dart';
 import 'package:fit_gate/screens/bottom_bar_screens/bottom_naviagtion_screen.dart';
+import 'package:fit_gate/screens/splash_screen.dart';
 import 'package:fit_gate/utils/my_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -101,32 +102,46 @@ class _SettingScreenState extends State<SettingScreen> {
     loading(value: false);
     if (Global.userModel?.phoneNumber != null) {
       if (Global.userModel?.name != null) {
-        name.text = (Global.userModel!.name == null ? "" : Global.userModel!.name!);
-        lName.text = (Global.userModel!.lastName == null ? "" : Global.userModel!.lastName!);
-        mName.text = (Global.userModel!.middleName == null ? "" : Global.userModel!.middleName!);
+        name.text =
+            (Global.userModel!.name == null ? "" : Global.userModel!.name!);
+        lName.text = (Global.userModel!.lastName == null
+            ? ""
+            : Global.userModel!.lastName!);
+        mName.text = (Global.userModel!.middleName == null
+            ? ""
+            : Global.userModel!.middleName!);
         updateNew();
         gender = Global.userModel!.gender;
-        email.text = (Global.userModel!.email == null ? "" : Global.userModel!.email!);
+        email.text =
+            (Global.userModel!.email == null ? "" : Global.userModel!.email!);
         dropdownValue = Global.userModel?.subscriptionPlan;
         imgController.imgUrl = Global.userModel?.avatar;
         if (mounted) {
           setState(() {});
         }
-        print("IMAGEURLLLLLL ---------- IFFFF +++++++++++++++     ${imgController.imgUrl}");
+        print(
+            "IMAGEURLLLLLL ---------- IFFFF +++++++++++++++     ${imgController.imgUrl}");
       } else {
         SharedPreferences pref = await SharedPreferences.getInstance();
         await loginController.getUserById();
-        name.text = (Global.userModel!.name == null ? "" : Global.userModel!.name!);
-        lName.text = (Global.userModel!.lastName == null ? "" : Global.userModel!.lastName!);
-        mName.text = (Global.userModel!.middleName == null ? "" : Global.userModel!.middleName!);
+        name.text =
+            (Global.userModel!.name == null ? "" : Global.userModel!.name!);
+        lName.text = (Global.userModel!.lastName == null
+            ? ""
+            : Global.userModel!.lastName!);
+        mName.text = (Global.userModel!.middleName == null
+            ? ""
+            : Global.userModel!.middleName!);
         updateNew();
         gender = Global.userModel!.gender;
-        email.text = (Global.userModel!.email == null ? "" : Global.userModel!.email!);
+        email.text =
+            (Global.userModel!.email == null ? "" : Global.userModel!.email!);
         var turnOnNotification = await pref.getBool('isNotifyOn');
         turnOnNotification == false ? notify = false : notify = true;
         print("TURNNNNN ONNNNNNNNNN -------------     ${turnOnNotification}");
         imgController.imgUrl = Global.userModel?.avatar;
-        print("IMAGEURLLLLLL ---------- ELSEEEEE +++++++++++++++     ${imgController.imgUrl}");
+        print(
+            "IMAGEURLLLLLL ---------- ELSEEEEE +++++++++++++++     ${imgController.imgUrl}");
         setState(() {});
       }
     }
@@ -162,7 +177,8 @@ class _SettingScreenState extends State<SettingScreen> {
       onWillPop: () {
         bottomController.getIndex(3);
 
-        return bottomController.setSelectedScreen(true, screenName: AccountScreen());
+        return bottomController.setSelectedScreen(true,
+            screenName: AccountScreen());
       },
       child: SafeArea(
           child: Scaffold(
@@ -170,13 +186,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   title: "Setting",
                   actionIcon: Icons.check,
                   onTap: () {
-                    bottomController.setSelectedScreen(true, screenName: AccountScreen());
+                    bottomController.setSelectedScreen(true,
+                        screenName: AccountScreen());
                     Get.to(() => BottomNavigationScreen());
                   },
                   actionIconOnTap: () async {
-                    if (email.text.isNotEmpty && Global.userModel?.phoneNumber == null) {
+                    if (email.text.isNotEmpty &&
+                        Global.userModel?.phoneNumber == null) {
                       print("object");
-                      if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(email.text)) {
                         showToast("Please enter valid email");
                       }
@@ -193,7 +212,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     // }
                     else {
                       if (!formKey.currentState!.validate()) return;
-                      SharedPreferences pref = await SharedPreferences.getInstance();
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
                       print("${phone.text.isNotEmpty}");
 
                       profileController.addProfile(
@@ -235,29 +255,40 @@ class _SettingScreenState extends State<SettingScreen> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        CustomCameraSheet().cameraBottomSheet(context);
+                                        CustomCameraSheet()
+                                            .cameraBottomSheet(context);
 
                                         print(cont.imgUrl);
                                       },
-                                      child: cont.imgUrl == null && Global.userModel?.avatar == null
-                                          ? CustomCircleAvatar(image: AssetImage("assets/images/1.png"))
+                                      child: cont.imgUrl == null &&
+                                              Global.userModel?.avatar == null
+                                          ? CustomCircleAvatar(
+                                              image: AssetImage(
+                                                  "assets/images/1.png"))
                                           : CachedNetworkImage(
-                                              imageBuilder: (context, imageProvider) => CircleAvatar(
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      CircleAvatar(
                                                 radius: 45,
                                                 backgroundImage: imageProvider,
                                               ),
-                                              placeholder: (c, url) => CircleAvatar(
-                                                backgroundColor: Colors.transparent,
+                                              placeholder: (c, url) =>
+                                                  CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 45,
                                                 child: Center(
-                                                  child: CircularProgressIndicator(
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     strokeWidth: 2.5,
                                                     color: MyColors.orange,
                                                   ),
                                                 ),
                                               ),
-                                              imageUrl: "${imgController.imgUrl}",
-                                              errorWidget: (c, u, r) => Container(),
+                                              imageUrl:
+                                                  "${imgController.imgUrl}",
+                                              errorWidget: (c, u, r) =>
+                                                  Container(),
                                             ),
                                       // CustomCircleAvatar(
                                       //         image: NetworkImage(
@@ -268,7 +299,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                         left: 67,
                                         child: Container(
                                           padding: EdgeInsets.all(3.5),
-                                          decoration: BoxDecoration(color: MyColors.orange, shape: BoxShape.circle),
+                                          decoration: BoxDecoration(
+                                              color: MyColors.orange,
+                                              shape: BoxShape.circle),
                                           child: Icon(
                                             Icons.camera_alt_outlined,
                                             size: 13,
@@ -325,7 +358,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               onTap: () {
                                 pickDate(onPick: (DateTime gg) {
                                   dateOfBirth = gg;
-                                  dobController.text = DateFormat("yyyy-MM-dd").format(gg);
+                                  dobController.text =
+                                      DateFormat("yyyy-MM-dd").format(gg);
                                   setState(() {});
                                 });
                               },
@@ -350,32 +384,44 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(height: 7),
                             Text(
                               "Country",
-                              style: TextStyle(color: MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: MyColors.grey,
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 1.5),
                             DropdownButtonFormField(
-                                value: selectedCountry.isEmpty ? null : selectedCountry,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                value: selectedCountry.isEmpty
+                                    ? null
+                                    : selectedCountry,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   if (selectedCountry.isEmpty) {
                                     return "Please select country";
                                   }
                                   return null;
                                 },
-                                items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                                items: items
+                                    .map((e) => DropdownMenuItem(
+                                        value: e, child: Text(e)))
+                                    .toList(),
                                 decoration: InputDecoration(
                                   counterText: "",
                                   prefixIcon: Icon(
                                     Icons.outlined_flag_rounded,
                                     color: Colors.grey,
                                   ),
-                                  contentPadding: EdgeInsets.only(left: 15, top: 20, bottom: 10, right: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 15, top: 20, bottom: 10, right: 10),
                                   fillColor: Colors.transparent,
                                   filled: true,
                                   isDense: true,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    borderSide: BorderSide(color: MyColors.grey, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey, width: 1.5),
                                   ),
                                   hintText: "Select Country",
                                   hintStyle: TextStyle(
@@ -384,16 +430,24 @@ class _SettingScreenState extends State<SettingScreen> {
                                     fontSize: 15,
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.orange, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.orange, width: 1.5),
                                   ),
                                 ),
                                 onChanged: (value) {
@@ -406,16 +460,23 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(height: 7),
                             Text(
                               "Area",
-                              style: TextStyle(color: MyColors.grey, fontSize: 13.5, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: MyColors.grey,
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 1.5),
                             if (selectedCountry == "Bahrain")
                               DropdownButtonFormField(
-                                key: ValueKey(DateTime.now().millisecondsSinceEpoch),
-                                value: selectedArea.isEmpty ? null : selectedArea,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                key: ValueKey(
+                                    DateTime.now().millisecondsSinceEpoch),
+                                value:
+                                    selectedArea.isEmpty ? null : selectedArea,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 icon: const Icon(Icons.keyboard_arrow_down),
-                                items: Bahrain.map((e) => e.trim()).map((String items) {
+                                items: Bahrain.map((e) => e.trim())
+                                    .map((String items) {
                                   return DropdownMenuItem(
                                     value: items,
                                     child: Text(items),
@@ -439,13 +500,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                     Icons.outlined_flag_rounded,
                                     color: Colors.grey,
                                   ),
-                                  contentPadding: EdgeInsets.only(left: 15, top: 20, bottom: 10, right: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 15, top: 20, bottom: 10, right: 10),
                                   fillColor: Colors.transparent,
                                   filled: true,
                                   isDense: true,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    borderSide: BorderSide(color: MyColors.grey, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey, width: 1.5),
                                   ),
                                   hintText: "Select Area",
                                   hintStyle: TextStyle(
@@ -454,24 +518,35 @@ class _SettingScreenState extends State<SettingScreen> {
                                     fontSize: 15,
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.orange, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.orange, width: 1.5),
                                   ),
                                 ),
                               ),
                             if (selectedCountry == "Saudi Arabia")
                               DropdownButtonFormField(
-                                key: ValueKey(DateTime.now().millisecondsSinceEpoch),
-                                value: selectedArea.isEmpty ? null : selectedArea,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                key: ValueKey(
+                                    DateTime.now().millisecondsSinceEpoch),
+                                value:
+                                    selectedArea.isEmpty ? null : selectedArea,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 icon: const Icon(Icons.keyboard_arrow_down),
                                 validator: (value) {
                                   if (selectedArea.isEmpty) {
@@ -479,7 +554,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   }
                                   return null;
                                 },
-                                items: SaudiArabia.map((e) => e.trim()).map((String items) {
+                                items: SaudiArabia.map((e) => e.trim())
+                                    .map((String items) {
                                   return DropdownMenuItem(
                                     value: items,
                                     child: Text(items),
@@ -496,13 +572,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                     Icons.outlined_flag_rounded,
                                     color: Colors.grey,
                                   ),
-                                  contentPadding: EdgeInsets.only(left: 15, top: 20, bottom: 10, right: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 15, top: 20, bottom: 10, right: 10),
                                   fillColor: Colors.transparent,
                                   filled: true,
                                   isDense: true,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    borderSide: BorderSide(color: MyColors.grey, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey, width: 1.5),
                                   ),
                                   hintText: "Select Area",
                                   hintStyle: TextStyle(
@@ -511,16 +590,24 @@ class _SettingScreenState extends State<SettingScreen> {
                                     fontSize: 15,
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.grey.withOpacity(.40), width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.grey.withOpacity(.40),
+                                        width: 1.5),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                                    borderSide: BorderSide(color: MyColors.orange, width: 1.5),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(7)),
+                                    borderSide: BorderSide(
+                                        color: MyColors.orange, width: 1.5),
                                   ),
                                 ),
                               ),
@@ -536,13 +623,23 @@ class _SettingScreenState extends State<SettingScreen> {
                                       prefixIcon: MyImages.email,
                                       keyboardType: TextInputType.emailAddress,
                                       controller: email,
-                                      hintColor:
-                                          Global.userModel?.emailVerifyStatus == '1' ? MyColors.black : MyColors.grey,
-                                      hint: Global.userModel?.emailVerifyStatus == '1'
-                                          ? Global.userModel?.email ?? "Enter your email"
-                                          : "Enter your email",
+                                      hintColor: Global.userModel
+                                                  ?.emailVerifyStatus ==
+                                              '1'
+                                          ? MyColors.black
+                                          : MyColors.grey,
+                                      hint:
+                                          Global.userModel?.emailVerifyStatus ==
+                                                  '1'
+                                              ? Global.userModel?.email ??
+                                                  "Enter your email"
+                                              : "Enter your email",
                                       label: "Email",
-                                      readOnly: Global.userModel?.emailVerifyStatus == '1' ? true : false,
+                                      readOnly:
+                                          Global.userModel?.emailVerifyStatus ==
+                                                  '1'
+                                              ? true
+                                              : false,
                                       onChanged: (newText) async {
                                         txt = newText;
                                         setState(() {});
@@ -563,7 +660,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 shape: BoxShape.circle,
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.all(4.0),
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
                                                 child: Icon(
                                                   Icons.check,
                                                   color: MyColors.white,
@@ -572,19 +670,25 @@ class _SettingScreenState extends State<SettingScreen> {
                                               ),
                                             )
                                           : CustomButton(
-                                              height: MediaQuery.of(context).size.height * 0.035,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.035,
                                               title: "Verify",
                                               fontSize: 13.5,
                                               fontColor: MyColors.white,
                                               bgColor: MyColors.orange,
-                                              borderRadius: BorderRadius.circular(10),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                               onTap: () async {
                                                 if (email.text.isEmpty) {
-                                                  showToast("Please enter email");
+                                                  showToast(
+                                                      "Please enter email");
                                                 } else if (!RegExp(
                                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                     .hasMatch(email.text)) {
-                                                  showToast("please enter valid email");
+                                                  showToast(
+                                                      "please enter valid email");
                                                 } else {
                                                   // if (((name.text.isNotEmpty &&
                                                   //             mName.text
@@ -663,27 +767,41 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   // }
                                                   profileController.addProfile(
                                                     isEmail: true,
-                                                    name: name.text.isEmpty ? Global.userModel?.name : name.text,
+                                                    name: name.text.isEmpty
+                                                        ? Global.userModel?.name
+                                                        : name.text,
                                                     email: email.text,
-                                                    dob: dobController.text.trim(),
-                                                    country_name: selectedCountry,
+                                                    dob: dobController.text
+                                                        .trim(),
+                                                    country_name:
+                                                        selectedCountry,
                                                     area: selectedArea,
-                                                    mName:
-                                                        mName.text.isEmpty ? Global.userModel?.middleName : mName.text,
-                                                    lName: lName.text.isEmpty ? Global.userModel?.lastName : lName.text,
+                                                    mName: mName.text.isEmpty
+                                                        ? Global.userModel
+                                                            ?.middleName
+                                                        : mName.text,
+                                                    lName: lName.text.isEmpty
+                                                        ? Global
+                                                            .userModel?.lastName
+                                                        : lName.text,
                                                     gender: gender,
-                                                    avatar: imgController.imgUrl,
+                                                    avatar:
+                                                        imgController.imgUrl,
                                                   );
-                                                  emailVerifyController.sendEmailVerification(
+                                                  emailVerifyController
+                                                      .sendEmailVerification(
                                                     email: email.text,
-                                                    userId: Global.userModel?.id.toString(),
+                                                    userId: Global.userModel?.id
+                                                        .toString(),
                                                   );
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
-                                                          builder: (_) => VerifyPhoneScreen(
+                                                          builder: (_) =>
+                                                              VerifyPhoneScreen(
                                                                 isEmail: true,
-                                                                email: email.text,
+                                                                email:
+                                                                    email.text,
                                                               )),
                                                       (route) => false);
                                                 }
@@ -700,16 +818,23 @@ class _SettingScreenState extends State<SettingScreen> {
                               children: [
                                 Text(
                                   "Notification",
-                                  style: TextStyle(color: MyColors.black, fontSize: 16, fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                      color: MyColors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 Switch(
                                   onChanged: (val) async {
-                                    var pref = await SharedPreferences.getInstance();
+                                    var pref =
+                                        await SharedPreferences.getInstance();
                                     notify = val;
                                     notify == false
-                                        ? await pref.setBool('isNotifyOn', false)
-                                        : await pref.setBool('isNotifyOn', true);
-                                    print("NOTIFICATIONNNNN    VALLlll    $notify");
+                                        ? await pref.setBool(
+                                            'isNotifyOn', false)
+                                        : await pref.setBool(
+                                            'isNotifyOn', true);
+                                    print(
+                                        "NOTIFICATIONNNNN    VALLlll    $notify");
                                     setState(() {});
                                   },
                                   value: notify,
@@ -723,7 +848,10 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(height: 10),
                             Text(
                               "Gender",
-                              style: TextStyle(color: MyColors.grey, fontSize: 14.5, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: MyColors.grey,
+                                  fontSize: 14.5,
+                                  fontWeight: FontWeight.w500),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -772,8 +900,11 @@ class _SettingScreenState extends State<SettingScreen> {
                             SizedBox(height: 10),
                             CustomAboutCard(
                               onTap: () async {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (_) => launchWebView("https://www.fitgate.live/")));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => launchWebView(
+                                            "https://www.fitgate.live/")));
                               },
                               title: "About Us",
                               icon: MyImages.aboutUs,
@@ -802,22 +933,32 @@ class _SettingScreenState extends State<SettingScreen> {
                                       showDialog(
                                           context: context,
                                           builder: (_) => CustomDialog(
-                                                title: "Are sure you want to logout?",
+                                                title:
+                                                    "Are sure you want to logout?",
                                                 label1: "Yes",
                                                 label2: "No",
                                                 cancel: () {
                                                   Get.back();
                                                 },
                                                 onTap: () async {
-                                                  await FirebaseAuth.instance.signOut();
-                                                  var pref = await SharedPreferences.getInstance();
-                                                  await pref.setBool("isLogout", true);
+                                                  await FirebaseAuth.instance
+                                                      .signOut();
+                                                  var pref =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  await pref.setBool(
+                                                      "isLogout", true);
                                                   await pref.remove('isLogin');
-                                                  await pref.remove('isActivated');
+                                                  await pref
+                                                      .remove('isActivated');
                                                   Global.userModel = null;
-                                                  Global.activeSubscriptionModel = null;
+                                                  Global.activeSubscriptionModel =
+                                                      null;
                                                   bottomController.resetIndex();
-                                                  push(context: context, screen: LoginScreen(), pushUntil: true);
+                                                  push(
+                                                      context: context,
+                                                      screen: SplashScreen(),
+                                                      pushUntil: true);
                                                 },
                                               ));
                                     },
@@ -830,7 +971,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                     ),
                                     icon: Icons.logout,
                                     iconSize: 16,
-                                    height: MediaQuery.of(context).size.height * 0.06,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
                                     title: "Log Out",
                                     borderRadius: BorderRadius.circular(10),
                                     img: MyImages.logOut,
@@ -839,7 +981,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 SizedBox(width: 20),
                                 Expanded(
                                   flex: 4,
-                                  child: GetBuilder<DeleteUserController>(builder: (controller) {
+                                  child: GetBuilder<DeleteUserController>(
+                                      builder: (controller) {
                                     return CustomJoinFitCard(
                                       onClick: () async {
                                         chooseOption = 2;
@@ -847,23 +990,32 @@ class _SettingScreenState extends State<SettingScreen> {
                                         showDialog(
                                             context: context,
                                             builder: (_) => CustomDialog(
-                                                  title: "Are sure you want to delete account?",
+                                                  title:
+                                                      "Are sure you want to delete account?",
                                                   label1: "Yes",
                                                   label2: "No",
                                                   cancel: () {
                                                     Get.back();
                                                   },
                                                   onTap: () async {
-                                                    var delete = await deleteUserController.deleteUser(
-                                                      Global.userModel?.id.toString(),
+                                                    var delete =
+                                                        await deleteUserController
+                                                            .deleteUser(
+                                                      Global.userModel?.id
+                                                          .toString(),
                                                     );
                                                     if (delete == true) {
-                                                      var pref = await SharedPreferences.getInstance();
-                                                      await pref.setBool("isDelete", true);
+                                                      var pref =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      await pref.setBool(
+                                                          "isDelete", true);
                                                       print("$delete");
                                                       Navigator.pushAndRemoveUntil(
                                                           context,
-                                                          MaterialPageRoute(builder: (_) => LoginScreen()),
+                                                          MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  LoginScreen()),
                                                           (route) => false);
                                                     }
                                                   },
@@ -878,7 +1030,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                         spreadRadius: 2,
                                         blurRadius: 24,
                                       ),
-                                      height: MediaQuery.of(context).size.height * 0.06,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.06,
                                       title: "Delete Account",
                                       borderRadius: BorderRadius.circular(10),
                                       img: MyImages.delete,

@@ -34,7 +34,8 @@ class _MapPageState extends State<MapPage> {
   final bottomController = Get.put(BottomController());
   TextEditingController search = TextEditingController();
   GoogleMapController? _googleMapController;
-  CustomInfoWindowController infoWindowController = CustomInfoWindowController();
+  CustomInfoWindowController infoWindowController =
+      CustomInfoWindowController();
   final homeScaffoldKey = GlobalKey<ScaffoldState>();
   Set<Marker> markers = {};
   List<MarkerList> list = [];
@@ -43,7 +44,9 @@ class _MapPageState extends State<MapPage> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
   void addCustomIcon() {
-    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)), "assets/pin.png").then(
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)), "assets/pin.png")
+        .then(
       (icon) {
         setState(() {
           markerIcon = icon;
@@ -60,8 +63,11 @@ class _MapPageState extends State<MapPage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
+          position: LatLng(
+              double.parse(
+                  mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(
+                  mapController.latLngList[i].addressLongitude!.toString())),
           //   icon: BitmapDescriptor.defaultMarker,
           icon: markerIcon,
           // infoWindow: InfoWindow(title: "", onTap: () {}),
@@ -79,19 +85,24 @@ class _MapPageState extends State<MapPage> {
                       true,
                       screenName: GymDetailsScreen(
                         index: i,
-                        gymDetailsModel: mapController.latLngList[i].gymDetailsModel,
+                        gymDetailsModel:
+                            mapController.latLngList[i].gymDetailsModel,
                       ),
                     );
                     Get.to(() => BottomNavigationScreen());
                   },
                 );
               }),
-              LatLng(double.parse(mapController.latLngList[i].addressLatitude.toString()),
-                  double.parse(mapController.latLngList[i].addressLongitude.toString())),
+              LatLng(
+                  double.parse(
+                      mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(
+                      mapController.latLngList[i].addressLongitude.toString())),
             );
           },
         );
-        if (mapController.latLngList[i].gymDetailsModel!.status == "accept") markers.add(marker);
+        if (mapController.latLngList[i].gymDetailsModel!.status == "accept")
+          markers.add(marker);
       }
     });
   }
@@ -106,9 +117,13 @@ class _MapPageState extends State<MapPage> {
   //   return position;
   // }
 
-  Future goToPlace({required latitude, required longitude, index, GymDetailsModel? gymDetailsModel}) async {
-    await _googleMapController
-        ?.animateCamera(CameraUpdate.newLatLngZoom(LatLng(double.parse(latitude), double.parse(longitude)), 16));
+  Future goToPlace(
+      {required latitude,
+      required longitude,
+      index,
+      GymDetailsModel? gymDetailsModel}) async {
+    await _googleMapController?.animateCamera(CameraUpdate.newLatLngZoom(
+        LatLng(double.parse(latitude), double.parse(longitude)), 16));
     // setState(() {
     //   var marker = MarkerList(Marker(
     //     markerId: MarkerId(id),
@@ -160,8 +175,11 @@ class _MapPageState extends State<MapPage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
+          position: LatLng(
+              double.parse(
+                  mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(
+                  mapController.latLngList[i].addressLongitude!.toString())),
           icon: markerIcon,
           infoWindow: InfoWindow(title: "", onTap: () {}),
           onTap: () {
@@ -188,7 +206,8 @@ class _MapPageState extends State<MapPage> {
                   },
                 );
               }),
-              LatLng(double.parse(latitude.toString()), double.parse(longitude.toString())),
+              LatLng(double.parse(latitude.toString()),
+                  double.parse(longitude.toString())),
             );
           },
         );
@@ -219,7 +238,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   void changeMapMode(GoogleMapController mapController) {
-    getJsonFile("assets/map_style.json").then((value) => setMapStyle(value, mapController));
+    getJsonFile("assets/map_style.json")
+        .then((value) => setMapStyle(value, mapController));
   }
 
   void setMapStyle(String mapStyle, GoogleMapController mapController) {
@@ -267,8 +287,11 @@ class _MapPageState extends State<MapPage> {
       for (int i = 0; i < mapController.latLngList.length; i++) {
         final marker = Marker(
           markerId: MarkerId("${mapController.latLngList[i].id}"),
-          position: LatLng(double.parse(mapController.latLngList[i].addressLatitude!.toString()),
-              double.parse(mapController.latLngList[i].addressLongitude!.toString())),
+          position: LatLng(
+              double.parse(
+                  mapController.latLngList[i].addressLatitude!.toString()),
+              double.parse(
+                  mapController.latLngList[i].addressLongitude!.toString())),
           icon: markerIcon,
           onTap: () {
             print("@@@@@@@@@@@@44");
@@ -287,15 +310,19 @@ class _MapPageState extends State<MapPage> {
                       true,
                       screenName: GymDetailsScreen(
                         index: i,
-                        gymDetailsModel: mapController.latLngList[i].gymDetailsModel,
+                        gymDetailsModel:
+                            mapController.latLngList[i].gymDetailsModel,
                       ),
                     );
                     Get.to(() => BottomNavigationScreen());
                   },
                 );
               }),
-              LatLng(double.parse(mapController.latLngList[i].addressLatitude.toString()),
-                  double.parse(mapController.latLngList[i].addressLongitude.toString())),
+              LatLng(
+                  double.parse(
+                      mapController.latLngList[i].addressLatitude.toString()),
+                  double.parse(
+                      mapController.latLngList[i].addressLongitude.toString())),
             );
           },
         );
@@ -354,7 +381,8 @@ class _MapPageState extends State<MapPage> {
                     _googleMapController = controller;
                     changeMapMode(_googleMapController!);
                     onMapCreated(_googleMapController!);
-                    print("GOOGLE MAP CONTROLLER -------> $_googleMapController");
+                    print(
+                        "GOOGLE MAP CONTROLLER -------> $_googleMapController");
                     // getMapLatLng(_googleMapController!);
                     infoWindowController.googleMapController = controller;
                     setState(() {});
@@ -400,11 +428,13 @@ class _MapPageState extends State<MapPage> {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: GetBuilder<BottomController>(builder: (bottomController) {
+                            child: GetBuilder<BottomController>(
+                                builder: (bottomController) {
                               return GestureDetector(
                                 onTap: () {
                                   search.clear();
-                                  bottomController.setSelectedScreen(true, screenName: Explore());
+                                  bottomController.setSelectedScreen(true,
+                                      screenName: Explore());
                                   Get.to(() => BottomNavigationScreen());
                                 },
                                 child: Container(
@@ -428,7 +458,8 @@ class _MapPageState extends State<MapPage> {
                           Expanded(
                             flex: 7,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 15.0, right: 15),
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, right: 15),
                               child: Focus(
                                 child: CustomTextField(
                                   controller: search,
@@ -440,7 +471,8 @@ class _MapPageState extends State<MapPage> {
                                     setState(() {
                                       searchText = val;
                                     });
-                                    mapController.getLocation(search: searchText);
+                                    mapController.getLocation(
+                                        search: searchText);
                                     print("00000000 $searchText");
                                   },
                                 ),
@@ -456,7 +488,8 @@ class _MapPageState extends State<MapPage> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: .0, left: 15, right: 15),
+                        padding:
+                            const EdgeInsets.only(top: .0, left: 15, right: 15),
                         child: search.text.isEmpty
                             ? SizedBox()
                             : ListView.builder(
@@ -475,14 +508,16 @@ class _MapPageState extends State<MapPage> {
                                               longitude: a.addressLongitude,
                                               gymDetailsModel: a);
                                       search.clear();
-                                      FocusManager.instance.primaryFocus?.unfocus();
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: MyColors.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 10),
                                         child: Text("${a.facilityName}"),
                                       ),
                                     ),
