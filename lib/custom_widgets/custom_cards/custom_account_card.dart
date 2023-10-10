@@ -38,7 +38,6 @@ class CustomAccountCard extends StatelessWidget {
     return outputFormat.format(inputDate);
   }
 
-  final subscriptionController = Get.put(SubscriptionProvider());
   final bottomController = Get.put(BottomController());
 
   @override

@@ -86,6 +86,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
       await auth.verifyPhoneNumber(
         phoneNumber: "${widget.dialCode}${widget.phone}",
         verificationCompleted: (PhoneAuthCredential credential) async {
+          loading(value: false);
           print("VERIFICATION COMPLETED");
         },
         verificationFailed: (FirebaseAuthException e) {
@@ -103,6 +104,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
         },
         forceResendingToken: _resendToken,
         codeAutoRetrievalTimeout: (String? verification) {
+          loading(value: false);
           verificationId = verification!;
           print("TIME OUT");
           setState(() {});
@@ -111,6 +113,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
         timeout: Duration(minutes: 1),
       );
     } on FirebaseAuthException catch (e) {
+      loading(value: false);
       print("ERRORRRRRRR $e");
       showToast("Something went wrong");
     }

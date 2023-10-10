@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:fit_gate/global_functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -103,18 +105,19 @@ class SubscriptionProvider extends ChangeNotifier {
   // }
 
   Future fetchOffer() async {
-    final offering = await PurchaseApi().fetchOffer();
+    final offering = await PurchaseSub().fetchOffer();
     if (offering.isEmpty) {
       showToast("No plans found");
     } else {
       package = offering.map((e) => e.availablePackages).expand((element) => element).toList();
+
       notifyListeners();
     }
   }
 }
 
-class PurchaseApi {
-  static const _apikey = "";
+class PurchaseSub {
+  static String _apikey = Platform.isAndroid ? "goog_wkUZtGJdqCwISKVWJYeYdPvHxXg" : "appl_dFYOZFhPKeDLCxOLVfiWLAfaqSm";
   static Future init() async {
     PurchasesConfiguration configuration = PurchasesConfiguration(_apikey);
     await Purchases.configure(configuration);

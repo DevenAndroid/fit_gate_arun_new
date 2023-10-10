@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage> {
       // lat: 25.989668.toString(),
       // lon: 50.560894.toString(),
     );
-    print('&&&&&&&&&&&&&&&&&&&&&&&& ${MapController().currentLongitude}');
-    print('${MapController().currentLatitude}');
+    print('&&&&&&&&&&&&&&&&&&&&&&&& ${mapController.currentLongitude}');
+    print('${mapController.currentLatitude}');
     await mapController.getGym();
     // await subscriptionController.subscriptionListGet();
     await banner.getBanner();

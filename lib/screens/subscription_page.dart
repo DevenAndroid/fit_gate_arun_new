@@ -222,7 +222,7 @@ class SubscriptionScreen extends StatefulWidget {
 }
 
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
-  int chooseOption = 0;
+  int? chooseOption;
   final bottomController = Get.put(BottomController());
   getData() async {
     await context.read<SubscriptionProvider>().fetchOffer();
@@ -258,158 +258,240 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Current Subscription",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    color: MyColors.lightGrey,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Free",
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Current Subscription",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.lightGrey,
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle,
-                              color: MyColors.orange,
-                              size: 20,
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              "Enjoy free offers",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: MyColors.grey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Free",
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: MyColors.orange,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Enjoy free offers",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: MyColors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        "Packages",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 20),
+                      CustomAccountCard(
+                        onClick: () {},
+                        // expiryDate: Global.userModel?.subscriptionTo,
+                        title: "Pro - Bahrain",
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.1,
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          padding: EdgeInsets.all(9),
+                          decoration: BoxDecoration(
+                            color: MyColors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ImageButton(
+                            padding: EdgeInsets.zero,
+                            image: MyImages.diamond,
+                            // width: 29,
+                            // height: 29,
+                            // height: 100,
+                            // width: MediaQuery.of(context).size.width * 0.9,
+                            // height: MediaQuery.of(context).size.height * 4,
+                            // color: MyColors.orange,
+                            // size: iconSize ?? 50,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        "Payment Options",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 20),
+                      Consumer<SubscriptionProvider>(builder: (context, subData, _) {
+                        return Row(
+                          children: List.generate(
+                            subData.package.length,
+                            (index) => Expanded(
+                              child: CustomJoinFitCard(
+                                onClick: () {
+                                  chooseOption = index;
+                                  setState(() {});
+                                },
+                                selectedIndex: chooseOption,
+                                index: index,
+                                iconSize: 17,
+                                boxShadow: BoxShadow(
+                                  color: chooseOption == index
+                                      ? MyColors.orange.withOpacity(.10)
+                                      : MyColors.grey.withOpacity(0.15),
+                                  spreadRadius: 2,
+                                  blurRadius: 24,
+                                ),
+                                height: MediaQuery.of(context).size.height * 0.086,
+                                isOffer: subData.package[index].storeProduct.identifier ==
+                                        "fitgate_2bhd_1m:pro-subscrition-1y"
+                                    ? true
+                                    : false,
+                                title:
+                                    "${subData.package[index].storeProduct.identifier == "fitgate_2bhd_1m:pro-subscrition-1y" ? "18BHD / year" : "2 BHD / month"}",
+                                borderRadius: BorderRadius.circular(10),
+                                // img: MyImages.activity,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        );
+                        //     Row(
+                        //   children: List.generate(
+                        //     2,
+                        //     (index) => Expanded(
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.symmetric(horizontal: 8),
+                        //         child: CustomJoinFitCard(
+                        //           onClick: () {
+                        //             chooseOption = index;
+                        //             setState(() {});
+                        //           },
+                        //           selectedIndex: chooseOption,
+                        //           index: index,
+                        //           iconSize: 17,
+                        //           boxShadow: BoxShadow(
+                        //             color: chooseOption == index
+                        //                 ? MyColors.orange.withOpacity(.10)
+                        //                 : MyColors.grey.withOpacity(0.15),
+                        //             spreadRadius: 2,
+                        //             blurRadius: 24,
+                        //           ),
+                        //           height: MediaQuery.of(context).size.height * 0.086,
+                        //           // isOffer: subData.package[index].storeProduct.identifier == "fitgate_2bhd_1m:pro-subscrition-1y"
+                        //           //     ? true
+                        //           //     : false,
+                        //           // title:
+                        //           // "${subData.package[index].storeProduct.identifier == "fitgate_2bhd_1m:pro-subscrition-1y" ? "18BHD / year" : "2 BHD / month"}",
+                        //           title: "Month $index",
+                        //           borderRadius: BorderRadius.circular(10),
+                        //           // img: MyImages.activity,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                      }),
+                    ],
                   ),
                 ),
-                SizedBox(height: 30),
-                Text(
-                  "Packages",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(height: 20),
-                CustomAccountCard(
-                  onClick: () {},
-                  // expiryDate: Global.userModel?.subscriptionTo,
-                  title: "Pro - Bahrain",
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.08,
-                    padding: EdgeInsets.all(9),
-                    decoration: BoxDecoration(
-                      color: MyColors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ImageButton(
-                      padding: EdgeInsets.zero,
-                      image: MyImages.diamond,
-                      // width: 29,
-                      // height: 29,
-                      // height: 100,
-                      // width: MediaQuery.of(context).size.width * 0.9,
-                      // height: MediaQuery.of(context).size.height * 4,
-                      // color: MyColors.orange,
-                      // size: iconSize ?? 50,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                Text(
-                  "Payment Options",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomJoinFitCard(
-                        onClick: () {
-                          chooseOption = 1;
-                          setState(() {});
-                        },
-                        selectedIndex: chooseOption,
-                        index: 1,
-                        iconSize: 17,
-                        boxShadow: BoxShadow(
-                          color: chooseOption == 1 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
-                          spreadRadius: 2,
-                          blurRadius: 24,
-                        ),
-                        height: MediaQuery.of(context).size.height * 0.086,
-                        title: "2 BHD / month",
-                        borderRadius: BorderRadius.circular(10),
-                        // img: MyImages.activity,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      child: CustomJoinFitCard(
-                        onClick: () {
-                          chooseOption = 2;
-                          setState(() {});
-                          // PurchaseApi.purchasePackage(context.read<SubscriptionProvider>().package.first);
-                        },
-                        selectedIndex: chooseOption,
-                        index: 2,
-                        boxShadow: BoxShadow(
-                          color: chooseOption == 2 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
-                          spreadRadius: 2,
-                          blurRadius: 24,
-                        ),
-                        iconSize: 17,
-                        height: MediaQuery.of(context).size.height * 0.086,
-                        title: "18BHD / year",
-                        iconClr: MyColors.grey,
-                        isOffer: true,
-                        borderRadius: BorderRadius.circular(10),
-                        // img: MyImages.setting,
-                      ),
-                    ),
-                  ],
-                ),
-                // Spacer(),
-                SizedBox(height: 130),
-                CustomButton(
-                  height: MediaQuery.of(context).size.height * 0.066,
-                  title: "Proceed to Payment",
-                  onTap: () {
-                    if (chooseOption == 0) {
-                      showToast("Please choose plan");
-                    }
-                  },
-                )
-              ],
+              ),
             ),
-          ),
+
+            // Spacer(),
+            // SizedBox(height: 130),
+            Expanded(
+              flex: 0,
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                  child: CustomButton(
+                    height: MediaQuery.of(context).size.height * 0.066,
+                    title: "Proceed to Payment",
+                    onTap: () {
+                      if (chooseOption == null) {
+                        showToast("Please choose plan");
+                      }
+                    },
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
   }
 }
+// Expanded(
+//                       child: CustomJoinFitCard(
+//                         onClick: () {
+//                           chooseOption = 1;
+//                           setState(() {});
+//                         },
+//                         selectedIndex: chooseOption,
+//                         index: 1,
+//                         iconSize: 17,
+//                         boxShadow: BoxShadow(
+//                           color: chooseOption == 1 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
+//                           spreadRadius: 2,
+//                           blurRadius: 24,
+//                         ),
+//                         height: MediaQuery.of(context).size.height * 0.086,
+//                         title: "2 BHD / month",
+//                         borderRadius: BorderRadius.circular(10),
+//                         // img: MyImages.activity,
+//                       ),
+//                     ),
+//                     SizedBox(width: 20),
+//                     Expanded(
+//                       child: CustomJoinFitCard(
+//                         onClick: () {
+//                           chooseOption = 2;
+//                           setState(() {});
+//                           // PurchaseApi.purchasePackage(context.read<SubscriptionProvider>().package.first);
+//                         },
+//                         selectedIndex: chooseOption,
+//                         index: 2,
+//                         boxShadow: BoxShadow(
+//                           color: chooseOption == 2 ? MyColors.orange.withOpacity(.10) : MyColors.grey.withOpacity(0.15),
+//                           spreadRadius: 2,
+//                           blurRadius: 24,
+//                         ),
+//                         iconSize: 17,
+//                         height: MediaQuery.of(context).size.height * 0.086,
+//                         title: "18BHD / year",
+//                         iconClr: MyColors.grey,
+//                         isOffer: true,
+//                         borderRadius: BorderRadius.circular(10),
+//                         // img: MyImages.setting,
+//                       ),
+//                     ),
 
 class CustomRowText extends StatelessWidget {
   final String? title;

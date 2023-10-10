@@ -244,6 +244,7 @@ class MapController extends GetxController {
       update();
       return position;
     } on LocationServiceDisabledException catch (e) {
+      await Geolocator.requestPermission();
       print("######################################### $e");
       return position!;
     }

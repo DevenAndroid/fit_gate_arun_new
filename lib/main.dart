@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -41,6 +42,15 @@ Future<void> main() async {
         ));
   }
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  await PurchaseSub.init();
+  final offering = await PurchaseSub().fetchOffer();
+  if (offering.isEmpty) {
+    showToast("No plans found");
+  } else {
+    var package = offering.map((e) => e.availablePackages).expand((element) => element).toList();
+    log("======= SUBSCRIPTION ======= ${package.first.storeProduct}");
+    // notifyListeners();
+  }
   // isBoardingView = prefs.getInt('intro');
   // print("$isBoardingView");
   notification();
@@ -52,7 +62,6 @@ notification() async {
   var pref = await SharedPreferences.getInstance();
   var turnOnNotification = await pref.getBool('isNotifyOn');
   if (turnOnNotification == true || turnOnNotification == null) {
-    print("object NOTIFICATION 55555555555555555       ");
     await FirebaseNotification.init();
     // await LocalNotification.init();
   }

@@ -44,7 +44,6 @@ class CustomSubscriptionPlanCard extends StatelessWidget {
       this.model,
       required this.title11})
       : super(key: key);
-  final subscriptionController = Get.put(SubscriptionProvider());
 
   @override
   Widget build(BuildContext context) {
