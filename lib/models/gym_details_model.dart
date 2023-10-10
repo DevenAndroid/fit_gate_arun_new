@@ -53,8 +53,8 @@ class GymDetailsModel {
     email = json['email'];
     phoneNumber = json['phone_number'];
     logo = json['logo'];
-    review = json['review'] ?? "";
-    rating = json['rating'] ?? "";
+    review = json['review'].toString() ?? "";
+    rating = json['rating'].toString() ?? "";
     announcement = json['announcement'] ?? "";
     distance = json['distance'] ?? "";
     pictures = json['pictures'].cast<String>();

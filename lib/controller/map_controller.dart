@@ -56,8 +56,10 @@ class MapController extends GetxController {
     // Future.delayed(
     //   Duration(seconds: 2),
     //   () async {
-    http.Response response =
-        await http.post(Uri.parse(EndPoints.classTypeFilterGym), headers: await header, body: jsonEncode(data));
+    http.Response response = await http.post(
+        Uri.parse(EndPoints.classTypeFilterGym),
+        headers: await header,
+        body: jsonEncode(data));
     log("class type request : " + jsonEncode(data));
     print("ENCODED ${jsonEncode(data)}");
     print("RESPONSE" + response.body);
@@ -66,7 +68,9 @@ class MapController extends GetxController {
     if (parsedData['statusCode'] == 200) {
       loadingValue = false;
       update();
-      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
+      var list = (parsedData['data'] as List)
+          .map((e) => GymDetailsModel.fromJson(e))
+          .toList();
       // parsedData['data'] != [] ? hasData = true : hasData = false;
       if (isCurrentLocation) {
         nearbyGymList.value = list;
@@ -87,7 +91,8 @@ class MapController extends GetxController {
 
   getGym() async {
     // loadingValue = true;
-    print("PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
+    print(
+        "PARSED DATA ------------  222222222222 ${EndPoints.getGym + "?user_id=${Global.userModel?.id}"}");
     http.Response response = await http.get(
       Uri.parse(EndPoints.getGym + "?user_id=${Global.userModel?.id}"),
       headers: await header,
@@ -98,7 +103,9 @@ class MapController extends GetxController {
     log(response.body);
     if (parsedData['statusCode'] == 200) {
       // loadingValue = false;
-      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
+      var list = (parsedData['data'] as List)
+          .map((e) => GymDetailsModel.fromJson(e))
+          .toList();
       getAllGymList.value = list;
       update();
     } else {
@@ -110,13 +117,17 @@ class MapController extends GetxController {
 
   getLocation({String? search}) async {
     var data = {"page_no": nextPage, "search": search ?? ""};
-    var response = await http.post(Uri.parse(EndPoints.searchGym), headers: await header, body: jsonEncode(data));
+    var response = await http.post(Uri.parse(EndPoints.searchGym),
+        headers: await header, body: jsonEncode(data));
     var parsedData = jsonDecode(response.body);
 
     if (parsedData['status'] == 200) {
-      var list = (parsedData['data'] as List).map((e) => GymDetailsModel.fromJson(e)).toList();
+      var list = (parsedData['data'] as List)
+          .map((e) => GymDetailsModel.fromJson(e))
+          .toList();
 
-      paginationData = PaginationDataModel.fromJson(parsedData['paginate_data']);
+      paginationData =
+          PaginationDataModel.fromJson(parsedData['paginate_data']);
       print("PAGINATION DATA -----------     $paginationData");
       update();
       return searchList.value = list;
@@ -128,7 +139,8 @@ class MapController extends GetxController {
   Position? position;
   Future getLocation1() async {
     print("CURRENT LOCATION");
-    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
     print("POSITIONNNNNN --------------       ${position}");
 
     return position;
@@ -145,9 +157,11 @@ class MapController extends GetxController {
     // loading(value: false);
     print("LOCATION  DATA ------------- $data");
     if (data['statusCode'] == 200) {
-      print("MAP DATA ========++++++++++++++++ |||||||||||||||||  ${data['data']}");
+      print(
+          "MAP DATA ========++++++++++++++++ |||||||||||||||||  ${data['data']}");
 
-      var list = (data['data'] as List).map((e) => LatLngModel.fromJson(e)).toList();
+      var list =
+          (data['data'] as List).map((e) => LatLngModel.fromJson(e)).toList();
       print("LIST ----############ $list");
       update();
       return latLngList.value = list;
@@ -220,11 +234,14 @@ class MapController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      snackBar("Location services are permanently disabled. Please click here to Enable", onTap: () {
+      snackBar(
+          "Location services are permanently disabled. Please click here to Enable",
+          onTap: () {
         openAppSettings();
       }, duration: 20000);
       update();
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
 
     return await Geolocator.getCurrentPosition();
@@ -239,7 +256,8 @@ class MapController extends GetxController {
       currentLatitude = position.latitude;
       currentLongitude = position.longitude;
       // print('CURRENT LATITUDE $latitude CURRENT LONGITUDE $longitude');
-      print('CURRENT LATITUDE $currentLatitude CURRENT LONGITUDE $currentLongitude');
+      print(
+          'CURRENT LATITUDE $currentLatitude CURRENT LONGITUDE $currentLongitude');
 
       update();
       return position;

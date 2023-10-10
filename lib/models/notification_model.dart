@@ -15,12 +15,12 @@ class NotificationModel {
       this.createdAt});
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    tittle = json['tittle'];
-    message = json['message'];
-    status = json['status'];
-    createdAt = json['created_at'];
+    id = json['id'].toString();
+    userId = json['user_id'].toString();
+    tittle = json['tittle'].toString();
+    message = json['message'].toString();
+    status = json['status'].toString();
+    createdAt = json['created_at'].toString();
   }
 
   Map<String, dynamic> toJson() {

@@ -81,7 +81,8 @@ class _SplashScreenState extends State<SplashScreen> {
         //       await jsonDecode(pref.getString('isActivated').toString()));
         //   Global.activeSubscriptionModel = activeData;
         // }
-        if (FirebaseAuth.instance.currentUser!.displayName.toString() != "true") {
+        if (FirebaseAuth.instance.currentUser!.displayName.toString() !=
+            "true") {
           Get.offAll(() => UserInfoScreen());
           return;
         }

@@ -6,7 +6,7 @@ class BannerModel {
   BannerModel({this.id, this.name, this.image});
 
   BannerModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     name = json['name'];
     image = json['image'];
   }
