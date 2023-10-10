@@ -1,14 +1,15 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\flutter
-FLUTTER_APPLICATION_PATH=D:\StudioProjects\fit_gate-master-master
+FLUTTER_ROOT=/Users/arunprajapati/Documents/flutter
+FLUTTER_APPLICATION_PATH=/Users/arunprajapati/AndroidStudioProjects/fit_gate
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=lib\main.dart
+FLUTTER_TARGET=/Users/arunprajapati/AndroidStudioProjects/fit_gate/lib/main.dart
 FLUTTER_BUILD_DIR=build
-FLUTTER_BUILD_NAME=1.0.3
-FLUTTER_BUILD_NUMBER=31
-EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
+FLUTTER_BUILD_NAME=1.0.6
+FLUTTER_BUILD_NUMBER=9
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 arm64
 EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
+DART_DEFINES=Zmx1dHRlci5pbnNwZWN0b3Iuc3RydWN0dXJlZEVycm9ycz10cnVl,RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==,RkxVVFRFUl9XRUJfQ0FOVkFTS0lUX1VSTD1odHRwczovL3d3dy5nc3RhdGljLmNvbS9mbHV0dGVyLWNhbnZhc2tpdC9hNzk0Y2YyNjgxYzZjOWZlN2IyNjBlMGU4NGRlOTYyOThkYzljMThiLw==
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=.dart_tool/package_config.json
+PACKAGE_CONFIG=/Users/arunprajapati/AndroidStudioProjects/fit_gate/.dart_tool/package_config.json
