@@ -105,14 +105,16 @@ class SubscriptionProvider extends ChangeNotifier {
   // }
 
   Future fetchOffer() async {
-    final offering = await PurchaseSub().fetchOffer();
-    if (offering.isEmpty) {
-      showToast("No plans found");
-    } else {
+    if (Platform.isAndroid) {
+      final offering = await PurchaseSub().fetchOffer();
+      // if (offering.isEmpty) {
+      //   showToast("No plans found");
+      // } else {
       package = offering.map((e) => e.availablePackages).expand((element) => element).toList();
-
+      log("======= SUBSCRIPTION ======= ${package.first.storeProduct}");
       notifyListeners();
     }
+    // }
   }
 }
 
@@ -121,17 +123,21 @@ class PurchaseSub {
   static Future init() async {
     PurchasesConfiguration configuration = PurchasesConfiguration(_apikey);
     await Purchases.configure(configuration);
-    configuration.shouldShowInAppMessagesAutomatically = false;
+    configuration.shouldShowInAppMessagesAutomatically = true;
   }
 
   Future<List<Offering>> fetchOffer() async {
-    try {
-      final offerList = await Purchases.getOfferings();
-      final current = offerList.current;
-
-      return current == null ? [] : [current];
-    } on PlatformException catch (e) {
-      print("ERROR ====== ${e.message}");
+    if (Platform.isAndroid) {
+      try {
+        final offerList = await Purchases.getOfferings();
+        final current = offerList.current;
+        log('###### ${offerList.current}');
+        return current == null ? [] : [current];
+      } on PurchasesErrorCode catch (e) {
+        log("ERROR ====== ${e}");
+        return [];
+      }
+    } else {
       return [];
     }
   }

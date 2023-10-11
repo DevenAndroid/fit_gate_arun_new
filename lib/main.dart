@@ -43,14 +43,7 @@ Future<void> main() async {
   }
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await PurchaseSub.init();
-  final offering = await PurchaseSub().fetchOffer();
-  if (offering.isEmpty) {
-    showToast("No plans found");
-  } else {
-    var package = offering.map((e) => e.availablePackages).expand((element) => element).toList();
-    log("======= SUBSCRIPTION ======= ${package.first.storeProduct}");
-    // notifyListeners();
-  }
+
   // isBoardingView = prefs.getInt('intro');
   // print("$isBoardingView");
   notification();

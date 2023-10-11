@@ -429,7 +429,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               child: Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                   child: CustomButton(
                     height: MediaQuery.of(context).size.height * 0.066,
                     title: "Proceed to Payment",
