@@ -19,7 +19,7 @@ class NotificationController extends GetxController {
         }),
         headers: await header);
     var parsedData = jsonDecode(response.body);
-    // print('NOTIFYYYYY -----------        $parsedData');
+     print('NOTIFYYYYY -----------        $parsedData');
     if (parsedData['statusCode'] == 200) {
       var list = (parsedData['data'] as List).map((e) => NotificationModel.fromJson(e)).toList();
       notificationList.value = list;

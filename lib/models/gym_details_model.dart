@@ -54,9 +54,9 @@ class GymDetailsModel {
     phoneNumber = json['phone_number'];
     logo = json['logo'];
     review = json['review'].toString() ?? "";
-    rating = json['rating'].toString() ?? "";
+    rating = json['rating']==null?"":json['rating'].toString();
     announcement = json['announcement'] ?? "";
-    distance = json['distance'] ?? "";
+    distance = json['distance']==null? "":json['distance'].toString();
     pictures = json['pictures'].cast<String>();
     amenities = json['amenities'].cast<String>();
     classType = json['class_type'];
@@ -69,7 +69,7 @@ class GymDetailsModel {
       });
     }
     about = json['about'];
-    distance = json['distance'];
+    distance = json['distance']==null?"":json['distance'].toString();
     addressAddress = json['address_address'];
     addressLatitude = json['address_latitude'];
     addressLongitude = json['address_longitude'];

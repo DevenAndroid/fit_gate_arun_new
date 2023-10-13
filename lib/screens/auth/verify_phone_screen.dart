@@ -174,7 +174,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> with SingleTicker
                 Get.to(() => BottomNavigationScreen());
               } else {
                 code.clear();
-                Get.to(() => LoginScreen());
+                Get.to(() => IntroScreen());
               }
             },
           ),

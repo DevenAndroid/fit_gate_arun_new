@@ -6,7 +6,6 @@ import 'dart:developer';
 
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_gate/controller/auth_controllers/login_controller.dart';
 import 'package:fit_gate/controller/map_controller.dart';
@@ -49,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       SharedPreferences pref = await SharedPreferences.getInstance();
       var data = jsonDecode(pref.getString('isLogin').toString());
-      log("^^^^^^^^^^^ $data");
+      //log("^^^^^^^^^^^ $data");
 
       // if (oldVersion == true) {
       //   showDialog(

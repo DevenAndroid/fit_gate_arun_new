@@ -60,10 +60,10 @@ class MapController extends GetxController {
         Uri.parse(EndPoints.classTypeFilterGym),
         headers: await header,
         body: jsonEncode(data));
-    log("class type request : " + jsonEncode(data));
+  /*  log("class type request : " + jsonEncode(data));
     print("ENCODED ${jsonEncode(data)}");
     print("RESPONSE" + response.body);
-    log("class type response : " + response.body);
+    log("class type response : " + response.body);*/
     var parsedData = jsonDecode(response.body);
     if (parsedData['statusCode'] == 200) {
       loadingValue = false;
@@ -98,9 +98,9 @@ class MapController extends GetxController {
       headers: await header,
     );
     var parsedData = jsonDecode(response.body);
-    print("PARSED DATA ------------  111111111111 $parsedData");
+    /*print("PARSED DATA ------------  111111111111 $parsedData");
     print("gggggg....      " + response.body);
-    log(response.body);
+    log(response.body);*/
     if (parsedData['statusCode'] == 200) {
       // loadingValue = false;
       var list = (parsedData['data'] as List)

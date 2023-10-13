@@ -399,7 +399,7 @@ class _GymTileState extends State<GymTile> {
                             Expanded(
                               child: Text(
                                 widget.opening ??
-                                    "${widget.gymModel.distance != null ? double.parse(widget.gymModel.distance.toString()).toStringAsFixed(2) : distance.toStringAsFixed(2)} km",
+                                    "${widget.gymModel.distance != null &&  widget.gymModel.distance != "" ? double.parse(widget.gymModel.distance.toString()).toStringAsFixed(2) : distance.toStringAsFixed(2)} km",
                                 style: TextStyle(
                                   color: MyColors.grey,
                                   fontSize: 13.8,

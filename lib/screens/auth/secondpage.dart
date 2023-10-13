@@ -61,16 +61,23 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   ];
   var Bahrain = [
     'Select Area',
-    'Hamad Town',
     'Riffa',
+    "A'ali",
     "Askar",
+    "Jaww",
     "Sanad",
+    'Hamad Town',
     "Hamala",
     "Manama",
+    'Adliya',
     "Seef district",
     "Sitra",
+    "Ma'ameer ",
     "Isa town",
+    "Tubli",
+    "Jid Ali",
     "Zallaq",
+    "Malkiya ",
     "Saar",
     "Madinat salman",
     "Barbar",
@@ -80,7 +87,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     "Malikya",
     "Zinj",
     "Budaiya",
+    "Northern City ",
+    "Diraz",
+    "Barbar",
     "Muharraq ",
+    "Dilmunia City ",
+    "Amwaj",
+    "Arad ",
+    "Hidd ",
+    "Galali ",
   ];
   var SaudiArabia = [
     'Select Area',
@@ -193,7 +208,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: "Date of birth (پیدائش کی تاریخ)",
+                    hintText: "Date of birth",
                     hintStyle: TextStyle(color: Colors.black),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 1, color: Colors.grey),

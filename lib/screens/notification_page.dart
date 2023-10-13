@@ -23,17 +23,17 @@ class _NotificationPageState extends State<NotificationPage> {
   final notifyController = Get.put(NotificationController());
   // final loginController = Get.put(LoginController());
   final bottomController = Get.put(BottomController());
-  //
-  // getNotify() async {
-  //   await notifyController.notification();
-  //   await loginController.getUserById();
-  // }
 
-  // @override
-  // void initState() {
-  //   getNotify();
-  //   super.initState();
-  // }
+  getNotify() async {
+    await notifyController.notification();
+  //  await loginController.getUserById();
+  }
+
+  @override
+  void initState() {
+    getNotify();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
