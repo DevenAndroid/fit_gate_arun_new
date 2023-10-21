@@ -444,7 +444,7 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     children: [
                       Text(
-                        "Nearby Gyms",
+                        "Nearby",
                         style: TextStyle(
                           color: MyColors.black,
                           fontSize: 17,

@@ -144,7 +144,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       //     child: CheckConnection(),
                       //     preferredSize: Size.fromHeight(70)),
                       title: Text(
-                        "Gym Details",
+                        "Details",
                         style: TextStyle(color: MyColors.white),
                       ),
                       leadingWidth: 45,
@@ -277,7 +277,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                     physics: BouncingScrollPhysics(),
                     children: [
                       Text(
-                        "Gym Photos",
+                        "Photos",
                         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
@@ -327,7 +327,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Gym Details",
+                        "Details",
                         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),
@@ -490,7 +490,7 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Gym Location",
+                        "Location",
                         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 10),

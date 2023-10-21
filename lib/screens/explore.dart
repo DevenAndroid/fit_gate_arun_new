@@ -418,7 +418,7 @@ class _GymTileState extends State<GymTile> {
                     widget.gymModel.sub_user_type == "free" ||
                             widget.gymModel.classType == "sapphire" ||
                             widget.gymModel.classType == "free"
-                        ? "Free"
+                        ? ""
                         : "Pro",
                     style: TextStyle(
                         color: widget.gymModel.sub_user_type == "free" ||
