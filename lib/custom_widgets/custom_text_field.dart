@@ -3,6 +3,7 @@
 import 'package:fit_gate/custom_widgets/custom_btns/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../utils/my_color.dart';
 
@@ -187,6 +188,108 @@ class CustomUnderlineTxt extends StatelessWidget {
             color: color ?? MyColors.orange,
             decoration: TextDecoration.underline),
       ),
+    );
+  }
+}
+
+class RegisterTextFieldWidget extends StatelessWidget {
+  final IconData? suffixIcon;
+  final IconData? prefixIcon;
+  final Widget? suffix;
+  final Widget? prefix;
+  final Color? bgColor;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final String? hint;
+  final Iterable<String>? autofillHints;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
+  final bool? readOnly;
+  final dynamic value = 0;
+  final dynamic minLines;
+  final dynamic maxLines;
+  final bool? obscureText;
+  final VoidCallback? onTap;
+  final length;
+  List<TextInputFormatter>? inputFormatters = [];
+  RegisterTextFieldWidget({
+    Key? key,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.onChanged,
+    this.hint,
+    this.keyboardType,
+    this.textInputAction,
+    this.controller,
+    this.bgColor,
+    this.validator,
+    this.suffix,
+    this.autofillHints,
+    this.inputFormatters,
+    this.prefix,
+    this.minLines = 1,
+    this.maxLines = 1,
+    this.obscureText = false,
+    this.readOnly = false,
+    this.onTap,
+    this.length,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: const TextStyle(color: Color(0xFF384953)),
+      onTap: onTap,
+      onChanged: onChanged,
+      readOnly: readOnly!,
+      controller: controller,
+      obscureText: hint == hint ? obscureText! : false,
+      autofillHints: autofillHints,
+
+      validator: validator,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      minLines: minLines,
+      maxLines: maxLines,
+      // cursorColor: AppTheme.primaryColor,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(length),
+      ],
+      decoration: InputDecoration(
+
+          hintText: hint,
+          focusColor: const Color(0xFF384953),
+          hintStyle: GoogleFonts.quicksand(
+            color: const Color(0xFF696969),
+            textStyle: GoogleFonts.quicksand(
+              color: const Color(0xFF696969),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            fontSize: 14,
+            // fontFamily: 'poppins',
+            fontWeight: FontWeight.w500,
+          ),
+          filled: true,
+          fillColor: Colors.white.withOpacity(.10),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          // .copyWith(top: maxLines! > 4 ? AddSize.size18 : 0),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: const Color(0xFF384953).withOpacity(.24)),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: const Color(0xFF384953).withOpacity(.24)),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          border: OutlineInputBorder(
+              borderSide:
+              BorderSide(color:const Color(0xFF384953).withOpacity(.24), width: 3.0),
+              borderRadius: BorderRadius.circular(10.0)),
+          suffixIcon: suffix,
+          prefixIcon: prefix),
     );
   }
 }

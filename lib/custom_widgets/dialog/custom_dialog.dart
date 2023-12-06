@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,7 +100,34 @@ class CustomDialog extends StatelessWidget {
       return false;
     }
   }*/
+  // static OverlayEntry overlayLoader(context) {
+  //   OverlayEntry loader = OverlayEntry(builder: (context) {
+  //     final size = MediaQuery.of(context).size;
+  //     return Positioned(
+  //       height: size.height,
+  //       width: size.width,
+  //       top: 0,
+  //       left: 0,
+  //       child: Material(
+  //         color: Colors.black,
+  //         child: const CupertinoActivityIndicator(
+  //           radius: 30,
+  //         ),
+  //       ),
+  //     );
+  //   });
+  //   return loader;
+  // }
+  // static hideShimmer(OverlayEntry loader) {
+  //   Timer(const Duration(milliseconds: 500), () {
+  //     try {
+  //       loader.remove();
+  //       // ignore: empty_catches
+  //     } catch (e) {}
+  //   });
+  // }
 }
+
 
 class CustomDialogForUpdate extends StatelessWidget {
   final bool? isAdmin;

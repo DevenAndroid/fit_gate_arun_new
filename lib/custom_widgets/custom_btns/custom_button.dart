@@ -1,6 +1,8 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
+import 'package:fit_gate/custom_widgets/custom_btns/size.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/my_color.dart';
 import 'icon_button.dart';
@@ -120,6 +122,46 @@ class CustomButtonWithIcon extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CommonButton1 extends StatelessWidget {
+  final String title;
+  final VoidCallback? onPressed;
+
+  const CommonButton1({Key? key, required this.title, this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        // gradient: const LinearGradient(
+        //   // begin: Alignment.topCenter,
+        //   // end: Alignment.bottomCenter,
+        //     colors: [
+        //       Color(0xFF7ED957),
+        //       Color(0xff6BD13F)]
+        // ),
+      ),
+      child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(AddSize.screenWidth, AddSize.size50*1.2),
+            backgroundColor: Color(0xffE53D00),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12), // <-- Radius
+            ),
+            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          child: Text(title,
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: .5,
+                  fontSize: 20))),
     );
   }
 }

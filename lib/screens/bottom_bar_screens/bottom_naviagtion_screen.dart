@@ -157,8 +157,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ImageButton(
                 padding: EdgeInsets.zero,
                 image: icon,
-                height: 20,
-                width: 20,
+                height: 20, width: 20,
                 // MyImages.add,
                 // height: 22,
                 color: index == selectedIndex ? MyColors.orange : MyColors.grey.withOpacity(.70),

@@ -134,7 +134,8 @@ filterBottomSheet(context) {
                       children: List.generate(
                         km.length,
                         (int index) {
-                          return ChoiceChip(
+                          return
+                            ChoiceChip(
                             backgroundColor: MyColors.lightGrey,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             label: Text(

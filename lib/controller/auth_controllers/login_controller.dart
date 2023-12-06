@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +42,7 @@ class LoginController extends GetxController {
       pref.setString("isLogin", jsonEncode(parsedData['data']));
       await mapController.getCurrentLocation();
       await mapController.getFilterData(
+
         isCurrentLocation: true,
         lat: mapController.currentLatitude.toString(),
         lon: mapController.currentLongitude.toString(),

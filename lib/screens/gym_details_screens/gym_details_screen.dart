@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fit_gate/controller/bottom_controller.dart';
 import 'package:fit_gate/custom_widgets/custom_google_map.dart';
 import 'package:fit_gate/screens/explore.dart';
 import 'package:fit_gate/screens/gym_details_screens/photo_view_page.dart';
+import 'package:fit_gate/screens/gym_details_screens/singlepage_details.dart';
 import 'package:fit_gate/screens/subscription_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../utils/my_color.dart';
 import '../../controller/map_controller.dart';
+import '../../controller/membership_controller.dart';
 import '../../controller/notification_controller.dart';
 import '../../custom_widgets/custom_btns/custom_button.dart';
 import '../../custom_widgets/custom_btns/icon_button.dart';
@@ -36,6 +40,7 @@ class GymDetailsScreen extends StatefulWidget {
 class _GymDetailsScreenState extends State<GymDetailsScreen> {
   int chooseOption = 0;
   final bottomController = Get.put(BottomController());
+  final membershipController = Get.put(MembershipController());
   final mapController = Get.put(MapController());
 
   GoogleMapController? _googleMapController;
@@ -104,6 +109,9 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
     addCustomIcon();
     getGymDetails();
     mapController.getLocation1();
+    membershipController.getData(widget.gymDetailsModel!.id.toString()).then((value){
+      setState(() {});
+    });
     goToPlace();
     getDailyDate();
 
@@ -276,6 +284,62 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     children: [
+                      membershipController.isDataLoading.value && membershipController.model.value.data != null ?
+                      ListView.builder(
+                        shrinkWrap: true,
+                          itemCount: membershipController.model.value.data!.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index){
+                          final amountList = membershipController.model.value.data![index];
+                            return GestureDetector(
+                              onTap: (){
+                                print("name is "+ widget.gymDetailsModel!.facilityName.toString());
+                                //Global.userModel!.id.toString();
+                                  membershipController.singleSubId.value = amountList.id.toString();
+                                  print("id is " + membershipController.singleSubId.value);
+                                Get.to(()=> SingleScreenGym(
+                                  gymId: widget.gymDetailsModel!.id.toString(),
+                                  gymName: widget.gymDetailsModel!.facilityName.toString(),
+                                  index: index,
+                                ),);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 15,horizontal: 14),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [Color(0xffFFC001), Color(0xffFFDB6E)]
+                                      )
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 6,right: 6),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            amountList.title.toString(),
+                                            style: TextStyle(color:Color(0xff000000), fontSize: 17, fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                        Text(
+                                          "BD ${amountList.price.toString()}",
+                                          style: TextStyle(color:Color(0xff000000), fontSize: 17, fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+
+                      }):SizedBox(),
+
+                      // Text("gym id is"+details.id.toString()),
                       Text(
                         "Photos",
                         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),

@@ -56,7 +56,9 @@ dependencies:
   connectivity_plus: ^3.0.3
 #  chewie: ^1.7.1
   page_transition: ^2.1.0
-
+  google_fonts:
+  form_field_validator:
+  fluttertoast:
   persistent_bottom_nav_bar: ^5.0.2
 
   purchases_flutter: ^6.0.0
