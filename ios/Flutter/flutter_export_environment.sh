@@ -1,14 +1,13 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/jamalwaheed/Downloads/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/jamalwaheed/Desktop/apps/fit_gate_arun_new"
+export "FLUTTER_ROOT=C:\Users\EOXYS\Downloads\flutter_windows_3.10.2-stable\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\EOXYS\Downloads\fit_gate_arun_new 2\fit_gate_arun_new"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=/Users/jamalwaheed/Desktop/apps/fit_gate_arun_new/lib/main.dart"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.6"
 export "FLUTTER_BUILD_NUMBER=17"
-export "DART_DEFINES=Zmx1dHRlci5pbnNwZWN0b3Iuc3RydWN0dXJlZEVycm9ycz10cnVl,RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==,RkxVVFRFUl9XRUJfQ0FOVkFTS0lUX1VSTD1odHRwczovL3d3dy5nc3RhdGljLmNvbS9mbHV0dGVyLWNhbnZhc2tpdC8wNTQ1Zjg3MDVkZjMwMTg3N2Q3ODcxMDdiYWMxYTZlOWZjOWVlMWFkLw=="
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
-export "PACKAGE_CONFIG=/Users/jamalwaheed/Desktop/apps/fit_gate_arun_new/.dart_tool/package_config.json"
+export "PACKAGE_CONFIG=.dart_tool/package_config.json"

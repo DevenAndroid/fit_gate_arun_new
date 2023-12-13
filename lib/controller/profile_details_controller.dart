@@ -21,9 +21,9 @@ class ProfileDetailscontroller extends GetxController {
       if (isDataLoading.value &&
           model.value.data != null) {
         emailController.text =
-            model.value.data!.planEmail.toString();
+            model.value.data!.planEmail ?? "Enter Email ID";
         cprController.text =
-            model.value.data!.cprNo.toString();
+            model.value.data!.cprNo ?? "Enter CPR Number";
 
       }
     });

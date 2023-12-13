@@ -398,6 +398,9 @@ class _GymDetailsScreenState extends State<GymDetailsScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
+
+
                           GestureDetector(
                             onTap: () {
                               print('PHONE CLICK');

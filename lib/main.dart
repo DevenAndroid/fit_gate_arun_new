@@ -81,9 +81,11 @@ class MyApp extends StatelessWidget {
         child: GetMaterialApp(
           title: "Fit Gate",
           theme: ThemeData(
+            useMaterial3: false,
             fontFamily: "Poppins",
             colorScheme: ColorScheme.fromSwatch().copyWith(secondary: MyColors.grey.withOpacity(.5)),
           ),
+          themeMode: ThemeMode.light,
           home: SplashScreen(),
           debugShowCheckedModeBanner: false,
           scaffoldMessengerKey: snackbarKey,

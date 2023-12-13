@@ -416,13 +416,22 @@ class _HomePageState extends State<HomePage> {
                         Positioned(
                           bottom: 20,
                           right: 20,
-                          child: Align(
+                          // child: Container(
+                          //   child: Text("Coming soon",style: TextStyle(
+                          //     fontSize: 14,
+                          //           fontWeight: FontWeight.w600,
+                          //           borderColor: Colors.transparent,
+                          //           fontColor: MyColors.orange,
+                          //           bgColor: MyColors.white,
+                          //   ),),
+                          // )
+                         child: Align(
                             alignment: Alignment.bottomRight,
                             child: GetBuilder<BottomController>(builder: (controller) {
                               return CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.18,
+                                width: MediaQuery.of(context).size.width * 0.27,
                                 height: MediaQuery.of(context).size.height * 0.033,
-                                title: "Join",
+                                title: "Coming soon",
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 borderColor: Colors.transparent,
@@ -430,8 +439,8 @@ class _HomePageState extends State<HomePage> {
                                 bgColor: MyColors.white,
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
-                                  controller.getIndex(0);
-                                  controller.setSelectedScreen(true, screenName: SubscriptionScreen());
+                                  // controller.getIndex(0);
+                                  // controller.setSelectedScreen(true, screenName: SubscriptionScreen());
                                 },
                               );
                             }),

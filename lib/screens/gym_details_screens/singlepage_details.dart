@@ -293,7 +293,7 @@ class _SingleScreenGymState extends State<SingleScreenGym> {
                 // SharedPreferences pref = await SharedPreferences.getInstance();
                 // UserModel userModel = UserModel.fromJson(jsonDecode(pref.getString("isLogin")!));
                 // cprController.text = userModel.cpr_no.toString();
-               profileInfoController.emailController.text = profileInfoController.model.value.data!.planEmail.toString();
+               // profileInfoController.emailController.text = profileInfoController.model.value.data!.planEmail.toString();
                 // emailController.text = Global.userModel!.id.toString();
                 // print(gymName);
                 showDialog(
@@ -341,20 +341,21 @@ class _SingleScreenGymState extends State<SingleScreenGym> {
                                         EmailValidator(errorText: "please enter valid mail")
 
                                       ]),
-                                      hint: "info@gmail.com"),
+                                      hint: "Enter Email ID"),
                                   SizedBox(
-                                    height: 12,
+                                    height: 14,
                                   ),
                                   Text(
                                     'CPR Number',
                                     style: GoogleFonts.poppins(
                                         color: Color(0xff000000), fontWeight: FontWeight.w500, fontSize: 15),
+
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   RegisterTextFieldWidget(
-                                      readOnly: true,
+                                    //  readOnly: true,
                                       controller: profileInfoController.cprController,
                                       validator: RequiredValidator(errorText: 'Please enter cpr number'),
                                       hint: "Enter CPR Number"),
@@ -415,7 +416,7 @@ class _SingleScreenGymState extends State<SingleScreenGym> {
                                     },
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: 30,
                                   ),
                                 ],
                               ),
