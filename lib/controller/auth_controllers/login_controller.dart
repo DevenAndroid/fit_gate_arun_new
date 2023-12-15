@@ -40,15 +40,15 @@ class LoginController extends GetxController {
       loading(value: false);
       Global.userModel = UserModel.fromJson(parsedData['data']);
       pref.setString("isLogin", jsonEncode(parsedData['data']));
-      await mapController.getCurrentLocation();
-      await mapController.getFilterData(
-
-        isCurrentLocation: true,
-        lat: mapController.currentLatitude.toString(),
-        lon: mapController.currentLongitude.toString(),
-        // lat: 25.989668.toString(),
-        // lon: 50.560894.toString(),
-      );
+      // await mapController.getCurrentLocation();
+      // await mapController.getFilterData(
+      //
+      //   isCurrentLocation: true,
+      //   lat: mapController.currentLatitude.toString(),
+      //   lon: mapController.currentLongitude.toString(),
+      //   // lat: 25.989668.toString(),
+      //   // lon: 50.560894.toString(),
+      // );
       print('AFTER LOGIN ${mapController.currentLongitude}');
       print('${mapController.currentLatitude}');
       update();

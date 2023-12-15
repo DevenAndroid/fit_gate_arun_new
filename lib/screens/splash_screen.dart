@@ -48,65 +48,27 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       SharedPreferences pref = await SharedPreferences.getInstance();
       var data = jsonDecode(pref.getString('isLogin').toString());
-      //log("^^^^^^^^^^^ $data");
-
-      // if (oldVersion == true) {
-      //   showDialog(
-      //       context: context,
-      //       barrierDismissible: false,
-      //       builder: (context) {
-      //         print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
-      //         return CustomDialogForUpdate(
-      //           title: "Update is required to use this application",
-      //           label1: "Update",
-      //           // label2: "Cancel",
-      //
-      //           onTap: () {
-      //             launchUrl(Uri.parse(Platform.isAndroid
-      //                 ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
-      //                 : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
-      //           },
-      //         );
-      //       });
-      // } else {
       if (data != null) {
-        // await mapController.getCurrentLocation();
         UserModel setData = UserModel.fromJson(data);
         Global.userModel = setData;
-        // var plan = await activePlan.activeSubscriptionPlan();
-        // print("SUB PLAN---> $plan");
-        // if (plan == true) {
-        //   ActiveSubscriptionModel activeData = ActiveSubscriptionModel.fromJson(
-        //       await jsonDecode(pref.getString('isActivated').toString()));
-        //   Global.activeSubscriptionModel = activeData;
-        // }
         if (FirebaseAuth.instance.currentUser!.displayName.toString() !=
             "true") {
           Get.offAll(() => UserInfoScreen());
           return;
         }
-        await mapController.getCurrentLocation();
-        await mapController.getLocation1();
+        // await mapController.getCurrentLocation();
+        // await mapController.getLocation1();
 
         await Future.wait<void>([
           loginCon.getUserById(),
           loginCon.checkUser(phoneNo: Global.userModel?.phoneNumber),
-          // activePlan.activeSubscriptionPlan(),
-          mapController.getGym(),
-          mapController.getFilterData(
-            isCurrentLocation: true,
-            lat: mapController.currentLatitude.toString(),
-            lon: mapController.currentLongitude.toString(),
-            // lat: 25.989668.toString(),
-            // lon: 50.560894.toString(),
-          ),
+          // mapController.getGym(),
+          // mapController.getFilterData(
+          //   isCurrentLocation: true,
+          //   lat: mapController.currentLatitude.toString(),
+          //   lon: mapController.currentLongitude.toString(),
+          // ),
         ]);
-        print('SPLASH ${mapController.currentLongitude}');
-        print('${mapController.currentLatitude}');
-        // // if (oldVersion == true) {
-        // //   showUpdateDialog(context);
-        // // }
-        // else {
         if (Global.userModel?.deleteStatus == '1') {
           Timer(Duration(seconds: 0), () {
             Get.off(() => LoginScreen());
@@ -114,10 +76,6 @@ class _SplashScreenState extends State<SplashScreen> {
         } else {
           Timer(Duration(seconds: 0), () {
             Get.off(() => BottomNavigationScreen());
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     PageTransition(child: BottomNavigationScreen(), type: PageTransitionType.leftToRight, ctx: context),
-            //     (route) => false);
           });
         }
         // }

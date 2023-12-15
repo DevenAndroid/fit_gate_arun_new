@@ -76,15 +76,15 @@ class RegisterController extends GetxController {
         loading(value: false);
         Global.userModel = UserModel.fromJson(parsedData['data']);
         pref.setString('isLogin', jsonEncode(parsedData['data']));
-        await mapController.getCurrentLocation();
-        await mapController.getGym();
-        await mapController.getFilterData(
-          isCurrentLocation: true,
-          lat: mapController.currentLatitude.toString(),
-          lon: mapController.currentLongitude.toString(),
-          // lat: 26.4334567.toString(),
-          // lon: 50.5327707.toString(),
-        );
+        // await mapController.getCurrentLocation();
+        // await mapController.getGym();
+        // await mapController.getFilterData(
+        //   isCurrentLocation: true,
+        //   lat: mapController.currentLatitude.toString(),
+        //   lon: mapController.currentLongitude.toString(),
+        //   // lat: 26.4334567.toString(),
+        //   // lon: 50.5327707.toString(),
+        // );
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => UserInfoScreen()), (route) => false);
       }
     } catch (e) {

@@ -39,6 +39,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     AccountScreen(),
   ];
   getNotify() async {
+
     await mapController.getCurrentLocation();
     await notifyController.notification();
     await loginController.getUserById();
