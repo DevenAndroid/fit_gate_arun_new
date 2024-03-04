@@ -293,7 +293,8 @@ class _SingleScreenGymState extends State<SingleScreenGym> {
                 // SharedPreferences pref = await SharedPreferences.getInstance();
                 // UserModel userModel = UserModel.fromJson(jsonDecode(pref.getString("isLogin")!));
                 // cprController.text = userModel.cpr_no.toString();
-               // profileInfoController.emailController.text = profileInfoController.model.value.data!.planEmail.toString();
+                // profileInfoController.emailController.text = profileInfoController.model.value.data!.planEmail.toString();
+                // profileInfoController.cprController.text = profileInfoController.model.value.data!.cprNo.toString();
                 // emailController.text = Global.userModel!.id.toString();
                 // print(gymName);
                 showDialog(

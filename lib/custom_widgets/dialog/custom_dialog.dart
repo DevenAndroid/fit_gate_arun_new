@@ -210,22 +210,22 @@ class CustomDialogForUpdate extends StatelessWidget {
   }*/
 }
 
-showUpdateDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
-        return CustomDialogForUpdate(
-          title: "Update is required to use this application",
-          label1: "Update",
-          // label2: "Cancel",
-
-          onTap: () {
-            launchUrl(Uri.parse(Platform.isAndroid
-                ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
-                : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
-          },
-        );
-      });
-}
+// showUpdateDialog(BuildContext context) {
+//   return showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (context) {
+//         print("DIALOGGGGGGGGGGGGGGGGGG      ------------------");
+//         return CustomDialogForUpdate(
+//           title: "Update is required to use this application",
+//           label1: "Update",
+//           // label2: "Cancel",
+//
+//           onTap: () {
+//             launchUrl(Uri.parse(Platform.isAndroid
+//                 ? "https://play.google.com/store/apps/details?id=com.antigecommerce.fitgate"
+//                 : "https://apps.apple.com/bh/app/fitgate/id6444258614"));
+//           },
+//         );
+//       });
+// }

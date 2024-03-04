@@ -70,14 +70,14 @@ class _HomePageState extends State<HomePage> {
     //       await jsonDecode(pref.getString('isActivated').toString()));
     //   Global.activeSubscriptionModel = activeData;
     // }
-    mapController.getCurrentLocation();
-    await mapController.getFilterData(
-      isCurrentLocation: true,
-      lat: mapController.currentLatitude.toString(),
-      lon: mapController.currentLongitude.toString(),
-      // lat: 25.989668.toString(),
-      // lon: 50.560894.toString(),
-    );
+    // mapController.getCurrentLocation();
+    // await mapController.getFilterData(
+    //   isCurrentLocation: true,
+    //   lat: mapController.currentLatitude.toString(),
+    //   lon: mapController.currentLongitude.toString(),
+    //   // lat: 25.989668.toString(),
+    //   // lon: 50.560894.toString(),
+    // );
     print('&&&&&&&&&&&&&&&&&&&&&&&& ${mapController.currentLongitude}');
     print('${mapController.currentLatitude}');
     await mapController.getGym();
@@ -416,15 +416,6 @@ class _HomePageState extends State<HomePage> {
                         Positioned(
                           bottom: 20,
                           right: 20,
-                          // child: Container(
-                          //   child: Text("Coming soon",style: TextStyle(
-                          //     fontSize: 14,
-                          //           fontWeight: FontWeight.w600,
-                          //           borderColor: Colors.transparent,
-                          //           fontColor: MyColors.orange,
-                          //           bgColor: MyColors.white,
-                          //   ),),
-                          // )
                          child: Align(
                             alignment: Alignment.bottomRight,
                             child: GetBuilder<BottomController>(builder: (controller) {
